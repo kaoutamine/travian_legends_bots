@@ -4,83 +4,72 @@ from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-class TestTravianoasisraid():
+class TestTravianvillagesraid():
     def setup_method(self, method):
         load_dotenv()
         options = Options()
-        # Uncomment to run headless
+        # Comment this if you want to see the browser
         # options.add_argument("--headless=new")
         options.add_argument("start-maximized")
-
-        service = Service("/usr/local/bin/chromedriver")
-        self.driver = webdriver.Chrome(service=service, options=options)
+        self.driver = webdriver.Chrome(service=ChromeService("/usr/local/bin/chromedriver"), options=options)
         self.vars = {}
 
     def teardown_method(self, method):
         self.driver.quit()
 
-    def test_travianoasisraid(self):
+    def test_travianvillagesraid(self):
         d = self.driver
+        wait = WebDriverWait(d, 15)
         actions = ActionChains(d)
 
-        d.get("https://www.travian.com/de")
-        d.set_window_size(1024, 768)
+        # Go to login page
+        d.get("https://www.travian.com/international#loginLobby")
+        wait = WebDriverWait(d, 15)
 
-        d.find_element(By.NAME, "name").click()
-        d.find_element(By.NAME, "name").send_keys(os.getenv("TRAVIAN_EMAIL"))
-        d.find_element(By.NAME, "password").click()
-        d.find_element(By.NAME, "password").send_keys(os.getenv("TRAVIAN_PASSWORD"))
-        d.find_element(By.CSS_SELECTOR, ".withLoadingIndicator > div").click()
-        time.sleep(3)
+        # Click login button to open modal
+        login_btn = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "js-login-button")))
+        login_btn.click()
 
-        d.find_element(By.CSS_SELECTOR, "section").click()
-        d.find_element(By.CSS_SELECTOR, ".gameworldButton").click()
-        actions.move_to_element(d.find_element(By.CSS_SELECTOR, ".gameworldButton")).perform()
-        actions.move_to_element(d.find_element(By.CSS_SELECTOR, "body"), 0, 0).perform()
-        d.find_element(By.CSS_SELECTOR, ".action div").click()
+        # Wait for modal to load
+        email_field = wait.until(EC.presence_of_element_located((By.NAME, "email")))
+        email_field.click()
+        email_field.send_keys(os.getenv("TRAVIAN_EMAIL"))
 
-        elements = [
-            ".buildingSlot2 > .labelLayer",
-            ".buildingSlot6:nth-child(6)",
-            ".buildingSlot3:nth-child(3)",
-            ".buildingSlot2:nth-child(2)",
-            ".buildingSlot9 > .labelLayer",
-            ".map",
-            ".buildingView",
-            ".a31 path",
-            "#villageContent"
-        ]
-        for selector in elements:
-            el = d.find_element(By.CSS_SELECTOR, selector)
-            actions.move_to_element(el).perform()
-            actions.move_to_element(d.find_element(By.CSS_SELECTOR, "body"), 0, 0).perform()
+        password_field = wait.until(EC.presence_of_element_located((By.NAME, "password")))
+        password_field.click()
+        password_field.send_keys(os.getenv("TRAVIAN_PASSWORD"))
 
-        d.find_element(By.CSS_SELECTOR, ".buildingView").click()
-        actions.click_and_hold(d.find_element(By.ID, "villageContent")).perform()
-        actions.release().perform()
-        d.find_element(By.ID, "villageContent").click()
+        # Submit the form
+        submit_btn = d.find_element(By.XPATH, "//button[@type='submit']")
+        submit_btn.click()
 
-        el = d.find_element(By.CSS_SELECTOR, ".aid39 > .labelLayer")
-        actions.move_to_element(el).click().perform()
 
-        d.find_element(By.ID, "button67df3e2481b72").click()
-        d.find_element(By.NAME, "selectAll").click()
+        # Wait for login to finish
+        time.sleep(5)
 
-        d.execute_script("window.scrollTo(0,918)")
-        d.find_element(By.CSS_SELECTOR, ".dropContainer:nth-child(2) .farmListFooter div").click()
-        d.find_element(By.CSS_SELECTOR, ".dropContainer:nth-child(3) tfoot input").click()
-        d.find_element(By.CSS_SELECTOR, ".dropContainer:nth-child(3) .farmListFooter div").click()
+        # Start your raid flow (copy-pasted from your original logic)
+        d.find_element(By.CSS_SELECTOR, "div:nth-child(1) > span").click()
+        actions.move_to_element(d.find_element(By.CSS_SELECTOR, ".a31 path")).perform()
+        actions.move_to_element(d.find_element(By.CSS_SELECTOR, ".g16 > .hoverShape > path")).perform()
+        d.find_element(By.CSS_SELECTOR, ".g16 path:nth-child(2)").click()
 
-        input("✅ Done. Press Enter to close...")
+        d.find_element(By.ID, "button67e04c1e282ff").click()
+        d.find_element(By.CSS_SELECTOR, ".dropContainer:nth-child(2) .farmListHeader > .textButtonV2 > div").click()
+        d.find_element(By.ID, "button67e04c209a011").click()
+
+        print("✅ Test finished executing.")
+        input("Press Enter to quit browser...")
 
 # Run directly
 if __name__ == "__main__":
-    test = TestTravianoasisraid()
+    test = TestTravianvillagesraid()
     test.setup_method(None)
     try:
-        test.test_travianoasisraid()
+        test.test_travianvillagesraid()
     finally:
         test.teardown_method(None)
