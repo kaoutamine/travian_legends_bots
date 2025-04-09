@@ -1,0 +1,30 @@
+# Ignore Python cache and virtual environments
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.env
+.venv/
+env/
+venv/
+
+# Ignore editor-specific files
+.vscode/
+.idea/
+*.swp
+
+# Ignore environment variables
+.env
+
+# Byte-compiled files
+*.pyc
+
+# Logs or debug output
+*.log
+
+# Ignore Jupyter notebooks checkpoints (if ever used)
+.ipynb_checkpoints/
+
+# OS-specific
+.DS_Store
+Thumbs.db
