@@ -28,3 +28,15 @@ venv/
 # OS-specific
 .DS_Store
 Thumbs.db
+
+
+# Ignore all files in selenium_UI based_exploits folder
+selenium_UI based_exploits/TravianOasisRaidRecodingHumanBehaviour.py
+selenium_UI based_exploits/readme
+selenium_UI based_exploits/runWithCookies.py
+selenium_UI based_exploits/test_TravianVillagesRaidFirefox.py:Zone.Identifier
+selenium_UI based_exploits/test_travianoasisraid.py:Zone.Identifier
+selenium_UI based_exploits/test_travianoasisraidwithasserts.py
+selenium_UI based_exploits/travian_cookies.json
+selenium_UI based_exploits/travian_firefox.side
+selenium_UI based_exploits/travian_firefox.side:Zone.Identifier
