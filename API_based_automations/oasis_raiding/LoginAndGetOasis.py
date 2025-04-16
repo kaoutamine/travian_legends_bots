@@ -2,6 +2,7 @@ import base64
 import hashlib
 import os
 import requests
+from dotenv import load_dotenv
 
 # Step 1: Generate code_verifier and code_challenge
 def generate_pkce():
@@ -73,10 +74,21 @@ def get_oasis_info(jwt, x, y, server_url):
 
 # Example usage
 if __name__ == "__main__":
-    email = "kaourintin.tamine.personal@gmail.com"
-    password = "password"  # <-- Replace with your real password or use getpass()
+
+    # Load environment variables from .env file
+    load_dotenv()
+
+    # Retrieve the variables
+    email = os.getenv('TRAVIAN_EMAIL')
+    password = os.getenv('TRAVIAN_PASSWORD')
+
+    print(email)
+    print(password)
     server_url = "https://ts3.x1.asia.travian.com"
 
     jwt_token, verifier = travian_login(email, password)
     if jwt_token:
         get_oasis_info(jwt_token, x=-72, y=-22, server_url=server_url)
+
+    
+ 
