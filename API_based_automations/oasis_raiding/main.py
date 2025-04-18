@@ -1,47 +1,36 @@
 # main.py
 
 from login import login
-from farm_list import (
-    fetch_villages_and_farm_lists,
-    fetch_farm_lists_with_ids,
-    fetch_farm_list,
-    parse_farm_list
-)
-from oasis import filter_oases, sort_oases_by_loot
+from travian_api import TravianAPI
 
 def main():
+    # Step 1: Login
     session, server_url = login()
-    print(f"[+] Connected to {server_url}")
+    travian = TravianAPI(session, server_url)
 
-    player_data = fetch_villages_and_farm_lists(session)
+    # Step 2: Fetch all villages and farm lists
+    player_data = travian.fetch_villages_and_farm_lists()
+
     villages = player_data["villages"]
+    farm_lists = player_data["farmLists"]
 
-    # Select village
-    for idx, village in enumerate(villages):
-        print(f"[{idx}] {village['name']} (ID: {village['id']})")
-    selected_village = villages[int(input("\nSelect a village: "))]
+    print("Available Villages:")
+    for i, village in enumerate(villages):
+        print(f"[{i}] {village['name']} (ID: {village['id']})")
 
-    farm_lists = fetch_farm_lists_with_ids(session, selected_village["id"])
+    print("\nAvailable Farm Lists:")
+    for i, fl in enumerate(farm_lists):
+        print(f"[{i}] {fl['name']} (Owner Village ID: {fl['ownerVillage']['id']})")
 
-    # Select farm list
-    for idx, farm_list in enumerate(farm_lists):
-        print(f"[{idx}] {farm_list['name']} — ID: {farm_list['id']} (Slots: {farm_list['slots_amount']})")
-    selected_farm_list = farm_lists[int(input("\nSelect a farm list: "))]
+    selected_index = int(input("\nSelect a Farm List to load (index): "))
+    selected_farm_list = farm_lists[selected_index]
 
-    raw_farm_list_data = fetch_farm_list(session, selected_farm_list["id"])
-    farms = parse_farm_list(raw_farm_list_data)
+    farm_list_details = travian.fetch_farm_list_details(selected_farm_list["id"])
+    farms = travian.parse_farm_list_slots(farm_list_details)
 
-    oases = filter_oases(farms)
-
-    if not oases:
-        print("[-] No oases found.")
-        return
-
-    oases = sort_oases_by_loot(oases)
-
-    print("\nOasis Targets (sorted by best loot):")
-    for idx, oasis in enumerate(oases):
-        print(f"[{idx}] {oasis['target_name']} at ({oasis['x']},{oasis['y']}) — Loot: {oasis['total_loot']}")
+    print("\nFarms in this list:")
+    for farm in farms:
+        print(f"{farm['type']}: {farm['target_name']} at ({farm['x']},{farm['y']}) - Loot: {farm['total_loot']}")
 
 if __name__ == "__main__":
     main()
