@@ -3,6 +3,42 @@
 import requests
 from datetime import datetime
 
+def fetch_farm_lists_with_ids(session: requests.Session, village_id: int) -> list:
+    url = "https://ts3.x1.asia.travian.com/api/v1/graphql"
+    payload = {
+        "query": """
+            query($villageId: Int!) {
+                rallyPointOverview(villageId: $villageId) {
+                    farmLists {
+                        id
+                        name
+                        slotsAmount
+                        runningRaidsAmount
+                        lastStartedTime
+                    }
+                }
+            }
+        """,
+        "variables": {
+            "villageId": village_id
+        }
+    }
+    response = session.post(url, json=payload)
+    response.raise_for_status()
+    data = response.json()
+    
+    farm_lists = []
+    for fl in data["data"]["rallyPointOverview"]["farmLists"]:
+        farm_lists.append({
+            "id": fl["id"],  # 🛡️ You now have the ID!
+            "name": fl["name"],
+            "slots_amount": fl["slotsAmount"],
+            "running_raids": fl["runningRaidsAmount"],
+            "last_started_time": fl["lastStartedTime"],
+        })
+    return farm_lists
+
+
 def fetch_farm_list(session: requests.Session, list_id: int) -> dict:
     url = "https://ts3.x1.asia.travian.com/api/v1/graphql"
     payload = {
