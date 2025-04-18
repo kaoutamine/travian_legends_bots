@@ -5,73 +5,50 @@ def main():
     session, server_url = login()
     api = TravianAPI(session, server_url)
 
-    print("[+] Fetching your villages...")
-    player_data = api.get_villages_and_farm_lists()
+    player_info = api.get_player_info()
 
-    villages = player_data["villages"]
-    farm_lists = player_data["farmLists"]
+    villages = player_info["villages"]
+    farm_lists = player_info["farmLists"]
 
-    if not villages:
-        print("[!] No villages found.")
-        return
-
-    # Show villages
     print("\nYour villages:")
     for idx, village in enumerate(villages):
         print(f"[{idx}] {village['name']} (ID {village['id']})")
 
-    selected_idx = int(input("\nSelect your village: "))
-    selected_village = villages[selected_idx]
+    village_idx = int(input("\nSelect your village: "))
+    selected_village = villages[village_idx]
     village_id = selected_village["id"]
 
-    print(f"\n[+] You selected {selected_village['name']} (ID {village_id})")
+    print(f"\n[+] Selected village: {selected_village['name']} (ID {village_id})\n")
 
-    # Now find farm lists that belong to this village
-    print("\nFarm Lists belonging to this village:")
-    village_farm_lists = [fl for fl in farm_lists if fl["ownerVillage"]["id"] == village_id]
+    available_lists = [fl for fl in farm_lists if fl["ownerVillage"]["id"] == village_id]
 
-    if not village_farm_lists:
-        print("[!] No farm lists found for this village.")
+    if not available_lists:
+        print("No farm lists found for this village.")
         return
 
-    for idx, fl in enumerate(village_farm_lists):
-        print(f"[{idx}] {fl['name']}")
+    print("\nFarm lists in this village:")
+    for idx, fl in enumerate(available_lists):
+        print(f"[{idx}] {fl['name']} (ID {fl['id']})")
 
-    selected_list_idx = int(input("\nSelect the farm list you want to scan: "))
-    selected_list_name = village_farm_lists[selected_list_idx]["name"]
+    list_idx = int(input("\nSelect farm list to scan: "))
+    selected_list = available_lists[list_idx]
 
-    print(f"\n[+] Scanning farm list: {selected_list_name}")
+    farm_list_details = api.get_farm_list_details(selected_list["id"])
+    slots = farm_list_details["slots"]
 
-    # Fetch details about that farm list
-    print("[+] Fetching full farm list details for this village...")
-    full_farm_lists = api.get_farm_lists(village_id)
-    matching_lists = [fl for fl in full_farm_lists if fl["name"] == selected_list_name]
+    print(f"\n[+] Total targets in '{farm_list_details['name']}': {len(slots)}\n")
 
-    if not matching_lists:
-        print("[!] No detailed info found for this farm list.")
-        return
-
-    farm_list_id = matching_lists[0]["id"]
-    farm_list_detail = api.get_farm_list_detail(farm_list_id)
-
-    slots = farm_list_detail["data"]["farmList"]["slots"]
-
-    # Now check each slot (target) for monsters if it's an oasis
-    print("\nScanning each target for monsters...")
-    for slot in slots:
+    for idx, slot in enumerate(slots):
         target = slot["target"]
-        if target["type"] != 2:  # 2 = Oasis type
-            continue
+        troop = slot.get("troop", {})
+        monster_count = sum(troop.get(f"t{i}", 0) for i in range(1, 11))
 
-        x, y = target["x"], target["y"]
-        oasis_info = api.get_oasis_info(x, y)
-        animals = oasis_info["data"]["mapDetails"]["oasis"]["animals"]
-
-        if not animals:
-            print(f"[EMPTY] Oasis at ({x}|{y}) named '{target['name']}' has no monsters.")
+        if target["type"] == 1:  # 1 = Village
+            print(f"[{idx}] Village '{target['name']}' at ({target['x']},{target['y']}) - No monsters (village)")
+        elif target["type"] == 2:  # 2 = Oasis
+            print(f"[{idx}] Oasis '{target['name']}' at ({target['x']},{target['y']}) - Monsters: {monster_count}")
         else:
-            total_animals = sum(a["count"] for a in animals)
-            print(f"[MONSTERS] Oasis at ({x}|{y}) named '{target['name']}' has {total_animals} monsters.")
+            print(f"[{idx}] Unknown type at ({target['x']},{target['y']})")
 
 if __name__ == "__main__":
     main()

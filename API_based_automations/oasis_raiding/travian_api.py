@@ -1,12 +1,11 @@
 import requests
-from datetime import datetime
 
 class TravianAPI:
     def __init__(self, session: requests.Session, server_url: str):
         self.session = session
         self.server_url = server_url
 
-    def get_villages_and_farm_lists(self):
+    def get_player_info(self):
         payload = {
             "query": """
                 query {
@@ -14,16 +13,12 @@ class TravianAPI:
                         currentVillageId
                         villages {
                             id
-                            sortIndex
                             name
-                            tribeId
-                            hasHarbour
                         }
                         farmLists {
+                            id
                             name
-                            ownerVillage {
-                                id
-                            }
+                            ownerVillage { id }
                         }
                     }
                 }
@@ -31,42 +26,34 @@ class TravianAPI:
         }
         response = self.session.post(f"{self.server_url}/api/v1/graphql", json=payload)
         response.raise_for_status()
-        data = response.json()["data"]["ownPlayer"]
-        return data
+        return response.json()["data"]["ownPlayer"]
 
-    def get_farm_lists(self, village_id: int):
+    def get_farm_list_details(self, list_id: int):
         payload = {
             "query": """
-            query($villageId: Int!) {
-                rallyPointOverview(villageId: $villageId) {
-                    farmLists {
+                query($id: Int!, $onlyExpanded: Boolean) {
+                    farmList(id: $id) {
                         id
                         name
                         slotsAmount
-                        runningRaidsAmount
-                        lastStartedTime
+                        slots(onlyExpanded: $onlyExpanded) {
+                            id
+                            target { x y name type }
+                            troop { t1 t2 t3 t4 t5 t6 t7 t8 t9 t10 }
+                        }
                     }
                 }
-            }
             """,
-            "variables": {"villageId": village_id}
+            "variables": {
+                "id": list_id,
+                "onlyExpanded": False
+            }
         }
         response = self.session.post(f"{self.server_url}/api/v1/graphql", json=payload)
         response.raise_for_status()
+        return response.json()["data"]["farmList"]
 
-        data = response.json()
-
-        if isinstance(data, list):
-            # If Travian sends a list, it is likely a wrapped error or weird output
-            raise Exception("Unexpected list response while fetching farm lists.")
-
-        if "data" not in data or data["data"].get("rallyPointOverview") is None:
-            raise Exception("Invalid farm list response structure.")
-
-        return data["data"]["rallyPointOverview"]["farmLists"]
-
-
-    def get_oasis_info(self, x: int, y: int) -> dict:
+    def get_oasis_info(self, x: int, y: int):
         payload = {
             "query": """
                 query($x: Int!, $y: Int!) {
@@ -87,4 +74,4 @@ class TravianAPI:
         }
         response = self.session.post(f"{self.server_url}/api/v1/graphql", json=payload)
         response.raise_for_status()
-        return response.json()
+        return response.json()["data"]["mapDetails"]["oasis"]
