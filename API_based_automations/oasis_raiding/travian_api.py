@@ -1,145 +1,84 @@
-# Travian API Modular Farm List Management
+# Update for travian_api.py
 
 import requests
 
 class TravianAPI:
     def __init__(self, session: requests.Session, server_url: str):
         self.session = session
-        self.server_url = server_url.rstrip("/")
+        self.server_url = server_url.rstrip('/')
 
-    def _graphql_query(self, query: str, variables: dict = None) -> dict:
+    def get_villages_and_farm_lists(self):
         url = f"{self.server_url}/api/v1/graphql"
-        payload = {"query": query}
-        if variables:
-            payload["variables"] = variables
+        payload = {"query": "query{ownPlayer{currentVillageId villages{id sortIndex name tribeId hasHarbour} farmLists{name ownerVillage{id}}}}"}
+        r = self.session.post(url, json=payload)
+        r.raise_for_status()
+        data = r.json()["data"]["ownPlayer"]
+        villages = data["villages"]
+        farm_lists = data["farmLists"]
+        return villages, farm_lists
 
-        response = self.session.post(url, json=payload)
-        response.raise_for_status()
-        return response.json()
-
-    def fetch_villages_and_farm_lists(self) -> dict:
-        query = """
-            query {
-                ownPlayer {
-                    currentVillageId
-                    villages {
-                        id
-                        sortIndex
-                        name
-                        tribeId
-                        hasHarbour
-                    }
-                    farmLists {
-                        id
-                        name
-                        ownerVillage {
-                            id
-                        }
-                    }
-                }
-            }
-        """
-        data = self._graphql_query(query)
-        return data["data"]["ownPlayer"]
-
-    def fetch_farm_list_details(self, farm_list_id: int) -> dict:
-        query = """
+    def get_farm_list_details(self, farm_list_id: int):
+        url = f"{self.server_url}/api/v1/graphql"
+        payload = {
+            "query": """
             query($id: Int!, $onlyExpanded: Boolean){
-                bootstrapData { timestamp }
-                weekendWarrior { isNightTruce }
                 farmList(id: $id) {
-                    id
-                    name
-                    slotsAmount
-                    runningRaidsAmount
-                    isExpanded
-                    sortIndex
-                    lastStartedTime
-                    sortField
-                    sortDirection
-                    useShip
-                    onlyLosses
-                    ownerVillage {
-                        id
-                        troops {
-                            ownTroopsAtTown {
-                                units {
-                                    t1 t2 t3 t4 t5 t6 t7 t8 t9 t10
-                                }
-                            }
-                        }
-                    }
-                    defaultTroop {
-                        t1 t2 t3 t4 t5 t6 t7 t8 t9 t10
-                    }
-                    slotStates: slots {
-                        id
-                        isActive
-                    }
                     slots(onlyExpanded: $onlyExpanded) {
                         id
-                        target {
-                            id
-                            mapId
-                            x
-                            y
-                            name
-                            type
-                            population
-                        }
-                        troop {
-                            t1 t2 t3 t4 t5 t6 t7 t8 t9 t10
-                        }
+                        target { id mapId x y name type population }
                         distance
                         isActive
                         isRunning
-                        isSpying
-                        runningAttacks
-                        nextAttackAt
-                        lastRaid {
-                            reportId
-                            authKey
-                            time
-                            booty {
-                                resourceType { id code }
-                                amount
-                            }
-                            bootyMax
-                            icon
-                        }
-                        totalBooty {
-                            booty
-                            raids
-                        }
+                        lastRaid { booty { resourceType { code } amount } }
                     }
                 }
             }
-        """
-        variables = {"id": farm_list_id, "onlyExpanded": False}
-        data = self._graphql_query(query, variables)
-        return data["data"]["farmList"]
+            """,
+            "variables": {"id": farm_list_id, "onlyExpanded": False}
+        }
+        r = self.session.post(url, json=payload)
+        r.raise_for_status()
+        return r.json()["data"]["farmList"]["slots"]
 
-    def parse_farm_list_slots(self, farm_list_data: dict) -> list:
-        parsed_slots = []
-        slots = farm_list_data.get("slots", [])
+    def get_map_info(self, x: int, y: int):
+        url = f"{self.server_url}/api/v1/map/position"
+        payload = {
+            "data": {
+                "x": x,
+                "y": y,
+                "zoomLevel": 1,
+                "ignorePositions": []
+            }
+        }
+        r = self.session.post(url, json=payload)
+        r.raise_for_status()
+        return r.json()
+
+    def check_oasis_for_monsters(self, x: int, y: int):
+        map_info = self.get_map_info(x, y)
+        oases = []
+        for pos in map_info.get("oasis", []):
+            oasis = {
+                "x": pos["x"],
+                "y": pos["y"],
+                "hasMonsters": pos.get("animals", []) != []
+            }
+            oases.append(oasis)
+        return oases
+
+    def list_farm_oases_with_monsters(self, farm_list_id: int):
+        slots = self.get_farm_list_details(farm_list_id)
+        oasis_info = []
+
         for slot in slots:
-            target = slot.get("target", {})
-            loot = {}
-            last_raid = slot.get("lastRaid")
-            if last_raid and last_raid.get("booty"):
-                for res in last_raid["booty"]:
-                    loot[res["resourceType"]["code"]] = res["amount"]
-
-            parsed_slots.append({
-                "target_name": target.get("name", "Unknown"),
-                "x": target.get("x"),
-                "y": target.get("y"),
-                "population": target.get("population"),
-                "type": "Oasis" if target.get("type") == 2 else "Village",
-                "distance": slot.get("distance"),
-                "loot": loot,
-                "total_loot": sum(loot.values()),
-                "is_running": slot.get("isRunning"),
-                "next_attack_at": slot.get("nextAttackAt"),
-            })
-        return parsed_slots
+            target = slot["target"]
+            if target["type"] == 2:  # Type 2 is Oasis
+                monsters = self.check_oasis_for_monsters(target["x"], target["y"])
+                for mon in monsters:
+                    oasis_info.append({
+                        "target_name": target["name"],
+                        "x": target["x"],
+                        "y": target["y"],
+                        "has_monsters": mon["hasMonsters"]
+                    })
+        return oasis_info
