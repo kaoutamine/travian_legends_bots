@@ -110,6 +110,22 @@ def login_to_server(session, avatars, selection=None):
     print(f"[+] Successfully logged into {selected['world_name']} at {selected['world_url']}")
     return server_session, selected['world_url']
 
+
+
+# Allow easy import when used from main.py
+def login(email=None, password=None, server_selection=None):
+    if email is None or password is None:
+        from dotenv import load_dotenv
+        load_dotenv()
+        email = os.getenv("TRAVIAN_EMAIL")
+        password = os.getenv("TRAVIAN_PASSWORD")
+
+    session = login_to_lobby(email, password)
+    avatars = get_avatars(session)
+    server_session, server_url = login_to_server(session, avatars, selection=server_selection)
+    return server_session, server_url
+
+
 def main():
     session = login_to_lobby(EMAIL, PASSWORD)
     avatars = get_avatars(session)
@@ -122,3 +138,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
