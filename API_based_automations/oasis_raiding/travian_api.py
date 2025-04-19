@@ -121,23 +121,38 @@ class TravianAPI:
                     continue
         return animal_count
 
-    def prepare_oasis_attack(self, map_id: int):
-        """Prepare attack (fetch action and checksum)."""
-        url = f"{self.server_url}/build.php?gid=16&tt=2&eventType=4&targetMapId={map_id}"
-        response = self.session.get(url)
-        response.raise_for_status()
-        html = response.text
+    def prepare_oasis_attack(self, map_id: int, x: int, y: int, troops: dict) -> dict:
+        """Prepare attack (fetch action and checksum) after triggering troop setup."""
+        # First POST to trigger checksum generation
+        url = f"{self.server_url}/build.php?gid=16&tt=2"
 
+        payload = {
+            "x": x,
+            "y": y,
+            "eventType": 4,
+            "ok": "ok",
+            "villagename": "",
+        }
+        for troop_id in range(1, 11):
+            payload[f"troop[t{troop_id}]"] = troops.get(f"t{troop_id}", "")
+
+        res = self.session.post(url, data=payload)
+        res.raise_for_status()
+
+        html = res.text
+
+        # Now extract action and checksum
         action_match = re.search(r'name="action" value="([^"]+)"', html)
         checksum_match = re.search(r'name="checksum" value="([^"]+)"', html)
 
         if not action_match or not checksum_match:
-            raise Exception("Failed to find action/checksum when preparing attack.")
+            raise Exception("Failed to find action/checksum when preparing attack (after troop setup POST).")
 
         return {
             "action": action_match.group(1),
             "checksum": checksum_match.group(1)
         }
+
 
     def confirm_oasis_attack(self, attack_info: dict, x: int, y: int, troops: dict, village_id: int) -> bool:
         """Confirm and launch the attack."""

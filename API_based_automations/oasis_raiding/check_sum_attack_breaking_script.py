@@ -1,114 +1,59 @@
 import requests
 import re
-import os
-from dotenv import load_dotenv
 from bs4 import BeautifulSoup
+from login import login  # Assuming your login() function still works
 
-# === SETTINGS ===
-SERVER_INDEX = 0  # 0 = Asia 3
-VILLAGE_INDEX = 0  # 0 = Rafale
+# === CONFIG ===
+OASIS_X = -90
+OASIS_Y = 3
 TROOP_SETUP = {
-    "t5": 60,  # Send 60 Equites Imperatoris
+    "t5": 60  # number of Equites Imperatoris
 }
-OASIS_X = -64
-OASIS_Y = -8
-
-load_dotenv()
-
-def login():
-    print("[+] Logging in...")
-    servers = [
-        "https://ts3.x1.asia.travian.com/",
-    ]
-    server_url = servers[SERVER_INDEX]
-
-    session = requests.Session()
-
-    login_page = session.get(server_url + "login.php")
-    if login_page.status_code != 200:
-        raise Exception("[-] Failed to load login page.")
-
-    # Direct POST login (no parsing needed)
-    res = session.post(server_url + "login.php", data={
-        "name": os.getenv("TRAVIAN_EMAIL"),
-        "password": os.getenv("TRAVIAN_PASSWORD"),
-        "s1": "Login",
-    })
-
-    if "dorf1.php" not in res.text:
-        raise Exception("[-] Login failed.")
-
-    print(f"[+] Successfully logged into {server_url}")
-    return session, server_url
-
-def extract_action_and_checksum(html: str) -> tuple[str, str]:
-    soup = BeautifulSoup(html, "html.parser")
-
-    # Find the confirm button
-    button = soup.find("button", id="confirmSendTroops")
-    if not button:
-        raise Exception("[-] Confirm button not found.")
-
-    onclick = button.get("onclick")
-    if not onclick:
-        raise Exception("[-] Confirm button has no onclick attribute.")
-
-    checksum_match = re.search(r"value\s*=\s*'([a-f0-9]+)'", onclick)
-    if not checksum_match:
-        raise Exception("[-] Failed to extract checksum from onclick.")
-
-    checksum = checksum_match.group(1)
-
-    # Find the hidden action input
-    action_input = soup.select_one('input[name="action"]')
-    if not action_input:
-        raise Exception("[-] Failed to find action input.")
-
-    action = action_input.get("value")
-
-    print(f"[+] Found action={action}, checksum={checksum}")
-    return action, checksum
+VILLAGE_INDEX = 0  # Which village to send from
 
 def main():
+    print("[+] Logging in...")
     session, server_url = login()
+    print("[+] Logged in successfully.")
 
-    print("[+] Fetching villages...")
-    res = session.post(server_url + "/api/v1/graphql", json={
+    print("[+] Fetching player info...")
+    payload = {
         "query": """
-        query {
-            ownPlayer {
-                villages {
-                    id
-                    name
+            query {
+                ownPlayer {
+                    villages {
+                        id
+                        name
+                    }
                 }
             }
-        }
         """
-    })
+    }
+    res = session.post(f"{server_url}/api/v1/graphql", json=payload)
+    res.raise_for_status()
+    player_info = res.json()["data"]["ownPlayer"]
 
-    villages = res.json()["data"]["ownPlayer"]["villages"]
-    selected_village = villages[VILLAGE_INDEX]
+    selected_village = player_info["villages"][VILLAGE_INDEX]
     village_id = selected_village["id"]
     print(f"[+] Selected village: {selected_village['name']} (ID {village_id})")
 
-    print("[+] Step 1: Get oasis tile details...")
-    tile_detail_res = session.post(server_url + "/api/v1/map/tile-details", json={"x": OASIS_X, "y": OASIS_Y})
-    tile_detail_res.raise_for_status()
-    tile_html = tile_detail_res.json()["html"]
+    print(f"[+] Getting target oasis details at ({OASIS_X}, {OASIS_Y})...")
+    res = session.post(server_url + "/api/v1/map/tile-details", json={"x": OASIS_X, "y": OASIS_Y})
+    res.raise_for_status()
+    html = res.json()["html"]
 
-    # Find targetMapId in HTML
-    match = re.search(r"targetMapId=(\d+)", tile_html)
+    match = re.search(r"targetMapId=(\d+)", html)
     if not match:
-        raise Exception("[-] Failed to find targetMapId.")
-
+        raise Exception("[-] Failed to find targetMapId in tile details.")
     target_map_id = match.group(1)
     print(f"[+] Found targetMapId: {target_map_id}")
 
-    print("[+] Step 2: Open raid page...")
-    raid_page_res = session.get(f"{server_url}/build.php?gid=16&tt=2&eventType=4&targetMapId={target_map_id}")
-    raid_page_res.raise_for_status()
+    # Here's where we will debug step-by-step:
+    print("[+] Opening raid preparation page...")
+    raid_page = session.get(f"{server_url}/build.php?gid=16&tt=2&eventType=4&targetMapId={target_map_id}")
+    raid_page.raise_for_status()
 
-    print("[+] Step 3: Prepare troops to get checksum...")
+    print("[+] Sending initial POST to prepare troops...")
     prepare_data = {
         "troop[t1]": "",
         "troop[t2]": "",
@@ -125,10 +70,21 @@ def main():
     preparation_res = session.post(f"{server_url}/build.php?gid=16&tt=2", data=prepare_data)
     preparation_res.raise_for_status()
 
-    print("[+] Step 4: Extract checksum and action...")
-    action, checksum = extract_action_and_checksum(preparation_res.text)
+    print("[+] Parsing action and checksum...")
+    soup = BeautifulSoup(preparation_res.text, "html.parser")
 
-    print("[+] Step 5: Confirm the raid...")
+    action_input = soup.select_one('input[name="action"]')
+    checksum_input = soup.select_one('input[name="checksum"]')
+
+    if not action_input or not checksum_input:
+        print(preparation_res.text[:2000])  # Print first 2000 chars to debug
+        raise Exception("[-] Failed to extract action/checksum.")
+
+    action = action_input.get("value")
+    checksum = checksum_input.get("value")
+    print(f"[+] Found action: {action}, checksum: {checksum}")
+
+    print("[+] Sending final attack confirmation...")
     final_attack_payload = {
         "action": action,
         "eventType": 4,
@@ -138,8 +94,6 @@ def main():
         "redeployHero": "",
         "checksum": checksum,
     }
-
-    # Add the troop setup
     for troop_id in range(1, 11):
         final_attack_payload[f"troops[0][t{troop_id}]"] = 0
     final_attack_payload[f"troops[0][t5]"] = TROOP_SETUP.get("t5", 0)
@@ -151,7 +105,8 @@ def main():
     if "Rally point" in confirm_res.text or "returning" in confirm_res.text or "underway" in confirm_res.text:
         print("✅ Attack launched successfully!")
     else:
-        print("❌ Failed to launch the attack.")
+        print("⚠️ Could not confirm success, please check manually.")
+        print(confirm_res.text[:2000])  # Print part of the response for debug
 
 if __name__ == "__main__":
     main()
