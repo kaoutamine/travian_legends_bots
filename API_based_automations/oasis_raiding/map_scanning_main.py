@@ -108,9 +108,16 @@ def main():
             "scan_radius": scan_radius,
             "total_tiles": len(scanned_tiles),
         }
-        save_json({"metadata": metadata, "tiles": scanned_tiles}, filename="full_map_scan.json", with_timestamp=True)
+
+        save_json(
+            data={"metadata": metadata, "tiles": scanned_tiles},
+            filename="full_map_scan.json",
+            with_timestamp=True,
+            subfolder="full_map_scans"
+        )
     else:
         print("❌ Scan not saved.")
+
 
 if __name__ == "__main__":
     main()
