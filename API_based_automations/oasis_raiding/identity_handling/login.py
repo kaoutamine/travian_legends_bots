@@ -2,13 +2,44 @@ import requests
 import hashlib
 import base64
 import secrets
-from dotenv import load_dotenv
 import os
+from pathlib import Path
+from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# === ENV HANDLING ===
+
+def ensure_env_exists():
+    env_path = Path(__file__).resolve().parents[3] / ".env"
+
+    def ask_and_create_env():
+        email = input("Enter your Travian email: ").strip()
+        password = input("Enter your Travian password: ").strip()
+        with open(env_path, "w") as f:
+            f.write(f"TRAVIAN_EMAIL={email}\n")
+            f.write(f"TRAVIAN_PASSWORD={password}\n")
+        print(f"✅ .env file created at {env_path}")
+
+    if not env_path.exists():
+        print(f"❌ .env file not found at {env_path}")
+        ask_and_create_env()
+    else:
+        load_dotenv(dotenv_path=env_path)
+        email = os.getenv("TRAVIAN_EMAIL")
+        password = os.getenv("TRAVIAN_PASSWORD")
+        if not email or not password:
+            print(f"❌ .env file exists but is incomplete at {env_path}")
+            ask_and_create_env()
+        else:
+            print(f"✅ .env file loaded successfully.")
+
+    load_dotenv(dotenv_path=env_path)
+
+ensure_env_exists()
+
 EMAIL = os.getenv("TRAVIAN_EMAIL")
 PASSWORD = os.getenv("TRAVIAN_PASSWORD")
+
+# === LOGIN SYSTEM ===
 
 def generate_code_pair():
     verifier = base64.urlsafe_b64encode(secrets.token_bytes(32)).rstrip(b'=').decode()
@@ -27,7 +58,6 @@ def login_to_lobby(email, password):
         "User-Agent": "Mozilla/5.0",
     }
 
-    # Step 1: Login to get the code
     login_url = "https://identity.service.legends.travian.info/provider/login?client_id=HIaSfC2LNQ1yXOMuY7Pc2uIH3EqkAi26"
     login_payload = {
         "login": email,
@@ -39,7 +69,6 @@ def login_to_lobby(email, password):
     login_resp.raise_for_status()
     code = login_resp.json().get("code")
 
-    # Step 2: Exchange code for session
     auth_url = "https://lobby.legends.travian.com/api/auth/code"
     auth_payload = {
         "locale": "en-EN",
@@ -93,7 +122,6 @@ def login_to_server(session, avatars, selection=None):
 
     selected = avatars[selection]
 
-    # Step 1: Play the avatar to get the redirect code
     play_url = f"https://lobby.legends.travian.com/api/avatar/play/{selected['uuid']}"
     play_resp = session.post(play_url)
     play_resp.raise_for_status()
@@ -101,42 +129,35 @@ def login_to_server(session, avatars, selection=None):
     code = redirect_info["code"]
     server_auth_url = f"{selected['world_url'].rstrip('/')}/api/v1/auth?code={code}&response_type=redirect"
 
-    # Step 2: Follow redirect to get authenticated in the game world
     server_session = requests.Session()
-    server_session.cookies.update(session.cookies.get_dict())  # Carry over cookies
+    server_session.cookies.update(session.cookies.get_dict())
     auth_resp = server_session.get(server_auth_url, allow_redirects=True)
     auth_resp.raise_for_status()
 
     print(f"[+] Successfully logged into {selected['world_name']} at {selected['world_url']}")
     return server_session, selected['world_url']
 
+# === MAIN LOGIN WRAPPER ===
 
-
-# Allow easy import when used from main.py
 def login(email=None, password=None, server_selection=None):
     if email is None or password is None:
-        from dotenv import load_dotenv
-        load_dotenv()
-        email = os.getenv("TRAVIAN_EMAIL")
-        password = os.getenv("TRAVIAN_PASSWORD")
+        email = EMAIL
+        password = PASSWORD
 
     session = login_to_lobby(email, password)
     avatars = get_avatars(session)
     server_session, server_url = login_to_server(session, avatars, selection=server_selection)
     return server_session, server_url
 
+# === TEST ===
 
 def main():
     session = login_to_lobby(EMAIL, PASSWORD)
     avatars = get_avatars(session)
     server_session, server_url = login_to_server(session, avatars)
 
-    # You are now inside the game server and can use `server_session` for further actions
-    # Example:
     res = server_session.get(server_url)
     print("[+] Game server main page loaded:", res.status_code)
 
 if __name__ == "__main__":
     main()
-
-
