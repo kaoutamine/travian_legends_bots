@@ -196,4 +196,12 @@ class TravianAPI:
 
         # Detect success based on 302 redirect
         return res.status_code == 302 and res.headers.get("Location") == "/build.php?gid=16&tt=1"
+    
+
+    def get_tile_html(self, x, y):
+        url = f"{self.server_url}/api/v1/map/tile-details"
+        res = self.session.post(url, json={"x": x, "y": y})
+        res.raise_for_status()
+        return res.json()["html"]
+
 
