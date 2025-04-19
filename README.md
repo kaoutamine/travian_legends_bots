@@ -1,8 +1,17 @@
-# Automate your Travian gameplay like a pro 
-## - while not being an obvious bot.
-This project connects directly to Travian’s servers through clean, fast API calls — no browsers, no slow clicking bots.
-If you know a little Python, can run a few scripts, and don’t mind answering some simple terminal questions, you can fully automate your early-game oasis raiding in minutes.
-Fast, stealthy, expandable — built by players, for players.
+# 🚀 Automate Your Travian Gameplay Like a Pro  
+## 🕵️ While Staying Under the Radar
+
+---
+
+This project **connects directly to Travian’s servers** using clean, fast **API calls** —  
+
+If you know a little **Python**, can run a few scripts, and don't mind answering a few simple **terminal questions**,  
+you can fully **automate your early-game oasis raiding in minutes**.
+
+---
+
+> Built by players, for players.
+
 
 
 ## API method by reverse engineering logins with Burp Suite/Inspect, storing variables and making API requests
