@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from db_manager import save_json
 from identity_handling.login import login
 from identity_handling.identity_helper import load_villages_from_identity, choose_village_to_scan
-from travian_api import TravianAPI
+from core.travian_api import TravianAPI
 
 def parse_tile_html(html):
     """Parse the HTML content of a tile."""
