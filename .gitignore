@@ -40,3 +40,6 @@ selenium_UI based_exploits/test_travianoasisraidwithasserts.py
 selenium_UI based_exploits/travian_cookies.json
 selenium_UI based_exploits/travian_firefox.side
 selenium_UI based_exploits/travian_firefox.side:Zone.Identifier
+
+API_based_automations/oasis_raiding/database/identity_card.json
+API_based_automations/oasis_raiding/scanned_tiles.json
