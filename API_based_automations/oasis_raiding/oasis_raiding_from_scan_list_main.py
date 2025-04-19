@@ -1,16 +1,14 @@
 from identity_handling.login import login
-from travian_api import TravianAPI
+from core.travian_api import TravianAPI
 import os
 import json
 from glob import glob
 from random import uniform
 import time
+from database.number_to_unit_mapping import get_unit_name  # <-- import properly
 
 # === CONFIG ===
 VILLAGE_INDEX = 0  # index of village to use
-TROOP_SETUP = {
-    "t5": 6  # number of Equites Imperatoris to send
-}
 OASIS_FOLDER = "API_based_automations/oasis_raiding/database/unoccupied_oases/"
 
 def load_latest_unoccupied_oases():
@@ -38,6 +36,11 @@ def main():
     village_id = village["id"]
     print(f"[+] Selected village: {village['name']} (ID {village_id})")
 
+    faction_id = player_info.get("faction")  # 1 = Roman, 2 = Teuton, 3 = Gaul
+    faction_mapping = {1: "roman", 2: "teuton", 3: "gaul"}
+    faction = faction_mapping.get(faction_id, "roman")  # Default fallback to roman
+    print(f"[+] Detected faction: {faction.title()}")
+
     print("[+] Loading unoccupied oases from latest map scan...")
     oases = load_latest_unoccupied_oases()
     if not oases:
@@ -54,24 +57,20 @@ def main():
 
     print("[+] Current troops in village:")
     for unit_code, amount in troops_info.items():
-        print(f"    {unit_code}: {amount} units")
+        unit_name = get_unit_name(unit_code, faction)
+        print(f"    {unit_code} ({unit_name}): {amount} units")
 
-    # You can now see all available units
-    print("\n[+] Reminder of unit code for Romans:")
-    print("    u1: Legionnaire")
-    print("    u2: Praetorian")
-    print("    u3: Imperian")
-    print("    u4: Equites Legati")
-    print("    u5: Equites Imperatoris")
-    print("    u6: Equites Caesaris")
-    print("    ...and more depending on your faction.")
+    # Pick unit to raid with
+    unit_code_for_raid = input("\nEnter unit code for raiding (e.g., u5 for Equites Imperatoris): ").strip()
 
-    # Now specifically get Equites Imperatoris
-    available_troops = troops_info.get("u5", 0)
-    print(f"\n[+] You have {available_troops} Equites Imperatoris available.")
+    available_troops = troops_info.get(unit_code_for_raid, 0)
+    if available_troops <= 0:
+        print(f"[-] No available troops of type {unit_code_for_raid}. Exiting.")
+        return
 
     troops_per_raid = int(input("How many troops per raid? "))
 
+    unit_code_for_payload = unit_code_for_raid.replace("u", "t")  # Correct Travian server expectation
 
     sent_raids = 0
 
@@ -83,15 +82,16 @@ def main():
         x_str, y_str = coords.split("_")
         x, y = int(x_str), int(y_str)
 
-        # Check for animal defenders before launching
         animal_count = api.get_oasis_animal_count(x, y)
         if animal_count > 0:
             print(f"[-] Skipping oasis at ({x}, {y}) — {animal_count} animals present.")
             continue
 
         print(f"[+] Launching raid on unoccupied oasis at ({x}, {y})...")
-        attack_info = api.prepare_oasis_attack(None, x, y, TROOP_SETUP)
-        success = api.confirm_oasis_attack(attack_info, x, y, TROOP_SETUP, village_id)
+        raid_setup = {unit_code_for_payload: troops_per_raid}
+
+        attack_info = api.prepare_oasis_attack(None, x, y, raid_setup)
+        success = api.confirm_oasis_attack(attack_info, x, y, raid_setup, village_id)
 
         if success:
             print(f"✅ Raid sent to ({x}, {y})")
