@@ -1,4 +1,4 @@
-from login import login
+from API_based_automations.oasis_raiding.identity_handling.login import login
 from travian_api import TravianAPI
 
 # === CONFIG ===

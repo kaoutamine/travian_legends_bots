@@ -1,69 +1,62 @@
-import random
-import time
-from login import login
-from travian_api import TravianAPI
-from database.identity_card import load_identity_card
+# map_scanning_main.py
 
-# === CONFIG ===
-VILLAGE_INDEX = 0  # Choose which village to scan around
-SCAN_RADIUS = 20   # How many tiles around the village (in each direction)
+from db_manager import save_json
+from identity_handling.login import login
+from travian_api import TravianAPI
+from bs4 import BeautifulSoup
+
+def scan_map_area(api_client, x_start, x_end, y_start, y_end):
+    print(f"🔍 Scanning coordinates from ({x_start}, {y_start}) to ({x_end}, {y_end})...")
+    scanned_data = {}
+
+    for x in range(x_start, x_end + 1):
+        for y in range(y_start, y_end + 1):
+            html = api_client.get_tile_html(x, y)
+            tile_info = parse_tile_html(html)
+            scanned_data[f"{x}_{y}"] = tile_info
+
+    print(f"✅ Scanned {len(scanned_data)} tiles.")
+    return scanned_data
+
+def parse_tile_html(html):
+    soup = BeautifulSoup(html, "html.parser")
+    tile_info = {}
+
+    title = soup.find("h1")
+    if title:
+        tile_info["title"] = title.text.strip()
+
+    # You can extend this parsing: resource bonuses, owner, type, etc.
+
+    return tile_info
 
 def main():
-    print("[+] Logging in...")
-    session, server_url = login()
-    api = TravianAPI(session, server_url)
+    # Login
+    session, base_url = login()
+    api_client = TravianAPI(session, base_url)
 
-    print("[+] Fetching player info...")
-    player_info = api.get_player_info()
-    villages = player_info["villages"]
+    # Define area to scan
+    x_start, x_end = 100, 102
+    y_start, y_end = 100, 102
 
-    selected_village = villages[VILLAGE_INDEX]
-    village_id = selected_village["id"]
-    print(f"[+] Selected village: {selected_village['name']} (ID {village_id})")
+    scanned_tiles = scan_map_area(api_client, x_start, x_end, y_start, y_end)
 
-    # Load identity card
-    identity_card = load_identity_card()
-    server_info = identity_card.get(server_url)
-    if not server_info:
-        raise Exception(f"[-] No identity card entry for server {server_url}")
+    # Show sample
+    print("\nSample tiles scanned:")
+    for coord, info in list(scanned_tiles.items())[:5]:
+        print(f"{coord}: {info}")
 
-    # Get the village with coordinates
-    village_data = next((v for v in server_info["villages"] if v["id"] == village_id), None)
-    if not village_data:
-        raise Exception(f"[-] No coordinate info for village ID {village_id} in identity card.")
-
-    center_x, center_y = village_data["x"], village_data["y"]
-    print(f"[+] Using center coordinates: ({center_x}, {center_y})")
-
-    print("[+] Starting map scan...")
-
-    scanned_tiles = []
-
-    for dx in range(-SCAN_RADIUS, SCAN_RADIUS + 1):
-        for dy in range(-SCAN_RADIUS, SCAN_RADIUS + 1):
-            x, y = center_x + dx, center_y + dy
-
-            try:
-                tile_html = api.get_tile_html(x, y)
-                scanned_tiles.append({
-                    "x": x,
-                    "y": y,
-                    "html": tile_html
-                })
-                print(f"[+] Scanned tile at ({x}, {y})")
-            except Exception as e:
-                print(f"[!] Failed to scan ({x}, {y}): {str(e)}")
-
-            # Add a small random human-like delay
-            time.sleep(random.uniform(0.5, 1.0))
-
-    print(f"[+] Scan complete! Total tiles scanned: {len(scanned_tiles)}")
-
-    # Save the result
-    import json
-    with open("scanned_tiles.json", "w") as f:
-        json.dump(scanned_tiles, f, indent=2)
-    print("[+] Saved scanned tiles to scanned_tiles.json")
+    # Ask to save
+    should_save = input("\n💾 Save scan results to database? [y/n]: ").strip().lower()
+    if should_save == 'y':
+        metadata = {
+            "description": "Small map scan",
+            "area_scanned": f"({x_start},{y_start}) to ({x_end},{y_end})",
+            "tiles_scanned": len(scanned_tiles),
+        }
+        save_json({"metadata": metadata, "tiles": scanned_tiles}, filename="map_scan.json", with_timestamp=True)
+    else:
+        print("❌ Scan not saved.")
 
 if __name__ == "__main__":
     main()
