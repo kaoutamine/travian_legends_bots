@@ -76,5 +76,84 @@ you can fully **automate your early-game oasis raiding in minutes**.
 
 ---
 
-# 🏗 Current Project Structure
+
+# 📂 Project Structure
+- API_based_automations/
+  - oasis_raiding/
+    - __pycache__/
+    - analysis/
+    - database/
+      - full_map_scans/
+      - identity_card/
+      - unoccupied_oases/
+    - core/
+      - travian_api.py
+    - identity_handling/
+      - login.py
+    - proof_of_concepts/
+    - map_scanning_main.py
+    - full_scan_oasis_analysis.py
+    - oasis_raiding_from_scan_list_main.py
+    - oasis_raiding_from_raid_list_main.py
+    - requirements.txt
+- selenium_UI_based_exploits/
+  - gettingCookies.py
+  - seleniumTest.py
+  - test_TravianVillagesRaidFirefox.py
+  - VillageOasisRaidRecording.py
+- README.md
+
+
+---
+
+# 🔥 Current Achievements
+
+- Fully API-driven Travian automation.
+- No browser or Selenium needed.
+- Travian checksum bypass integrated.
+- Smart oasis targeting (no animals, closest first).
+- Self-updating local data structure.
+
+---
+
+# 🧩 What's Coming Next?
+
+## 🖥 Usability Improvements
+- Fuse login → map scan → oasis raid into one seamless script.
+- Add self-refreshing scripts (auto rescan, auto raid).
+- Package into a desktop app for non-tech users.
+
+---
+
+## 🛡 Robustness Enhancements
+- Better support for multi-account and multi-server players.
+- Handle multi-village troop management.
+- Build auto-recovery in case of API/login errors.
+
+---
+
+## 🎮 Extra Features
+- Hero smart raiding (weak oasis auto-pick for hero XP).
+- Troop stat scraping for smarter raid planning.
+
+---
+
+# 🕹 Bonus (Old Method)
+
+Inside `selenium_UI based_exploits/`:
+- Early experiments using Selenium + Firefox action replay.
+- Deprecated in favor of superior API-only approach.
+
+---
+
+# 🎯 Why Use This?
+
+- It's way faster than clicking manually.
+- Looks exactly like a real human player.
+- Gives you real strategic data.
+- Expandable into anything: construction, attacking, farming.
+
+---
+
+# ✨ Happy Raiding!
 
