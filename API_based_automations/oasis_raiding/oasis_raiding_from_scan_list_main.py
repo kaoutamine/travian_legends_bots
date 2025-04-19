@@ -45,11 +45,35 @@ def main():
 
     print(f"[+] Found {len(oases)} unoccupied oases. Preparing raids...")
 
-    total_troops = int(input("How many total troops available? "))
+    print("[+] Fetching current troop counts...")
+    troops_info = api.get_troops_in_village()
+
+    if not troops_info:
+        print("[-] Could not fetch troops. Exiting.")
+        return
+
+    print("[+] Current troops in village:")
+    for unit_code, amount in troops_info.items():
+        print(f"    {unit_code}: {amount} units")
+
+    # You can now see all available units
+    print("\n[+] Reminder of unit code for Romans:")
+    print("    u1: Legionnaire")
+    print("    u2: Praetorian")
+    print("    u3: Imperian")
+    print("    u4: Equites Legati")
+    print("    u5: Equites Imperatoris")
+    print("    u6: Equites Caesaris")
+    print("    ...and more depending on your faction.")
+
+    # Now specifically get Equites Imperatoris
+    available_troops = troops_info.get("u5", 0)
+    print(f"\n[+] You have {available_troops} Equites Imperatoris available.")
+
     troops_per_raid = int(input("How many troops per raid? "))
 
+
     sent_raids = 0
-    available_troops = total_troops
 
     for coords, tile in oases.items():
         if available_troops < troops_per_raid:
