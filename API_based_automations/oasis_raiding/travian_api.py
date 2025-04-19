@@ -121,37 +121,54 @@ class TravianAPI:
                     continue
         return animal_count
 
-    def prepare_oasis_attack(self, map_id: int, x: int, y: int, troops: dict) -> dict:
-        """Prepare attack (fetch action and checksum) after triggering troop setup."""
-        # First POST to trigger checksum generation
-        url = f"{self.server_url}/build.php?gid=16&tt=2"
+    def prepare_oasis_attack(self, map_id: int, x: int, y: int, troop_setup: dict) -> dict:
+        """Prepare an attack on a given oasis and return action and checksum."""
+        # 1. Open raid preparation page (GET)
+        url = f"{self.server_url}/build.php?gid=16&tt=2&eventType=4&targetMapId={map_id}"
+        res = self.session.get(url)
+        res.raise_for_status()
 
-        payload = {
+        # 2. Send troop setup (POST)
+        prepare_data = {
+            "villagename": "",
             "x": x,
             "y": y,
             "eventType": 4,
             "ok": "ok",
-            "villagename": "",
         }
-        for troop_id in range(1, 11):
-            payload[f"troop[t{troop_id}]"] = troops.get(f"t{troop_id}", "")
+        for troop_id in range(1, 12):  # t1 to t11
+            prepare_data[f"troop[t{troop_id}]"] = troop_setup.get(f"t{troop_id}", 0)
+        prepare_data["troop[scoutTarget]"] = ""
+        prepare_data["troop[catapultTarget1]"] = ""
+        prepare_data["troop[catapultTarget2]"] = ""
 
-        res = self.session.post(url, data=payload)
-        res.raise_for_status()
+        troop_preparation_res = self.session.post(f"{self.server_url}/build.php?gid=16&tt=2", data=prepare_data)
+        troop_preparation_res.raise_for_status()
 
-        html = res.text
+        # 3. Parse action and checksum
+        soup = BeautifulSoup(troop_preparation_res.text, "html.parser")
 
-        # Now extract action and checksum
-        action_match = re.search(r'name="action" value="([^"]+)"', html)
-        checksum_match = re.search(r'name="checksum" value="([^"]+)"', html)
+        # Find action
+        action_input = soup.select_one('input[name="action"]')
+        if not action_input:
+            raise Exception("[-] No action input found during preparation.")
+        action = action_input["value"]
 
-        if not action_match or not checksum_match:
-            raise Exception("Failed to find action/checksum when preparing attack (after troop setup POST).")
+        # Find checksum from Confirm button
+        button = soup.find("button", id="confirmSendTroops")
+        if not button:
+            raise Exception("[-] Confirm button not found during preparation.")
+        onclick = button.get("onclick")
+        checksum_match = re.search(r"value\s*=\s*'([a-f0-9]+)'", onclick)
+        if not checksum_match:
+            raise Exception("[-] Checksum not found in onclick during preparation.")
+        checksum = checksum_match.group(1)
 
         return {
-            "action": action_match.group(1),
-            "checksum": checksum_match.group(1)
+            "action": action,
+            "checksum": checksum,
         }
+
 
 
     def confirm_oasis_attack(self, attack_info: dict, x: int, y: int, troops: dict, village_id: int) -> bool:
