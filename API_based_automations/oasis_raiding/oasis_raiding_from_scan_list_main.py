@@ -59,6 +59,12 @@ def main():
         x_str, y_str = coords.split("_")
         x, y = int(x_str), int(y_str)
 
+        # Check for animal defenders before launching
+        animal_count = api.get_oasis_animal_count(x, y)
+        if animal_count > 0:
+            print(f"[-] Skipping oasis at ({x}, {y}) — {animal_count} animals present.")
+            continue
+
         print(f"[+] Launching raid on unoccupied oasis at ({x}, {y})...")
         attack_info = api.prepare_oasis_attack(None, x, y, TROOP_SETUP)
         success = api.confirm_oasis_attack(attack_info, x, y, TROOP_SETUP, village_id)
