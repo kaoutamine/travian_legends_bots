@@ -32,8 +32,9 @@ you can fully **automate your early-game oasis raiding in minutes**.
 3. **Parses all unoccupied oases** (true unowned "Unoccupied oasis" only).
 4. **Asks how many troops you want to send per raid** (example: 6 Equites Imperatoris).
 5. **Raids only the available unoccupied oases**, respecting your available troop count.
-6. **Handles the Travian checksum** to validate attack sending.
-7. **Stops raiding automatically when you run out of troops**.
+6. **Will raid from closest to furthest (ordered by distance)** and **Will raid only oases with no animals defending it**
+7. **Handles the Travian checksum** to validate attack sending.
+8. **Stops raiding automatically when you run out of troops**.
 
 ---
 
