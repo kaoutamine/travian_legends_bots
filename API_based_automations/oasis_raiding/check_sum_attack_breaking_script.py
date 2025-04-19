@@ -102,11 +102,12 @@ def main():
     confirm_res = session.post(f"{server_url}/build.php?gid=16&tt=2", data=final_attack_payload)
     confirm_res.raise_for_status()
 
-    if "Rally point" in confirm_res.text or "returning" in confirm_res.text or "underway" in confirm_res.text:
+    if confirm_res.status_code == 302 and confirm_res.headers.get("Location") == "/build.php?gid=16&tt=1":
         print("✅ Attack launched successfully!")
     else:
-        print("⚠️ Could not confirm success, please check manually.")
-        print(confirm_res.text[:2000])  # Print part of the response for debug
+        print("❌ Attack may have failed. Status:", confirm_res.status_code)
+        print(confirm_res.text[:1000])  # Optional: show response body for debug
+
 
 if __name__ == "__main__":
     main()
