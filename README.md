@@ -1,83 +1,82 @@
 # 🚀 Automate Your Travian Gameplay Like a Pro  
-## 🕵️ Stay Fast. Stay Stealthy. Dominate Efficiently.
+## 🕵️ While Staying Under the Radar
 
 ---
 
-This project **connects directly to Travian’s servers** using clean, fast **API calls** — no browser automation needed.
+This project **connects directly to Travian’s servers** using clean, fast **API calls** —  
+No browser automation, no heavy Selenium bots.
 
-If you know a little **Python**, can run a few scripts, and don't mind answering some simple **terminal questions**,  
+If you know a little **Python**, can run a few scripts, and don't mind answering a few simple **terminal questions**,  
 you can fully **automate your early-game oasis raiding in minutes**.
 
-> 🛠 Built by players, for players.  
-> 🛡 Looks, acts, and feels like a legit human player.
+---
+
+> ⚙️ Built by players, for players.
 
 ---
 
-# 🧠 Project Summary
+# 🔥 Project Highlights
 
-| Feature | Status |
-|:---|:---|
-| Login via OAuth2 PKCE | ✅ |
-| Server and village selection | ✅ |
-| Map scanning and analysis | ✅ |
-| Oasis raiding automation | ✅ |
-| Animal detection and safe attacks | ✅ |
-| Travian checksum bypass | ✅ |
-| Real-world account ready | ✅ |
+## API-based Automation (Reverse Engineering Approach)
+
+### `identity_handling/login.py`:
+- Loads credentials (`TRAVIAN_EMAIL` and `TRAVIAN_PASSWORD`) from a `.env` file, creating it if missing.
+- Logs into Travian using the PKCE OAuth2 authentication flow.
+- Retrieves your active avatars and servers using GraphQL.
+- Lets you select the server from a menu (auto-selectable if you want).
 
 ---
 
-# 📚 Modules Breakdown
+### `oasis_raiding_from_scan_list_main.py` (Main Raiding Automation):
 
-## 🛂 `identity_handling/login.py`
-- Secure login using OAuth2 PKCE flow.
-- Automatically create `.env` if missing.
-- Fetches avatars and servers via GraphQL.
-- Saves your identity card locally.
-
----
-
-## 🛠 `core/travian_api.py`
-- Core Travian API abstraction layer.
-- Handles sending attacks, scanning villages, reading troops, etc.
-- Manages Travian checksum protections.
-- Fast, robust, and battle-tested.
+✅ After logging in and selecting your server and village, the script:
+1. **Loads your villages** from your identity card (`identity.json`).
+2. **Loads the latest full map scan** saved in your local database.
+3. **Parses unoccupied oases** only (true "Unoccupied oasis", not wilderness).
+4. **Fetches available troops** automatically (no more manual inputs).
+5. **Asks you for unit and troops per raid**, or uses your hardcoded defaults.
+6. **Raids only oases that are truly empty (no animals)**.
+7. **Raids from closest to furthest**, ordered by distance.
+8. **Handles the Travian checksum** system for sending legit-looking attacks.
+9. **Stops automatically** when you run out of troops.
 
 ---
 
-## 🗺 `map_scanning_main.py`
-- Full 25x25 radius map scan around your village.
-- Saves a snapshot of all tiles: oases, villages, wilderness.
-- Stores map snapshots timestamped.
+### `full_scan_oasis_analysis.py` (Oasis Mapping):
+
+- **Scans and saves** all unoccupied oases around your village.
+- **Sorts oases by distance** for smart farming.
+- **Stores clean, reusable JSON datasets** inside `database/unoccupied_oases/`.
 
 ---
 
-## ⚔️ `oasis_raiding_from_scan_list_main.py`
-- Auto raids all unoccupied, undefended oases.
-- Sorts by closest first for efficiency.
-- Detects animals and skips protected oases.
-- Stops automatically when troops run out.
+### `core/travian_api.py`:
+
+- **Wraps Travian API requests**: troops, raids, map data, attacks, farm lists, hero actions.
+- Clean, simple, and highly expandable.
+- Fully bypasses UI limitations — acts as a lightweight mobile API client.
 
 ---
 
-## 🧪 `proof_of_concepts/check_sum_attack_breaking_script.py`
-- Proof that Travian's checksum can be extracted and reused.
-- Allows server-side validated attacks.
-- Integrated into `travian_api.py`.
+### `proof_of_concepts/`:
+
+- Testing playgrounds to experiment with attacks, map reads, checksum injections, etc.
 
 ---
 
-## 📂 `database/`
-- Stores:
-  - Identity card (villages, coordinates, faction).
-  - Map scans.
-  - Extracted unoccupied oases.
-  - Troop mappings (`u1`, `u2`, etc to real unit names).
+### ✅ Summary
+
+- No browser automation needed (no Selenium, no ChromeDriver).
+- Clean, fast, human-like interactions with the server.
+- Modular code, easy to expand into **full automation**.
 
 ---
 
+# 🏗 Current Project Structure
 
-# 📂 Project Structure
+```markdown
+📂 Project Structure
+
 - API_based_automations/
   - oasis_raiding/
     - __pycache__/
@@ -102,7 +101,6 @@ you can fully **automate your early-game oasis raiding in minutes**.
   - test_TravianVillagesRaidFirefox.py
   - VillageOasisRaidRecording.py
 - README.md
-
 
 ---
 
