@@ -94,4 +94,3 @@ It worked but ignore it. It's slow and it does only what a human could do. We ca
 
 ---
 
-✅ **Project is API-driven, fast, stealthy, and ready to scale into full Travian automation.**
