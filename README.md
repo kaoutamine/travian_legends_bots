@@ -1,11 +1,6 @@
 The project is divided into two pieces :
 
-## The first is an attempt to connect to Travian the "organic" way with Selenium.
-This attempt is for now abandonned. The idea was to use a browser to connect to Travian and then replicate
-a specific path using the Selenium plugin (works only on firefox these days) to for example launch the raid lists in Travian.
-It worked but ignore it. It's slow and I can't easily generalise it.
-
-## The second is a classic attempt by reverse engineering logins with Burp Suite/Inspect, storing variables and making API requests
+## API method by reverse engineering logins with Burp Suite/Inspect, storing variables and making API requests
 
 ### `login.py`:
 - Loads credentials (`TRAVIAN_EMAIL` and `TRAVIAN_PASSWORD`) from a `.env` file, creating it if missing.
@@ -85,6 +80,15 @@ It worked but ignore it. It's slow and I can't easily generalise it.
   - Identify **weak oases** suitable for solo hero XP farming.
   - Calculate **safe troop compositions** (minimize or eliminate troop losses).
   - Automatically target low-risk, high-reward oases intelligently.
+
+
+
+## The selenium attempt was an easier way to automatise a workflow by using the firefox plugin to replicate specific actions
+This attempt yielded interesting results but it prevented me from doing calculations, scans and automating more things. 
+The idea was to use a browser to connect to Travian and then replicate
+a specific path using the Selenium plugin (works only on firefox these days) to for example launch the raid lists in Travian.
+It worked but ignore it. It's slow and it does only what a human could do. We can do better.
+
 
 
 
