@@ -203,5 +203,34 @@ class TravianAPI:
         res = self.session.post(url, json={"x": x, "y": y})
         res.raise_for_status()
         return res.json()["html"]
+    
+
+
+    def get_troops_in_village(self):
+        """
+        Fetches the troop counts stationed in the currently active village.
+        Returns a dictionary like {'u5': 21, 'u6': 8, ...}
+        """
+        url = f"{self.server_url}/dorf1.php"
+        response = self.session.get(url)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, "html.parser")
+        troops_table = soup.find("table", {"id": "troops"})
+        if not troops_table:
+            print("[!] Troops table not found.")
+            return {}
+
+        troops = {}
+        for row in troops_table.find_all("tr"):
+            img = row.find("img")
+            num = row.find("td", class_="num")
+            if img and num:
+                unit_class = img.get("class", [])
+                for c in unit_class:
+                    if c.startswith("u"):
+                        unit_code = c  # like "u5"
+                        troops[unit_code] = int(num.text.strip())
+        return troops
 
 
