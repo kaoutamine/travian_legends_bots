@@ -1,60 +1,114 @@
 # map_scanning_main.py
 
+import os
+import json
+from tqdm import tqdm
+from bs4 import BeautifulSoup
 from db_manager import save_json
 from identity_handling.login import login
+from identity_handling.identity_helper import load_villages_from_identity, choose_village_to_scan
 from travian_api import TravianAPI
-from bs4 import BeautifulSoup
-
-def scan_map_area(api_client, x_start, x_end, y_start, y_end):
-    print(f"🔍 Scanning coordinates from ({x_start}, {y_start}) to ({x_end}, {y_end})...")
-    scanned_data = {}
-
-    for x in range(x_start, x_end + 1):
-        for y in range(y_start, y_end + 1):
-            html = api_client.get_tile_html(x, y)
-            tile_info = parse_tile_html(html)
-            scanned_data[f"{x}_{y}"] = tile_info
-
-    print(f"✅ Scanned {len(scanned_data)} tiles.")
-    return scanned_data
 
 def parse_tile_html(html):
+    """Parse the HTML content of a tile."""
     soup = BeautifulSoup(html, "html.parser")
     tile_info = {}
 
-    title = soup.find("h1")
-    if title:
-        tile_info["title"] = title.text.strip()
+    title_tag = soup.find("h1")
+    if title_tag:
+        title = title_tag.text.strip()
 
-    # You can extend this parsing: resource bonuses, owner, type, etc.
+        if "abandoned valley" in title.lower():
+            tile_info["type"] = "oasis"
+        elif "village" in title.lower() or "city" in title.lower():
+            tile_info["type"] = "village"
+        elif "cropland" in title.lower() or "forest" in title.lower() or "mountain" in title.lower():
+            tile_info["type"] = "resource field"
+        else:
+            tile_info["type"] = "empty"
+
+        tile_info["raw_title"] = title
+    else:
+        tile_info["type"] = "unknown"
+        tile_info["raw_title"] = None
+
+    # Bonus (e.g., +50% wood, crop, etc.)
+    bonus_info = soup.find("div", class_="distribution")
+    if bonus_info:
+        bonuses = bonus_info.get_text(separator=" ", strip=True)
+        tile_info["bonus"] = bonuses
+    else:
+        tile_info["bonus"] = None
+
+    # Owner (if it's a village or occupied oasis)
+    owner_tag = soup.find("div", class_="playerName")
+    if owner_tag:
+        tile_info["owner"] = owner_tag.text.strip()
+    else:
+        tile_info["owner"] = None
 
     return tile_info
 
+def scan_map_area(api_client, x_start, x_end, y_start, y_end):
+    """Scan the area between coordinates and parse each tile."""
+    print(f"🔍 Scanning coordinates from ({x_start}, {y_start}) to ({x_end}, {y_end})...")
+
+    scanned_data = {}
+    total_tiles = (x_end - x_start + 1) * (y_end - y_start + 1)
+
+    with tqdm(total=total_tiles, desc="🗺️  Scanning Progress", unit="tile") as pbar:
+        for x in range(x_start, x_end + 1):
+            for y in range(y_start, y_end + 1):
+                try:
+                    html = api_client.get_tile_html(x, y)
+                    tile_info = parse_tile_html(html)
+                    scanned_data[f"{x}_{y}"] = tile_info
+                except Exception as e:
+                    print(f"❌ Error scanning ({x},{y}): {e}")
+                finally:
+                    pbar.update(1)
+
+    print(f"✅ Finished scanning {len(scanned_data)} tiles.")
+    return scanned_data
+
 def main():
-    # Login
+    # Login and API setup
     session, base_url = login()
     api_client = TravianAPI(session, base_url)
 
-    # Define area to scan
-    x_start, x_end = 100, 102
-    y_start, y_end = 100, 102
+    # Load villages and select scanning center
+    villages = load_villages_from_identity()
+    village_x, village_y = choose_village_to_scan(villages)
 
+    # Ask for scan radius
+    try:
+        scan_radius = int(input("\n🗺️  Enter scan radius around the village (default = 25): ").strip())
+    except ValueError:
+        scan_radius = 25
+
+    x_start = village_x - scan_radius
+    x_end = village_x + scan_radius
+    y_start = village_y - scan_radius
+    y_end = village_y + scan_radius
+
+    # Perform map scan
     scanned_tiles = scan_map_area(api_client, x_start, x_end, y_start, y_end)
 
-    # Show sample
-    print("\nSample tiles scanned:")
+    # Show a few scanned tiles
+    print("\n📄 Sample scanned tiles:")
     for coord, info in list(scanned_tiles.items())[:5]:
         print(f"{coord}: {info}")
 
-    # Ask to save
-    should_save = input("\n💾 Save scan results to database? [y/n]: ").strip().lower()
+    # Save results
+    should_save = input("\n💾 Save full map scan to database? [y/n]: ").strip().lower()
     if should_save == 'y':
         metadata = {
-            "description": "Small map scan",
-            "area_scanned": f"({x_start},{y_start}) to ({x_end},{y_end})",
-            "tiles_scanned": len(scanned_tiles),
+            "description": "Full map scan centered around village",
+            "center_coordinates": f"({village_x},{village_y})",
+            "scan_radius": scan_radius,
+            "total_tiles": len(scanned_tiles),
         }
-        save_json({"metadata": metadata, "tiles": scanned_tiles}, filename="map_scan.json", with_timestamp=True)
+        save_json({"metadata": metadata, "tiles": scanned_tiles}, filename="full_map_scan.json", with_timestamp=True)
     else:
         print("❌ Scan not saved.")
 
