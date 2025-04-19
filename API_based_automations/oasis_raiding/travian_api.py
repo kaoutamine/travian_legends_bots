@@ -172,8 +172,8 @@ class TravianAPI:
 
 
     def confirm_oasis_attack(self, attack_info: dict, x: int, y: int, troops: dict, village_id: int) -> bool:
-        """Confirm and launch the attack."""
-        payload = {
+        """Confirm and send the final attack based on prepared action and checksum."""
+        final_payload = {
             "action": attack_info["action"],
             "eventType": 4,
             "villagename": "",
@@ -183,14 +183,17 @@ class TravianAPI:
             "checksum": attack_info["checksum"],
         }
 
-        for troop_id in range(1, 11):
-            payload[f"troops[0][t{troop_id}]"] = troops.get(f"t{troop_id}", 0)
+        for troop_id in range(1, 12):
+            final_payload[f"troops[0][t{troop_id}]"] = troops.get(f"t{troop_id}", 0)
 
-        payload["troops[0][villageId]"] = village_id
+        final_payload["troops[0][scoutTarget]"] = ""
+        final_payload["troops[0][catapultTarget1]"] = ""
+        final_payload["troops[0][catapultTarget2]"] = ""
+        final_payload["troops[0][villageId]"] = village_id
 
-        response = self.session.post(f"{self.server_url}/build.php?gid=16&tt=2", data=payload)
-        response.raise_for_status()
+        res = self.session.post(f"{self.server_url}/build.php?gid=16&tt=2", data=final_payload, allow_redirects=False)
+        res.raise_for_status()
 
-        if "Raid sent" in response.text or "The troops are on their way" in response.text:
-            return True
-        return False
+        # Detect success based on 302 redirect
+        return res.status_code == 302 and res.headers.get("Location") == "/build.php?gid=16&tt=1"
+
