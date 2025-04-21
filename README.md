@@ -3,6 +3,9 @@
 
 > *Automate smarter, not harder — your Travian empire just got a personal assistant.* 🌟
 
+NB: It took a lot of time to manually inspect Travian's network traffic using Burp Suite and GUI experimentation.
+The game uses a mix of GraphQL API requests for modern features (like avatar, farm lists) and classic HTML responses for legacy parts (like dorf1.php and dorf2.php), where everything is dumped into large HTML pages.
+It also took time to figure out their bot prevention mechanisms, but a few careful scripts extracting the necessary hidden inputs (like tokens and checksums) were enough to bypass them reliably.
 ---
 
 This project is intentionally left without a frontend for two reasons:
