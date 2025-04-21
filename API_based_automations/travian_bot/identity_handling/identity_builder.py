@@ -4,81 +4,71 @@ import json
 # === LOCATION CONSTANTS ===
 DATABASE_FOLDER = os.path.join(os.path.dirname(__file__), "..", "database")
 IDENTITY_FILE = os.path.join(DATABASE_FOLDER, "identity.json")
-ENTITY_FILE = os.path.join(DATABASE_FOLDER, "entities.json")
 
 # Make sure database folder exists
 os.makedirs(DATABASE_FOLDER, exist_ok=True)
 
-def load_entities():
-    if not os.path.exists(ENTITY_FILE):
-        return {}
-    with open(ENTITY_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-def save_entities(entities):
-    with open(ENTITY_FILE, "w", encoding="utf-8") as f:
-        json.dump(entities, f, indent=2)
-
-# --- NEW: Fetch villages and save identity ---
 def fetch_villages_with_coordinates(session, server_url):
-    """Fetch own villages, try to get coordinates, ask user if missing."""
-    # Step 1: Fetch player villages
+    """Fetch own villages (ID + name), ask user to input (x, y) manually."""
+    print("[+] Fetching your villages from Travian...")
+
     payload = {
         "query": """
             query {
                 ownPlayer {
+                    currentVillageId
                     villages {
                         id
+                        sortIndex
                         name
+                        tribeId
+                        hasHarbour
                     }
-                }
-            """
-    }
-    response = session.post(f"{server_url}/api/v1/graphql", json=payload)
-    response.raise_for_status()
-    villages_info = response.json()["data"]["ownPlayer"]["villages"]
-
-    # Step 2: Try fetching map data for coordinates
-    try:
-        payload_map = {
-            "query": """
-                query {
-                    map {
-                        villages {
+                    farmLists {
+                        id
+                        name
+                        ownerVillage {
                             id
-                            x
-                            y
                         }
                     }
-                """
-        }
-        response_map = session.post(f"{server_url}/api/v1/graphql", json=payload_map)
-        response_map.raise_for_status()
-        map_villages = response_map.json()["data"]["map"]["villages"]
-        id_to_coords = {v["id"]: (v["x"], v["y"]) for v in map_villages}
-    except Exception:
-        id_to_coords = {}
+                }
+            }
+        """
+    }
 
-    # Step 3: Assemble final village list
+    response = session.post(f"{server_url}/api/v1/graphql", json=payload)
+    response.raise_for_status()
+
+    response_json = response.json()
+    print("[DEBUG] GraphQL Response:", response_json)
+
+    if "errors" in response_json:
+        print("\n❌ GraphQL Error:", response_json["errors"])
+        raise Exception("GraphQL query failed. Check if you are properly logged in.")
+
+    own_player = response_json.get("data", {}).get("ownPlayer")
+    if own_player is None:
+        raise Exception("❌ 'ownPlayer' missing in response. Something went wrong.")
+
+    villages_info = own_player["villages"]
+    print(f"[+] Found {len(villages_info)} villages.")
+
     final_villages = []
+
     for village in villages_info:
         village_id = village["id"]
         village_name = village["name"]
-        coords = id_to_coords.get(village_id)
+        print(f"\n[🏡] Village '{village_name}' (ID {village_id})")
 
-        if coords is None:
-            print(f"\n[!] Missing coordinates for village '{village_name}' (ID {village_id})")
-            while True:
-                try:
-                    coords_input = input("Enter coordinates (format: x y): ").strip().split()
-                    if len(coords_input) != 2:
-                        raise ValueError
-                    x, y = map(int, coords_input)
-                    break
-                except ValueError:
-                    print("[-] Invalid input. Please enter two integers separated by a space.")
-        else:
-            x, y = coords
+        while True:
+            try:
+                coords_input = input("Enter coordinates for this village (format: x y): ").strip().split()
+                if len(coords_input) != 2:
+                    raise ValueError
+                x, y = map(int, coords_input)
+                break
+            except ValueError:
+                print("❌ Invalid input. Please enter two integers separated by a space.")
 
         final_villages.append({
             "village_name": village_name,
@@ -87,6 +77,7 @@ def fetch_villages_with_coordinates(session, server_url):
             "y": y
         })
 
+    print(f"\n✅ Finished collecting coordinates for {len(final_villages)} villages.")
     return final_villages
 
 def save_identity(session, server_url):
@@ -95,7 +86,7 @@ def save_identity(session, server_url):
 
     identity_data = {
         "travian_identity": {
-            "created_at": "2025-04-22T00:00:00Z",  # you could make this dynamic later
+            "created_at": "2025-04-22T00:00:00Z",  # (Optional) You can later make it dynamic with datetime.now()
             "servers": [
                 {
                     "server_name": server_url,

@@ -9,7 +9,7 @@ from random import uniform
 from identity_handling.login import login
 from identity_handling.identity_helper import load_villages_from_identity
 from core.travian_api import TravianAPI
-from database.number_to_unit_mapping import get_unit_name
+from analysis.number_to_unit_mapping import get_unit_name
 from core.database_helpers import load_latest_unoccupied_oases
 
 
