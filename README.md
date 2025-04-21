@@ -6,6 +6,12 @@
 > *Built out of curiosity, for personal use, and as an engineering challenge.* ⚙️
 
 ---
+<img width="404" alt="1 login and villages" src="https://github.com/user-attachments/assets/ad070b81-82b2-4ed3-80f6-2df92ab69a22" />
+<img width="626" alt="2 scanning" src="https://github.com/user-attachments/assets/e1625431-6b16-46b9-893a-9eeb0f18712f" />
+<img width="622" alt="3 oases_numbering" src="https://github.com/user-attachments/assets/87effc3a-8f4c-4ec3-be9c-081c05a5861d" />
+<img width="434" alt="4 unit code for raid" src="https://github.com/user-attachments/assets/71d7e71b-0e1e-4f83-bd37-26a711d51cdd" />
+<img width="388" alt="5 launching raids" src="https://github.com/user-attachments/assets/6f3dd4a1-fe05-4186-900b-6d99be89da99" />
+
 
 **Background**:  
 This project was created after spending a lot of time manually inspecting Travian’s network behavior using Burp Suite and browser developer tools.  
