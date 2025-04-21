@@ -1,45 +1,38 @@
-# Ignore Python cache and virtual environments
+# === Python ignores ===
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-*.env
+*.pyc
+
+# Virtual environments
 .venv/
 env/
 venv/
 
-# Ignore editor-specific files
-.vscode/
-.idea/
-*.swp
-
-# Ignore environment variables
+# Environment files
 .env
-
-# Byte-compiled files
-*.pyc
 
 # Logs or debug output
 *.log
 
-# Ignore Jupyter notebooks checkpoints (if ever used)
+# Byte-compiled / cache files
+*.pyc
+
+# Jupyter notebook checkpoints (if ever used)
 .ipynb_checkpoints/
 
-# OS-specific
+# === Editor ignores ===
+.vscode/
+.idea/
+*.swp
+
+# === OS-specific ignores ===
 .DS_Store
 Thumbs.db
 
+# === Travian bot project ignores ===
 
-# Ignore all files in selenium_UI based_exploits folder
-selenium_UI based_exploits/TravianOasisRaidRecodingHumanBehaviour.py
-selenium_UI based_exploits/readme
-selenium_UI based_exploits/runWithCookies.py
-selenium_UI based_exploits/test_TravianVillagesRaidFirefox.py:Zone.Identifier
-selenium_UI based_exploits/test_travianoasisraid.py:Zone.Identifier
-selenium_UI based_exploits/test_travianoasisraidwithasserts.py
-selenium_UI based_exploits/travian_cookies.json
-selenium_UI based_exploits/travian_firefox.side
-selenium_UI based_exploits/travian_firefox.side:Zone.Identifier
+# Ignore database output and sensitive files
+travian_bot/database/
 
-API_based_automations/oasis_raiding/database/identity_card.json
-API_based_automations/oasis_raiding/scanned_tiles.json
