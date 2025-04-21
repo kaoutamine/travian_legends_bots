@@ -5,12 +5,56 @@
 
 > *Built out of curiosity, for personal use, and as an engineering challenge.* ⚙️
 
+> A full early-game flow from login to launching raids.
+
 ---
-<img width="404" alt="1 login and villages" src="https://github.com/user-attachments/assets/ad070b81-82b2-4ed3-80f6-2df92ab69a22" />
-<img width="626" alt="2 scanning" src="https://github.com/user-attachments/assets/e1625431-6b16-46b9-893a-9eeb0f18712f" />
-<img width="622" alt="3 oases_numbering" src="https://github.com/user-attachments/assets/87effc3a-8f4c-4ec3-be9c-081c05a5861d" />
-<img width="434" alt="4 unit code for raid" src="https://github.com/user-attachments/assets/71d7e71b-0e1e-4f83-bd37-26a711d51cdd" />
-<img width="388" alt="5 launching raids" src="https://github.com/user-attachments/assets/6f3dd4a1-fe05-4186-900b-6d99be89da99" />
+
+## 🔑 1. Login and Find Your Villages
+
+Login securely with your `.env` credentials.  
+Auto-fetch all your linked **avatars** and **villages**.
+
+![Login and villages](https://github.com/user-attachments/assets/ad070b81-82b2-4ed3-80f6-2df92ab69a22)
+
+---
+
+## 🗺 2. Scan the Map Around Your Village
+
+Quickly scan thousands of tiles to detect nearby oases.  
+(✅ Everything saved locally for fast reuse later.)
+
+![Scanning](https://github.com/user-attachments/assets/e1625431-6b16-46b9-893a-9eeb0f18712f)
+
+---
+
+## 🏕 3. Map and Number All Unoccupied Oases
+
+List unoccupied oases around you —  
+sorted automatically by distance for smarter raiding.
+
+![Oases numbering](https://github.com/user-attachments/assets/87effc3a-8f4c-4ec3-be9c-081c05a5861d)
+
+---
+
+## ⚔️ 4. Pick the Troops You Want to Raid With
+
+Choose your unit type (e.g., Equites Imperatoris)  
+and define how many troops per raid.
+
+![Unit code for raid](https://github.com/user-attachments/assets/71d7e71b-0e1e-4f83-bd37-26a711d51cdd)
+
+---
+
+## 🚀 5. Launch Raids Automatically
+
+The bot sends raids intelligently:  
+✅ Only unoccupied oases  
+✅ Closest first  
+✅ Stops automatically when no more troops left
+
+![Launching raids](https://github.com/user-attachments/assets/6f3dd4a1-fe05-4186-900b-6d99be89da99)
+
+---
 
 
 **Background**:  
