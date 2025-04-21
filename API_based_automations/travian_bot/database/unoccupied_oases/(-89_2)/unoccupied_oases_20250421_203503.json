@@ -1,0 +1,2242 @@
+{
+    "-90_2": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d90\u202c\u202c|\u202d2\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-90_1": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d90\u202c\u202c|\u202d1\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-90_3": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d90\u202c\u202c|\u202d3\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-92_1": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d92\u202c\u202c|\u202d1\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-86_1": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d86\u202c\u202c|\u202d1\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-86_3": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d86\u202c\u202c|\u202d3\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-93_3": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d93\u202c\u202c|\u202d3\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-93_0": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d93\u202c\u202c|\u202d0\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-93_-1": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d93\u202c\u202c|\u202d\u2212\u202d1\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-92_6": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d92\u202c\u202c|\u202d6\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-94_3": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d94\u202c\u202c|\u202d3\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-86_7": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d86\u202c\u202c|\u202d7\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-88_-4": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d88\u202c\u202c|\u202d\u2212\u202d4\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-91_-4": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d91\u202c\u202c|\u202d\u2212\u202d4\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-87_8": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d87\u202c\u202c|\u202d8\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-88_9": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d88\u202c\u202c|\u202d9\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-83_6": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d83\u202c\u202c|\u202d6\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-86_10": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d86\u202c\u202c|\u202d10\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-98_2": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d98\u202c\u202c|\u202d2\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-88_11": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d88\u202c\u202c|\u202d11\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-80_3": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d80\u202c\u202c|\u202d3\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-87_11": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d87\u202c\u202c|\u202d11\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-81_-3": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d81\u202c\u202c|\u202d\u2212\u202d3\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-86_11": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d86\u202c\u202c|\u202d11\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-85_11": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d85\u202c\u202c|\u202d11\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-80_6": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d80\u202c\u202c|\u202d6\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-97_8": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d97\u202c\u202c|\u202d8\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-81_8": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d81\u202c\u202c|\u202d8\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-92_12": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d92\u202c\u202c|\u202d12\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-99_7": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d99\u202c\u202c|\u202d7\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-84_-8": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d84\u202c\u202c|\u202d\u2212\u202d8\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-81_10": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d81\u202c\u202c|\u202d10\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-98_-5": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d98\u202c\u202c|\u202d\u2212\u202d5\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-86_-9": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d86\u202c\u202c|\u202d\u2212\u202d9\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-82_11": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d82\u202c\u202c|\u202d11\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-89_-10": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d89\u202c\u202c|\u202d\u2212\u202d10\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-90_-10": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d90\u202c\u202c|\u202d\u2212\u202d10\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-80_10": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d80\u202c\u202c|\u202d10\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-78_-3": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d78\u202c\u202c|\u202d\u2212\u202d3\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-96_-8": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d96\u202c\u202c|\u202d\u2212\u202d8\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-101_-1": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d101\u202c\u202c|\u202d\u2212\u202d1\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-92_-10": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d92\u202c\u202c|\u202d\u2212\u202d10\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-100_8": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d100\u202c\u202c|\u202d8\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-78_8": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d78\u202c\u202c|\u202d8\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-88_15": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d88\u202c\u202c|\u202d15\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-78_-5": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d78\u202c\u202c|\u202d\u2212\u202d5\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-78_9": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d78\u202c\u202c|\u202d9\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-101_-4": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d101\u202c\u202c|\u202d\u2212\u202d4\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-98_-8": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d98\u202c\u202c|\u202d\u2212\u202d8\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-103_0": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d103\u202c\u202c|\u202d0\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-79_12": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d79\u202c\u202c|\u202d12\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-78_-7": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d78\u202c\u202c|\u202d\u2212\u202d7\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-101_-6": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d101\u202c\u202c|\u202d\u2212\u202d6\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-103_6": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d103\u202c\u202c|\u202d6\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-93_-12": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d93\u202c\u202c|\u202d\u2212\u202d12\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-99_13": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d99\u202c\u202c|\u202d13\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-94_16": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d94\u202c\u202c|\u202d16\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-84_16": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d84\u202c\u202c|\u202d16\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-98_14": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d98\u202c\u202c|\u202d14\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-80_-10": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d80\u202c\u202c|\u202d\u2212\u202d10\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-95_-12": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d95\u202c\u202c|\u202d\u2212\u202d12\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-83_-12": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d83\u202c\u202c|\u202d\u2212\u202d12\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-102_-6": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d102\u202c\u202c|\u202d\u2212\u202d6\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-93_-13": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d93\u202c\u202c|\u202d\u2212\u202d13\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-99_14": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d99\u202c\u202c|\u202d14\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-96_16": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d96\u202c\u202c|\u202d16\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-82_16": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d82\u202c\u202c|\u202d16\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-104_7": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d104\u202c\u202c|\u202d7\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-94_17": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d94\u202c\u202c|\u202d17\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-73_2": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d73\u202c\u202c|\u202d2\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-105_1": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d105\u202c\u202c|\u202d1\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-90_-14": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d90\u202c\u202c|\u202d\u2212\u202d14\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-73_1": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d73\u202c\u202c|\u202d1\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-73_3": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d73\u202c\u202c|\u202d3\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-103_10": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d103\u202c\u202c|\u202d10\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-91_-14": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d91\u202c\u202c|\u202d\u2212\u202d14\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-104_8": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d104\u202c\u202c|\u202d8\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-78_-10": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d78\u202c\u202c|\u202d\u2212\u202d10\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-105_6": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d105\u202c\u202c|\u202d6\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-73_-2": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d73\u202c\u202c|\u202d\u2212\u202d2\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-96_17": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d96\u202c\u202c|\u202d17\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-103_11": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d103\u202c\u202c|\u202d11\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-84_18": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d84\u202c\u202c|\u202d18\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-77_-10": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d77\u202c\u202c|\u202d\u2212\u202d10\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-105_8": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d105\u202c\u202c|\u202d8\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-106_4": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d106\u202c\u202c|\u202d4\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-91_19": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d91\u202c\u202c|\u202d19\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-72_0": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d72\u202c\u202c|\u202d0\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-96_18": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d96\u202c\u202c|\u202d18\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-77_-11": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d77\u202c\u202c|\u202d\u2212\u202d11\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-84_19": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d84\u202c\u202c|\u202d19\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-75_-9": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d75\u202c\u202c|\u202d\u2212\u202d9\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-107_3": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d107\u202c\u202c|\u202d3\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-90_-16": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d90\u202c\u202c|\u202d\u2212\u202d16\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-107_4": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d107\u202c\u202c|\u202d4\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-86_-16": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d86\u202c\u202c|\u202d\u2212\u202d16\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-102_15": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d102\u202c\u202c|\u202d15\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-96_-15": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d96\u202c\u202c|\u202d\u2212\u202d15\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-76_15": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d76\u202c\u202c|\u202d15\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-101_-12": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d101\u202c\u202c|\u202d\u2212\u202d12\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-94_-16": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d94\u202c\u202c|\u202d\u2212\u202d16\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-71_7": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d71\u202c\u202c|\u202d7\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-89_-17": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d89\u202c\u202c|\u202d\u2212\u202d17\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-88_21": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d88\u202c\u202c|\u202d21\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-108_4": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d108\u202c\u202c|\u202d4\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-102_16": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d102\u202c\u202c|\u202d16\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-77_-13": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d77\u202c\u202c|\u202d\u2212\u202d13\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-98_19": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d98\u202c\u202c|\u202d19\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-92_21": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d92\u202c\u202c|\u202d21\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-105_-9": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d105\u202c\u202c|\u202d\u2212\u202d9\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-94_-17": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d94\u202c\u202c|\u202d\u2212\u202d17\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-99_19": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d99\u202c\u202c|\u202d19\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-104_15": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d104\u202c\u202c|\u202d15\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-76_17": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d76\u202c\u202c|\u202d17\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-109_2": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d109\u202c\u202c|\u202d2\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-101_-14": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d101\u202c\u202c|\u202d\u2212\u202d14\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-89_22": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d89\u202c\u202c|\u202d22\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-107_11": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d107\u202c\u202c|\u202d11\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-106_-9": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d106\u202c\u202c|\u202d\u2212\u202d9\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-100_-15": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d100\u202c\u202c|\u202d\u2212\u202d15\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-78_-15": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d78\u202c\u202c|\u202d\u2212\u202d15\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-72_-9": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d72\u202c\u202c|\u202d\u2212\u202d9\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-71_-8": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d71\u202c\u202c|\u202d\u2212\u202d8\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-76_18": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d76\u202c\u202c|\u202d18\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-101_-15": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d101\u202c\u202c|\u202d\u2212\u202d15\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-110_1": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d110\u202c\u202c|\u202d1\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-98_-17": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d98\u202c\u202c|\u202d\u2212\u202d17\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-80_-17": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d80\u202c\u202c|\u202d\u2212\u202d17\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-107_13": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d107\u202c\u202c|\u202d13\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-71_-9": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d71\u202c\u202c|\u202d\u2212\u202d9\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-109_9": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d109\u202c\u202c|\u202d9\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-110_-1": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d110\u202c\u202c|\u202d\u2212\u202d1\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-105_16": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d105\u202c\u202c|\u202d16\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-70_-8": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d70\u202c\u202c|\u202d\u2212\u202d8\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-109_-6": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d109\u202c\u202c|\u202d\u2212\u202d6\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-81_-18": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d81\u202c\u202c|\u202d\u2212\u202d18\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-110_-3": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d110\u202c\u202c|\u202d\u2212\u202d3\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-101_-16": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d101\u202c\u202c|\u202d\u2212\u202d16\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-73_17": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d73\u202c\u202c|\u202d17\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-78_-17": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d78\u202c\u202c|\u202d\u2212\u202d17\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-111_1": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d111\u202c\u202c|\u202d1\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-91_24": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d91\u202c\u202c|\u202d24\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-96_23": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d96\u202c\u202c|\u202d23\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-107_15": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d107\u202c\u202c|\u202d15\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-102_20": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d102\u202c\u202c|\u202d20\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-111_6": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d111\u202c\u202c|\u202d6\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-99_-18": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d99\u202c\u202c|\u202d\u2212\u202d18\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-93_24": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d93\u202c\u202c|\u202d24\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-110_-6": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d110\u202c\u202c|\u202d\u2212\u202d6\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-67_-3": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d67\u202c\u202c|\u202d\u2212\u202d3\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-111_-4": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d111\u202c\u202c|\u202d\u2212\u202d4\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-83_-20": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d83\u202c\u202c|\u202d\u2212\u202d20\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-75_20": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d75\u202c\u202c|\u202d20\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-112_2": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d112\u202c\u202c|\u202d2\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-102_21": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d102\u202c\u202c|\u202d21\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-92_25": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d92\u202c\u202c|\u202d25\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-110_-8": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d110\u202c\u202c|\u202d\u2212\u202d8\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-99_23": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d99\u202c\u202c|\u202d23\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-79_-19": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d79\u202c\u202c|\u202d\u2212\u202d19\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-85_-21": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d85\u202c\u202c|\u202d\u2212\u202d21\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-104_20": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d104\u202c\u202c|\u202d20\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-71_17": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d71\u202c\u202c|\u202d17\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-75_-17": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d75\u202c\u202c|\u202d\u2212\u202d17\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-68_13": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d68\u202c\u202c|\u202d13\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-112_9": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d112\u202c\u202c|\u202d9\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-96_25": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d96\u202c\u202c|\u202d25\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-79_-20": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d79\u202c\u202c|\u202d\u2212\u202d20\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-86_26": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d86\u202c\u202c|\u202d26\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-93_26": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d93\u202c\u202c|\u202d26\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-66_10": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d66\u202c\u202c|\u202d10\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-78_-20": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d78\u202c\u202c|\u202d\u2212\u202d20\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-67_13": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d67\u202c\u202c|\u202d13\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-66_11": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d66\u202c\u202c|\u202d11\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-108_-14": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d108\u202c\u202c|\u202d\u2212\u202d14\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-114_1": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d114\u202c\u202c|\u202d1\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-90_27": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d90\u202c\u202c|\u202d27\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-91_27": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d91\u202c\u202c|\u202d27\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-110_-12": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d110\u202c\u202c|\u202d\u2212\u202d12\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-114_-2": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d114\u202c\u202c|\u202d\u2212\u202d2\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-72_21": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d72\u202c\u202c|\u202d21\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-67_15": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d67\u202c\u202c|\u202d15\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-98_-22": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d98\u202c\u202c|\u202d\u2212\u202d22\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-83_27": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d83\u202c\u202c|\u202d27\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-101_25": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d101\u202c\u202c|\u202d25\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-82_-23": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d82\u202c\u202c|\u202d\u2212\u202d23\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-113_12": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d113\u202c\u202c|\u202d12\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-67_-12": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d67\u202c\u202c|\u202d\u2212\u202d12\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-71_21": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d71\u202c\u202c|\u202d21\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-72_22": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d72\u202c\u202c|\u202d22\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-110_-14": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d110\u202c\u202c|\u202d\u2212\u202d14\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-105_23": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d105\u202c\u202c|\u202d23\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-100_26": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d100\u202c\u202c|\u202d26\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-76_25": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d76\u202c\u202c|\u202d25\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-114_11": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d114\u202c\u202c|\u202d11\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-98_-23": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d98\u202c\u202c|\u202d\u2212\u202d23\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-64_11": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d64\u202c\u202c|\u202d11\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-67_-13": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d67\u202c\u202c|\u202d\u2212\u202d13\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-109_-16": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d109\u202c\u202c|\u202d\u2212\u202d16\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-69_-16": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d69\u202c\u202c|\u202d\u2212\u202d16\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-75_25": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d75\u202c\u202c|\u202d25\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-64_-8": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d64\u202c\u202c|\u202d\u2212\u202d8\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-113_-11": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d113\u202c\u202c|\u202d\u2212\u202d11\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-78_-23": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d78\u202c\u202c|\u202d\u2212\u202d23\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-109_21": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d109\u202c\u202c|\u202d21\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-108_22": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d108\u202c\u202c|\u202d22\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-106_24": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d106\u202c\u202c|\u202d24\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-66_-14": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d66\u202c\u202c|\u202d\u2212\u202d14\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-102_-23": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d102\u202c\u202c|\u202d\u2212\u202d23\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-113_-13": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d113\u202c\u202c|\u202d\u2212\u202d13\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-107_24": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d107\u202c\u202c|\u202d24\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-75_27": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d75\u202c\u202c|\u202d27\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-104_27": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d104\u202c\u202c|\u202d27\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-73_27": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d73\u202c\u202c|\u202d27\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-110_-19": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d110\u202c\u202c|\u202d\u2212\u202d19\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-114_19": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d114\u202c\u202c|\u202d19\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-111_-19": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d111\u202c\u202c|\u202d\u2212\u202d19\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-108_-22": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d108\u202c\u202c|\u202d\u2212\u202d22\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-114_-16": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d114\u202c\u202c|\u202d\u2212\u202d16\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-71_-23": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d71\u202c\u202c|\u202d\u2212\u202d23\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-64_-16": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d64\u202c\u202c|\u202d\u2212\u202d16\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-114_-17": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d114\u202c\u202c|\u202d\u2212\u202d17\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-109_-23": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d109\u202c\u202c|\u202d\u2212\u202d23\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-112_-21": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d112\u202c\u202c|\u202d\u2212\u202d21\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    },
+    "-112_-22": {
+        "type": "empty",
+        "raw_title": "Unoccupied oasis \u202d(\u202d\u2212\u202d112\u202c\u202c|\u202d\u2212\u202d22\u202c\u202c)\u202c",
+        "bonus": null,
+        "owner": null,
+        "scanned_from": {
+            "center_x": -89,
+            "center_y": 2
+        }
+    }
+}

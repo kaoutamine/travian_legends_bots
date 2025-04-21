@@ -1,26 +1,16 @@
-# db_manager.py
-
 import os
 import json
 from datetime import datetime
 
-# Set the database directory relative to this file
+# Set the database directory relative to the project root
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-DATABASE_DIR = os.path.join(CURRENT_DIR, 'database')
+PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, ".."))
+DATABASE_DIR = os.path.join(PROJECT_ROOT, "database")
 
 # Ensure the main database folder exists
 os.makedirs(DATABASE_DIR, exist_ok=True)
 
 def save_json(data, filename="save.json", with_timestamp=False, subfolder=None):
-    """
-    Save data as a JSON file inside the database directory or a subfolder.
-
-    Args:
-        data (dict or list): The data to save.
-        filename (str): Desired filename (default 'save.json').
-        with_timestamp (bool): Whether to add a timestamp to the filename.
-        subfolder (str): Optional subfolder inside database/ to save into.
-    """
     if with_timestamp:
         base, ext = os.path.splitext(filename)
         filename = f"{base}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}{ext}"
@@ -38,17 +28,6 @@ def save_json(data, filename="save.json", with_timestamp=False, subfolder=None):
     print(f"✅ Data saved to {path}")
 
 def load_json(filename, subfolder=None, return_metadata=False):
-    """
-    Load a JSON file from the database directory or a subfolder.
-
-    Args:
-        filename (str): Filename to load.
-        subfolder (str): Optional subfolder inside database/ to load from.
-        return_metadata (bool): If True, return (data, metadata) tuple.
-
-    Returns:
-        dict or list: Loaded JSON content, optionally with metadata.
-    """
     load_dir = DATABASE_DIR
     if subfolder:
         load_dir = os.path.join(DATABASE_DIR, subfolder)

@@ -1,48 +1,67 @@
-from identity_handling.login import login
-from core.travian_api import TravianAPI
+# oasis_raiding_from_scan_list_main.py
+
 import os
 import json
+import time
 from glob import glob
 from random import uniform
-import time
-from database.number_to_unit_mapping import get_unit_name  # <-- import properly
+
+from identity_handling.login import login
+from identity_handling.identity_helper import load_villages_from_identity
+from core.travian_api import TravianAPI
+from database.number_to_unit_mapping import get_unit_name
+from core.database_helpers import load_latest_unoccupied_oases
+
 
 # === CONFIG ===
-VILLAGE_INDEX = 0  # index of village to use
-OASIS_FOLDER = "API_based_automations/oasis_raiding/database/unoccupied_oases/"
+BASE_OASIS_FOLDER = "API_based_automations/oasis_raiding/database/unoccupied_oases/"
 
-def load_latest_unoccupied_oases():
-    scan_files = glob(os.path.join(OASIS_FOLDER, "*.json"))
-    if not scan_files:
-        print("[-] No unoccupied oases scan found.")
-        return None
-
-    latest_file = max(scan_files, key=os.path.getmtime)
-    print(f"[+] Using latest unoccupied oases file: {os.path.basename(latest_file)}")
-
-    with open(latest_file, "r") as f:
-        oases = json.load(f)
-
-    return oases
 
 def main():
     print("[+] Logging in...")
     session, server_url = login()
     api = TravianAPI(session, server_url)
 
+    print("[+] Loading villages from identity file...")
+    villages = load_villages_from_identity()
+
+    if not villages:
+        print("[-] No villages found in identity. Exiting.")
+        return
+
+    # Choose village to raid from
+    print("\nAvailable villages:")
+    for idx, v in enumerate(villages):
+        print(f"  [{idx}] {v['village_name']} at ({v['x']},{v['y']})")
+
+    try:
+        village_index = int(input("\nSelect the village to raid from (index): ").strip())
+    except ValueError:
+        print("[-] Invalid village index.")
+        return
+
+    if not (0 <= village_index < len(villages)):
+        print("[-] Village index out of range.")
+        return
+
+    selected_village = villages[village_index]
+    village_id = selected_village["village_id"]
+    village_x = selected_village["x"]
+    village_y = selected_village["y"]
+    print(f"[+] Selected village: {selected_village['village_name']} (ID {village_id})")
+
+    # Faction detection
     print("[+] Fetching player info...")
     player_info = api.get_player_info()
-    village = player_info["villages"][VILLAGE_INDEX]
-    village_id = village["id"]
-    print(f"[+] Selected village: {village['name']} (ID {village_id})")
-
     faction_id = player_info.get("faction")  # 1 = Roman, 2 = Teuton, 3 = Gaul
     faction_mapping = {1: "roman", 2: "teuton", 3: "gaul"}
-    faction = faction_mapping.get(faction_id, "roman")  # Default fallback to roman
+    faction = faction_mapping.get(faction_id, "roman")
     print(f"[+] Detected faction: {faction.title()}")
 
-    print("[+] Loading unoccupied oases from latest map scan...")
-    oases = load_latest_unoccupied_oases()
+    # Load latest oasis list
+    print("\n[+] Loading unoccupied oases for selected village...")
+    village_coords_folder = f"({village_x}_{village_y})"
+    oases = load_latest_unoccupied_oases(village_coords_folder)
     if not oases:
         return
 
@@ -50,7 +69,6 @@ def main():
 
     print("[+] Fetching current troop counts...")
     troops_info = api.get_troops_in_village()
-
     if not troops_info:
         print("[-] Could not fetch troops. Exiting.")
         return
@@ -60,7 +78,7 @@ def main():
         unit_name = get_unit_name(unit_code, faction)
         print(f"    {unit_code} ({unit_name}): {amount} units")
 
-    # Pick unit to raid with
+    # Ask user for raid setup
     unit_code_for_raid = input("\nEnter unit code for raiding (e.g., u5 for Equites Imperatoris): ").strip()
 
     available_troops = troops_info.get(unit_code_for_raid, 0)
@@ -68,9 +86,13 @@ def main():
         print(f"[-] No available troops of type {unit_code_for_raid}. Exiting.")
         return
 
-    troops_per_raid = int(input("How many troops per raid? "))
+    try:
+        troops_per_raid = int(input("How many troops per raid? ").strip())
+    except ValueError:
+        print("[-] Invalid number. Exiting.")
+        return
 
-    unit_code_for_payload = unit_code_for_raid.replace("u", "t")  # Correct Travian server expectation
+    unit_code_for_payload = unit_code_for_raid.replace("u", "t")  # Convert for Travian server
 
     sent_raids = 0
 
@@ -83,6 +105,9 @@ def main():
         x, y = int(x_str), int(y_str)
 
         animal_count = api.get_oasis_animal_count(x, y)
+        if animal_count is None:
+            continue
+
         if animal_count > 0:
             print(f"[-] Skipping oasis at ({x}, {y}) — {animal_count} animals present.")
             continue
@@ -102,7 +127,7 @@ def main():
 
         time.sleep(uniform(0.5, 1.2))  # Human-like delay
 
-    print(f"[+] Finished sending {sent_raids} raids. Troops remaining: {available_troops}")
+    print(f"\n[+] Finished sending {sent_raids} raids. Troops remaining: {available_troops}")
 
 if __name__ == "__main__":
     main()
