@@ -1,6 +1,6 @@
 # proof_of_concepts/get_troops_simple.py
 
-from oasis_raiding.travian_api import TravianAPI
+from oasis_raiding.core.travian_api import TravianAPI
 from oasis_raiding.identity_handling.login import login
 from bs4 import BeautifulSoup
 
