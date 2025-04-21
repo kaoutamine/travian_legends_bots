@@ -6,7 +6,7 @@
 ---
 
 This project is intentionally left without a frontend for two reasons:
-1. It’s not my wish to distribute this tool to just anyone — only to truly passionate players.
+1. It’s not my wish to distribute this tool to just anyone — only to truly passionate players that can also code!
 2. It’s not intended to fully replace raiding, but to act as a helper for repetitive tasks.
 
 ---
