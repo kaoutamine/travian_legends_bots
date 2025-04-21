@@ -1,85 +1,159 @@
-# 🚀 Automate Your Travian Gameplay Like a Pro
-## 🕵️ Stay Under the Radar — Play Smart
-
-> *Automate smarter, not harder — your Travian empire just got a personal assistant.* 🌟
-
-NB: It took a lot of time to manually inspect Travian's network traffic using Burp Suite and GUI experimentation.
-The game uses a mix of GraphQL API requests for modern features (like avatar, farm lists) and classic HTML responses for legacy parts (like dorf1.php and dorf2.php), where everything is dumped into large HTML pages.
-It also took time to figure out their bot prevention mechanisms, but a few careful scripts extracting the necessary hidden inputs (like tokens and checksums) were enough to bypass them reliably.
----
-
-This project is intentionally left without a frontend for two reasons:
-1. It’s not my wish to distribute this tool to just anyone — only to truly passionate players that can also code!
-2. It’s not intended to fully replace raiding, but to act as a helper for repetitive tasks.
+# 🚀 Travian API Automation Project
+## 🛠 Personal Reverse Engineering and Automation
 
 ---
 
-## 🛠 Typical Flow (Single Village)
-
-**Step 1 — Scan the Map**  
-Launch `map_scan_and_oasis_extract_main.py`.  
-- Login credentials are requested once and safely stored in a `.env` file. (No 2FA in Travian.)  
-- **Choose your scan radius carefully**: a 25-tile radius means scanning over **2,500 tiles**.  
-- To stay stealthy, the bot scans at a rate of about **20 tiles per second**.  
-- After scanning, data is stored in the database under folders named after **village coordinates**.  
-- The system automatically extracts unoccupied oases from the scan.
-
-**Step 2 — Launch Raids**  
-Launch `oasis_raiding_from_scan_list.py`.  
-- Choose your village.  
-- Set troop distribution strategies (e.g., send groups of 20 legionnaires first, then 6 Equites Imperatoris after depletion).
-
-> I’m happy with this flow because it hides the underlying complexity, exactly as good code should.
+> *Built out of curiosity, for personal use, and as an engineering challenge.* ⚙️
 
 ---
 
-## ⚡ (Optional) Alternative Raiding
+**Background**:  
+This project was created after spending a lot of time manually inspecting Travian’s network behavior using Burp Suite and browser developer tools.  
+Travian uses a combination of:
+- **GraphQL API requests** for dynamic data (like avatars, farm lists, account metadata).
+- **Classic HTML endpoints** for legacy game views (e.g., `dorf1.php`, `dorf2.php`), where most of the world state is embedded into large static HTML pages.
 
-You can also raid using `oasis_scanning_from_raid_list.py`, which pulls from internal raid lists.  
-However, this method is **not actively maintained** and may require small fixes.  
-Overall, the scan-based system is more efficient and reliable. 😄
+Bot prevention primarily relies on hidden dynamic fields (tokens, checksums), not on traditional CAPTCHA systems.  
+With careful parsing and request crafting, those mechanisms were bypassed reliably without trying to "spoof" a browser.
+
+---
+
+## 📚 Project Philosophy
+
+This tool was never meant to be widely distributed:  
+- It's a personal technical exercise — **a playground for reverse engineering, automation architecture, and real-world API handling**.
+- It intentionally skips building a GUI to **stay lightweight and focus on code quality and expandability**.
+- It's not intended to fully replace manual gameplay, only to **relieve repetitive tasks like early-game oasis farming**.
+
+The idea is to automate *enough* to assist, but not so much that it kills the fun.
+
+---
+
+## 🛠 Typical Usage Flow (Single Village)
+
+### Step 1 — Scan the Map
+- Launch `map_scan_and_oasis_extract_main.py`.
+- Enter login credentials once (saved in a local `.env` file, no 2FA needed).
+- Select the scan radius (**example**: a 25-tile radius = ~2,500 tiles).
+- Tiles are scanned at about **20 per second** to fly under bot detection radars (some functions of travian have similar scanning speed).
+- After scanning, local JSON files are generated containing full map and oasis data in the database/ file. Per village.
+
+### Step 2 — Launch Raids
+- Launch `oasis_raiding_from_scan_list_main.py`.
+- Village and available troops are automatically loaded.
+- Troop allocation is automatic, for example for Romans you could specify (via the terminal)
+  - First use **legionnaires** (groups of 20)  
+  - Then use **Equites Imperatoris** (groups of 6)
+- The script targets **only unoccupied oases without defenders** and raids **closest first**.
+
+The flow is designed to stay minimal and resilient — no unnecessary prompts, no wasted actions.
+
+---
+
+## ⚡ Alternative Raiding (Optional)
+
+There’s also a `oasis_raiding_from_raid_list_main.py` method based on pre-defined farm lists inside Travian.  
+It’s functional, but scan-based raiding is currently faster and more reliable.
+
+---
+
+> This project is a side experiment in engineering clean, API-driven game interactions — not a "cheat" platform.  
+> All contributions were made for **personal use** and **learning purposes only**.
 
 
 # 🔥 Project Highlights
-
-## API-based Automation (Reverse Engineering Approach)
-
-### `identity_handling/login.py`:
-- Loads credentials (`TRAVIAN_EMAIL` and `TRAVIAN_PASSWORD`) from a `.env` file, creating it if missing.
-- Logs into Travian using the PKCE OAuth2 authentication flow.
-- Retrieves your active avatars and servers using GraphQL.
-- Lets you select the server from a menu (auto-selectable if you want).
+### If you want to dive into the technical side or understand the architecture
 
 ---
 
-### `oasis_raiding_from_scan_list_main.py` (Main Raiding Automation):
+## 🧩 API-based Automation — Built by Reverse Engineering
 
-✅ After logging in and selecting your server and village, the script:
-1. **Loads your villages** from your identity card (`identity.json`).
-2. **Loads the latest full map scan** saved in your local database.
-3. **Parses unoccupied oases** only (true "Unoccupied oasis", not wilderness).
-4. **Fetches available troops** automatically (no more manual inputs).
-5. **Asks you for unit and troops per raid**, or uses your hardcoded defaults.
-6. **Raids only oases that are truly empty (no animals)**.
-7. **Raids from closest to furthest**, ordered by distance.
-8. **Handles the Travian checksum** system for sending legit-looking attacks.
-9. **Stops automatically** when you run out of troops.
+Instead of interacting with the web UI, this project connects **directly to Travian's APIs** and **classic HTML endpoints**, carefully reconstructing all required requests and protections manually.
 
----
+Travian uses:
+- **OAuth2 (PKCE flow)** authentication against the identity server.
+- **GraphQL APIs** for account, avatar, and farm list management.
+- **Classic POST/GET** forms and **HTML scraping** for troop movements and map interactions.
+- **Dynamic bot protection fields** (tokens, checksums) inside forms that must be parsed and reused at every interaction.
 
-### `full_scan_oasis_analysis.py` (Oasis Mapping):
-
-- **Scans and saves** all unoccupied oases around your village.
-- **Sorts oases by distance** for smart farming.
-- **Stores clean, reusable JSON datasets** inside `database/unoccupied_oases/`.
+All major obstacles were handled cleanly:
+- **OAuth token acquisition** through code verifier/challenge flow.
+- **Session maintenance** via cookies between lobby and gameworld.
+- **Checksum generation/extraction** for attack requests.
+- **Anti-bot measures** bypassed by scraping dynamic fields and replaying them properly.
 
 ---
 
-### `core/travian_api.py`:
+## 📂 `identity_handling/login.py` — Account Handling
 
-- **Wraps Travian API requests**: troops, raids, map data, attacks, farm lists, hero actions.
-- Clean, simple, and highly expandable.
-- Fully bypasses UI limitations — acts as a lightweight mobile API client.
+- Loads your Travian credentials safely from a local `.env` file.
+- If missing, prompts once and auto-creates the file.
+- Handles full **OAuth2 PKCE flow** without using a browser.
+- Lists all active avatars (accounts) linked to your identity.
+- Lets you **choose the target server** (or hardcode default selection).
+- After login, **hands over an authenticated Session object** for further API calls.
+
+---
+
+## ⚔️ `oasis_raiding_from_scan_list_main.py` — Fully Automated Oasis Raiding
+
+✅ Once logged in, the script:
+1. **Loads your village data** (ID, coordinates) from an internal **identity card** JSON.
+2. **Fetches your live troop count** directly from `dorf1.php`, parsing HTML.
+3. **Loads the most recent full map scan** locally saved.
+4. **Filters** only real "Unoccupied oases" (ignores wilderness and fake targets).
+5. **Ranks oases by proximity** (closest first) based on tile coordinates.
+6. **Skips oases with any animal defenders**, checking before each raid.
+7. **Handles attack checksum fields dynamically**, to pass bot protection.
+8. **Sends small raiding parties** (e.g., 20 Legionnaires, 6 Equites Imperatoris) intelligently until troops run out.
+
+Notes:
+- Delays between attacks are randomized (**0.5s - 1.2s**) to simulate human behavior.
+- Server responses are validated at every step to ensure stability.
+
+---
+
+## 🗺️ `full_scan_oasis_analysis.py` — Map Scanning and Database
+
+- Scans the map in a **configurable radius** (default: 25 tiles = 2,500+ tiles).
+- Works by sending **map position GraphQL queries** systematically.
+- Parses and saves **tile metadata** (type, ownership, bonuses, coordinates).
+- After scanning:
+  - Automatically extracts **unoccupied oases**.
+  - Saves them in **timestamped JSON** files inside a dedicated folder.
+  - Stores metadata (scan date, center coordinates, scan radius) for traceability.
+
+---
+
+## 🔧 `core/travian_api.py` — API Wrapper
+
+Central module abstracting all Travian server interactions:
+- **Authentication flows** (login, token handling, session management).
+- **Troop data scraping** from `dorf1.php`.
+- **Farm list management**: creating, listing, sending raids.
+- **Oasis attack preparation and execution**:
+  - Fetches necessary checksums.
+  - Prepares attack payloads.
+  - Sends authenticated POST requests matching expected client behavior.
+- **Map interaction** through **GraphQL** queries:
+  - Fetch tile metadata.
+  - Analyze surrounding map.
+  - Discover villages, oases, wilderness tiles.
+
+All functions are built:
+- **Idempotent**: safe to retry.
+- **Modular**: reusable from anywhere.
+- **Compatible** with future expansions (hero automation, multi-village support).
+
+---
+
+# 🛠 Engineering Design Choices
+
+- **No browser automation** (Selenium/Playwright) — 100% API-driven.
+- **No hard dependencies** outside `requests`, `bs4`, and `python-dotenv`.
+- **Minimal external libraries** for security, portability, and long-term maintainability.
+- **Separation of concerns**: login logic, API wrapper, map scanning, oasis management all live in distinct modules.
+- **Extensibility ready**: easily pluggable into more complex automation (resource management, construction queues, etc.).
 
 ---
 
@@ -102,30 +176,27 @@ Overall, the scan-based system is more efficient and reliable. 😄
 ```markdown
 📂 Project Structure
 
-- API_based_automations/
-  - oasis_raiding/
-    - __pycache__/
-    - analysis/
-    - database/
-      - full_map_scans/
-      - identity_card/
-      - unoccupied_oases/
-    - core/
-      - travian_api.py
-    - identity_handling/
-      - login.py
-    - proof_of_concepts/
-    - map_scanning_main.py
-    - full_scan_oasis_analysis.py
-    - oasis_raiding_from_scan_list_main.py
-    - oasis_raiding_from_raid_list_main.py
-    - requirements.txt
-- selenium_UI_based_exploits/
-  - gettingCookies.py
-  - seleniumTest.py
-  - test_TravianVillagesRaidFirefox.py
-  - VillageOasisRaidRecording.py
-- README.md
+├── API_based_automations
+│   ├── readme.md
+│   └── travian_bot
+│       ├── __pycache__
+│       ├── analysis
+│       ├── core
+│       ├── database
+│       ├── identity_handling
+│       ├── map_scanning_main.py
+│       ├── oasis_raiding_from_raid_list_main.py
+│       ├── oasis_raiding_from_scan_list_main.py
+│       ├── proof_of_concepts
+│       ├── refactor_attempt
+│       └── requirements.txt
+├── README.md
+├── selenium_UI based_exploits
+│   ├── VillageOasisRaidRecording.py
+│   ├── gettingCookies.py
+│   ├── seleniumTest.py
+│   └── test_TravianVillagesRaidFirefox.py
+└── structure.txt
 ```
 ---
 
