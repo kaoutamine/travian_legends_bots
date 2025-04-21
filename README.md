@@ -1,19 +1,41 @@
-# 🚀 Automate Your Travian Gameplay Like a Pro  
-## 🕵️ While Staying Under the Radar
+# 🚀 Automate Your Travian Gameplay Like a Pro
+## 🕵️ Stay Under the Radar — Play Smart
+
+> *Automate smarter, not harder — your Travian empire just got a personal assistant.* 🌟
 
 ---
 
-This project **connects directly to Travian’s servers** using clean, fast **API calls** —  
-No browser automation, no heavy Selenium bots.
-
-If you know a little **Python**, can run a few scripts, and don't mind answering a few simple **terminal questions**,  
-you can fully **automate your early-game oasis raiding in minutes**.
+This project is intentionally left without a frontend for two reasons:
+1. It’s not my wish to distribute this tool to just anyone — only to truly passionate players that can also code!
+2. It’s not intended to fully replace raiding, but to act as a helper for repetitive tasks.
 
 ---
 
-> ⚙️ Built by players, for players.
+## 🛠 Typical Flow (Single Village)
+
+**Step 1 — Scan the Map**  
+Launch `map_scan_and_oasis_extract_main.py`.  
+- Login credentials are requested once and safely stored in a `.env` file. (No 2FA in Travian.)  
+- **Choose your scan radius carefully**: a 25-tile radius means scanning over **2,500 tiles**.  
+- To stay stealthy, the bot scans at a rate of about **20 tiles per second**.  
+- After scanning, data is stored in the database under folders named after **village coordinates**.  
+- The system automatically extracts unoccupied oases from the scan.
+
+**Step 2 — Launch Raids**  
+Launch `oasis_raiding_from_scan_list.py`.  
+- Choose your village.  
+- Set troop distribution strategies (e.g., send groups of 20 legionnaires first, then 6 Equites Imperatoris after depletion).
+
+> I’m happy with this flow because it hides the underlying complexity, exactly as good code should.
 
 ---
+
+## ⚡ (Optional) Alternative Raiding
+
+You can also raid using `oasis_scanning_from_raid_list.py`, which pulls from internal raid lists.  
+However, this method is **not actively maintained** and may require small fixes.  
+Overall, the scan-based system is more efficient and reliable. 😄
+
 
 # 🔥 Project Highlights
 
