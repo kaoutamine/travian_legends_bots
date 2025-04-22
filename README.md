@@ -121,7 +121,7 @@ It’s functional, but scan-based raiding is currently faster and more reliable.
 Instead of interacting with the web UI, this project connects **directly to Travian's APIs** and **classic HTML endpoints**, carefully reconstructing all required requests and protections manually.
 
 Travian uses:
-- **OAuth2 (PKCE flow)** authentication against the identity server.
+- **Classic email/password authentication with an extra variable hidden in the request (Unclear what it's for)** for authentication.
 - **GraphQL APIs** for account, avatar, and farm list management.
 - **Classic POST/GET** forms and **HTML scraping** for troop movements and map interactions.
 - **Dynamic bot protection fields** (tokens, checksums) inside forms that must be parsed and reused at every interaction.
