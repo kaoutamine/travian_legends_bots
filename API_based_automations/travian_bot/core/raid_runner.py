@@ -3,7 +3,7 @@ import time
 from random import uniform
 from analysis.number_to_unit_mapping import get_unit_name
 
-def run_raid_batch(api, raid_plan, faction, village_id, oases):
+def run_raid_batch(api, raid_plan, faction, village_id, oases, hero_raiding=False, hero_available=False):
     sent_raids = 0
 
     for coords, tile in oases.items():

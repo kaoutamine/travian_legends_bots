@@ -1,6 +1,6 @@
 from identity_handling.login import login
 from identity_handling.identity_helper import load_villages_from_identity, choose_village_to_scan
-from identity_handling.identity_builder import save_identity  # 🆕 Added
+from identity_handling.identity_builder import save_identity  
 from core.travian_api import TravianAPI
 from core.full_map_scanner import full_map_scan
 from analysis.full_scan_oasis_analysis import extract_unoccupied_oases

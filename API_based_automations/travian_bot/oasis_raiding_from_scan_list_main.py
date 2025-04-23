@@ -10,6 +10,7 @@ from analysis.number_to_unit_mapping import get_unit_name
 from core.database_helpers import load_latest_unoccupied_oases
 from core.database_raid_config import load_saved_raid_plan, save_raid_plan
 from core.raid_runner import run_raid_batch
+from core.hero_runner import try_send_hero_to_oasis  # ✅ Hero logic
 
 class NoTimestampFormatter(logging.Formatter):
     def format(self, record):
@@ -106,13 +107,39 @@ def main():
             })
 
         save_raid_plan(server_url, village_index, [
-    {k: unit[k] for k in ["unit_code", "unit_payload_code", "group_size"]}
-    for unit in raid_plan
-    ])
-
+            {k: unit[k] for k in ["unit_code", "unit_payload_code", "group_size"]}
+            for unit in raid_plan
+        ])
 
     oases = load_latest_unoccupied_oases(f"({village_x}_{village_y})")
+
+    # --- HERO LOGIC START ---
+    hero_available = troops_info.get("uhero", 0) >= 1
+    hero_sent = False
+    hero_raiding_enabled = input("\n🦸 Enable hero raiding? [Y/n]: ").strip().lower() in ("", "y", "yes")
+
+    if hero_raiding_enabled and hero_available:
+        for coord_key, oasis_data in oases.items():
+            x_str, y_str = coord_key.split("_")
+            oasis = {"x": int(x_str), "y": int(y_str)}
+            if try_send_hero_to_oasis(api, selected_village, oasis):
+                hero_sent = True
+                break
+
+    # --- HERO LOGIC END ---
+
     run_raid_batch(api, raid_plan, faction, village_id, oases)
+
+    # --- HERO RESULT REPORT ---
+    print("\n--- Hero Raid Summary ---")
+    if not hero_raiding_enabled:
+        print("Hero raiding was disabled.")
+    elif not hero_available:
+        print("Hero was not available.")
+    elif hero_sent:
+        print("✅ Hero was sent on a raid.")
+    else:
+        print("⚠️ Hero was available but no suitable oasis was found.")
 
 if __name__ == "__main__":
     main()

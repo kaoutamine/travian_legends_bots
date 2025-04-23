@@ -2,7 +2,7 @@
 
 from tqdm import tqdm
 from bs4 import BeautifulSoup
-from core.file_utils import save_json_scan
+from core.database_json_scan_utils import save_json_scan
 
 def parse_tile_html(html):
     soup = BeautifulSoup(html, "html.parser")
