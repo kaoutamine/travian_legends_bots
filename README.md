@@ -56,6 +56,27 @@ The bot sends raids intelligently:
 
 ---
 
+## HOW TO USE THE SCRIPT
+I designed this script for myself. I designed it to scale but as you know without testing it probably won't work for someone else from the get go.
+I'm sorry for this. Please contact me for debug.
+
+1) git clone this repository 
+2) **IMPORTANT** Place yourself in the travian_bot file.
+```bash
+cd travian_legend_bots/API_based_automations/travian_bot
+```
+4) run python3 map_scanning_main.py, fill in your email & password. they will be saved to a .env file. Do a scan. It will be saved in a database/ file with your identity and your villages.
+```bash
+python3 map_scanning_main.py
+```
+6) run python3 oasis_raiding_from_scan_list.py and fill in whatever is needed in there.
+```bash
+python3 oasis_raiding_from_scan_list.py
+```
+That's it! Hopefully you should have launched your first raid 🎫🎟️
+
+---
+
 
 **Background**:  
 This project was created after spending a lot of time manually inspecting Travian’s network behavior using Burp Suite and browser developer tools.  
@@ -121,7 +142,7 @@ It’s functional, but scan-based raiding is currently faster and more reliable.
 Instead of interacting with the web UI, this project connects **directly to Travian's APIs** and **classic HTML endpoints**, carefully reconstructing all required requests and protections manually.
 
 Travian uses:
-- **OAuth2 (PKCE flow)** authentication against the identity server.
+- **Classic email/password authentication with an extra variable hidden in the request (Unclear what it's for)** for authentication.
 - **GraphQL APIs** for account, avatar, and farm list management.
 - **Classic POST/GET** forms and **HTML scraping** for troop movements and map interactions.
 - **Dynamic bot protection fields** (tokens, checksums) inside forms that must be parsed and reused at every interaction.
@@ -267,6 +288,18 @@ All functions are built:
 - Fuse login → map scan → oasis raid into one seamless script.
 - Add self-refreshing scripts (auto rescan, auto raid).
 - Package into a desktop app for non-tech users.
+
+---
+
+## 💡 Contributing to this Project
+
+1. Fork the repo
+2. Create a feature branch (`git checkout -b my-feature`)
+3. Commit your changes
+4. Push to your fork
+5. Open a Pull Request to the `main` branch of this repo
+
+All contributions go through PR review. Thank you!
 
 ---
 
