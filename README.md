@@ -8,6 +8,23 @@
 > A full early-game flow from login to launching raids.
 
 ---
+## HOW TO USE THE SCRIPT
+I designed this script for myself. I designed it to scale but as you know without testing it probably won't work for someone else from the get go.
+I'm sorry for this. Please contact me for debug.
+
+1) git clone this repository 
+2) **IMPORTANT** Place yourself in the travian_bot file.
+```bash
+cd travian_legend_bots/API_based_automations/travian_bot
+```
+4) run python3 map_scanning_main.py, fill in your email & password. they will be saved to a .env file. Do a scan. It will be saved in a database/ file with your identity and your villages.
+```bash
+python3 map_scanning_main.py
+```
+6) run python3 oasis_raiding_from_scan_list.py and fill in whatever is needed in there.
+```bash
+python3 oasis_raiding_from_scan_list.py
+```
 
 ## 🔑 1. Login and Find Your Villages
 
