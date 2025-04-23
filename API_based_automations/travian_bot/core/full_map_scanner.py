@@ -2,7 +2,7 @@
 
 from tqdm import tqdm
 from bs4 import BeautifulSoup
-from core.file_utils import save_json
+from core.file_utils import save_json_scan
 
 def parse_tile_html(html):
     soup = BeautifulSoup(html, "html.parser")
@@ -67,7 +67,7 @@ def full_map_scan(api_client, village_x, village_y, scan_radius=25):
 
     village_coords_folder = f"({village_x}_{village_y})"
 
-    scan_save_path = save_json(
+    scan_save_path = save_json_scan(
         data={"metadata": metadata, "tiles": scanned_tiles},
         filename="full_map_scan.json",
         with_timestamp=True,

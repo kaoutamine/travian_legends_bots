@@ -5,7 +5,7 @@ import json
 from datetime import datetime
 from math import sqrt
 
-from core.file_utils import save_json  # <- use the helper we built
+from core.file_utils import save_json_scan  # <- use the helper we built
 
 def distance(x1, y1, x2, y2):
     return sqrt((x2 - x1)**2 + (y2 - y1)**2)
@@ -54,7 +54,7 @@ def extract_unoccupied_oases(scan_path):
         sorted_unoccupied[coords] = unoccupied_oases[coords]
 
     # Save only unoccupied
-    save_json(
+    save_json_scan(
         data=sorted_unoccupied,
         filename="unoccupied_oases.json",
         with_timestamp=True,

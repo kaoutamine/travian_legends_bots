@@ -2,7 +2,7 @@ import os
 import json
 from datetime import datetime
 
-def save_json(data, filename, with_timestamp=False, subfolder=None, coords_folder=None, return_path=False):
+def save_json_scan(data, filename, with_timestamp=False, subfolder=None, coords_folder=None, return_path=False):
     # Find the true project root dynamically (wherever the script is)
     root_dir = os.path.dirname(os.path.abspath(__file__))
 
