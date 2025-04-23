@@ -291,6 +291,18 @@ All functions are built:
 
 ---
 
+## 💡 Contributing to this Project
+
+1. Fork the repo
+2. Create a feature branch (`git checkout -b my-feature`)
+3. Commit your changes
+4. Push to your fork
+5. Open a Pull Request to the `main` branch of this repo
+
+All contributions go through PR review. Thank you!
+
+---
+
 ## 🛡 Robustness Enhancements
 - Better support for multi-account and multi-server players.
 - Handle multi-village troop management.
