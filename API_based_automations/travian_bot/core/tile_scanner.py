@@ -1,6 +1,6 @@
 # tile_scanner.py
 
-from db_manager import save_json
+from API_based_automations.travian_bot.core.db_manager import save_json
 from API_based_automations.oasis_raiding.identity_handling.login import login
 from API_based_automations.oasis_raiding.travian_api import fetch_map_data
 

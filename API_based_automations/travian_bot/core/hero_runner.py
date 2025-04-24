@@ -1,6 +1,6 @@
 import logging
 
-def try_send_hero_to_oasis(api, village, oasis, max_power=300):
+def try_send_hero_to_oasis(api, village, oasis, min_power = 50, max_power=150):
     """
     Sends the hero to the given oasis if its attack power is under the threshold.
 
@@ -16,7 +16,7 @@ def try_send_hero_to_oasis(api, village, oasis, max_power=300):
     power = api.get_oasis_attack_power(oasis["x"], oasis["y"])
 
     logging.debug(f"Checking oasis at ({oasis['x']}, {oasis['y']}) → Power: {power}")
-    if power > max_power:
+    if power > max_power or power < min_power:
         logging.info(f"⚠️ Skipping oasis at ({oasis['x']},{oasis['y']}) — Power too high ({power})")
         return False
 
