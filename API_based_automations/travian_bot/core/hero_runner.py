@@ -1,6 +1,6 @@
 import logging
 
-def try_send_hero_to_oasis(api, village, oasis, min_power = 50, max_power=150):
+def try_send_hero_to_oasis(api, village, oasis, min_power = 50, max_power=150, help = True):
     """
     Sends the hero to the given oasis if its attack power is under the threshold.
 
@@ -21,7 +21,11 @@ def try_send_hero_to_oasis(api, village, oasis, min_power = 50, max_power=150):
         return False
 
     logging.info(f"🚀 Sending hero to oasis at ({oasis['x']},{oasis['y']}) — Estimated power: {power}")
-    raid_setup = {"t11": 1}
+    raid_setup = {}
+    if help:
+        raid_setup = {"t5":1, "t11": 1}
+    else:
+        raid_setup = {"t11": 1}
     attack_info = api.prepare_oasis_attack(None, oasis["x"], oasis["y"], raid_setup)
     success = api.confirm_oasis_attack(attack_info, oasis["x"], oasis["y"], raid_setup, village["village_id"])
     return True
