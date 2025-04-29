@@ -8,10 +8,12 @@ from dotenv import load_dotenv
 
 # === ENV HANDLING ===
 
-def ensure_env_exists():
+def ensure_env_exists(interactive=True):
     env_path = Path(__file__).resolve().parents[3] / ".env"
 
     def ask_and_create_env():
+        if not interactive:
+            raise RuntimeError("Missing .env file and no interactive mode allowed.")
         email = input("Enter your Travian email: ").strip()
         password = input("Enter your Travian password: ").strip()
         with open(env_path, "w") as f:
@@ -33,13 +35,6 @@ def ensure_env_exists():
             print(f"✅ .env file loaded successfully.")
 
     load_dotenv(dotenv_path=env_path)
-
-ensure_env_exists()
-
-EMAIL = os.getenv("TRAVIAN_EMAIL")
-PASSWORD = os.getenv("TRAVIAN_PASSWORD")
-
-# === LOGIN SYSTEM ===
 
 def generate_code_pair():
     verifier = base64.urlsafe_b64encode(secrets.token_bytes(32)).rstrip(b'=').decode()
@@ -113,8 +108,10 @@ def get_avatars(session):
         })
     return avatars
 
-def login_to_server(session, avatars, selection=None):
+def login_to_server(session, avatars, selection=None, interactive=True):
     if selection is None:
+        if not interactive:
+            raise RuntimeError("No server selection provided and interactive mode is disabled.")
         print("Your servers:")
         for i, a in enumerate(avatars):
             print(f"[{i}] {a['world_name']} — {a['world_url']}")
@@ -139,20 +136,23 @@ def login_to_server(session, avatars, selection=None):
 
 # === MAIN LOGIN WRAPPER ===
 
-def login(email=None, password=None, server_selection=None):
+def login(email=None, password=None, server_selection=None, interactive=True):
     if email is None or password is None:
-        email = EMAIL
-        password = PASSWORD
+        ensure_env_exists(interactive=interactive)
+        email = os.getenv("TRAVIAN_EMAIL")
+        password = os.getenv("TRAVIAN_PASSWORD")
+        if not email or not password:
+            raise RuntimeError("Missing TRAVIAN_EMAIL or TRAVIAN_PASSWORD.")
 
     session = login_to_lobby(email, password)
     avatars = get_avatars(session)
-    server_session, server_url = login_to_server(session, avatars, selection=server_selection)
+    server_session, server_url = login_to_server(session, avatars, selection=server_selection, interactive=interactive)
     return server_session, server_url
 
 # === TEST ===
 
 def main():
-    session = login_to_lobby(EMAIL, PASSWORD)
+    session = login_to_lobby(os.getenv("TRAVIAN_EMAIL"), os.getenv("TRAVIAN_PASSWORD"))
     avatars = get_avatars(session)
     server_session, server_url = login_to_server(session, avatars)
 
