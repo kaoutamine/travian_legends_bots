@@ -6,7 +6,7 @@ from core.travian_api import TravianAPI
 
 # === CONFIGURATION ===
 LIST_DELAYS_MINUTES = {
-    190: (60, 3),  # (base delay in minutes, number of sends per burst)
+    190: (60, 1),  # (base delay in minutes, number of sends per burst)
 }
 
 RANDOM_JITTER_MINUTES = 3  # +/- jitter in minutes
@@ -104,6 +104,21 @@ def run_farmlist_runner():
             delay_seconds = calculate_next_delay(base_delay)
             next_send_times[list_id] = now + timedelta(seconds=delay_seconds)
             print(f"⏩ Next send for list {list_id} scheduled at {next_send_times[list_id].strftime('%H:%M:%S')}\n")
+
+def run_one_farm_list_burst(api):
+    now = datetime.now()
+
+    for list_id, (base_delay, burst_count) in LIST_DELAYS_MINUTES.items():
+        for i in range(burst_count):
+            success = send_farm_list(api, list_id)
+            if not success:
+                api = safe_relogin()
+                send_farm_list(api, list_id)
+            if i < burst_count - 1:
+                time.sleep(2)  # short pause between bursts
+
+    print("✅ Finished one farm list burst.")
+
 
 # === MAIN ===
 

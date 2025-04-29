@@ -21,24 +21,20 @@ console_handler.setFormatter(NoTimestampFormatter())
 logging.basicConfig(level=logging.INFO, handlers=[console_handler])
 
 def run_raid_planner(
+    api,
+    server_url,
     reuse_saved=True,
     selected_village_index=None,
     units_to_use=None,
     enable_hero_raiding=True,
-    server_selection=0,
     interactive=False
 ):
+
     saved_data = load_saved_raid_plan()
 
     if not saved_data:
         logging.error("❌ No saved raid plan found. You must run it once interactively to save one.")
         return
-
-    session, server_url = login(
-        server_selection=server_selection,
-        interactive=interactive
-    )
-    api = TravianAPI(session, server_url)
 
     villages = load_villages_from_identity()
     if not villages:
