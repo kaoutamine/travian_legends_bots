@@ -6,11 +6,7 @@ from core.travian_api import TravianAPI
 
 # === CONFIGURATION ===
 LIST_DELAYS_MINUTES = {
-    48: 48,    # List 48
-    80: 74,    # List 80
-    81: 100,   # List 81
-    95: 125,   # List 95
-    170: 180   # List 170, 21 tiles round trip = ~180 minutes
+    190: (60, 3),  # (base delay in minutes, number of sends per burst)
 }
 
 RANDOM_JITTER_MINUTES = 3  # +/- jitter in minutes
@@ -19,7 +15,6 @@ STOP_HOUR = 9              # Stop at 9AM
 STOP_MINUTE = 0
 
 # === FUNCTIONS ===
-
 def send_farm_list(api, list_id):
     payload = {
         "action": "farmList",
@@ -72,7 +67,7 @@ def run_farmlist_runner():
 
     next_send_times = {}
     now = datetime.now()
-    for list_id, base_delay in LIST_DELAYS_MINUTES.items():
+    for list_id, (base_delay, burst_count) in LIST_DELAYS_MINUTES.items():
         next_send_times[list_id] = now  # Start immediately
 
     while True:
@@ -92,16 +87,21 @@ def run_farmlist_runner():
             continue
 
         for list_id in due_lists:
-            success = send_farm_list(api, list_id)
-            if not success:
-                api = safe_relogin()
+            base_delay, burst_count = LIST_DELAYS_MINUTES[list_id]
+
+            for i in range(burst_count):
                 success = send_farm_list(api, list_id)
                 if not success:
-                    print(f"❌ Failed again after relogin for list {list_id}. Will retry later.")
-                    next_send_times[list_id] = now + timedelta(minutes=1)
-                    continue
+                    api = safe_relogin()
+                    success = send_farm_list(api, list_id)
+                    if not success:
+                        print(f"❌ Failed again after relogin for list {list_id}. Will retry later.")
+                        next_send_times[list_id] = now + timedelta(minutes=1)
+                        break  # Break out of burst sends
+                if i < burst_count - 1:
+                    time.sleep(2)  # Short pause between sends in a burst
 
-            delay_seconds = calculate_next_delay(LIST_DELAYS_MINUTES[list_id])
+            delay_seconds = calculate_next_delay(base_delay)
             next_send_times[list_id] = now + timedelta(seconds=delay_seconds)
             print(f"⏩ Next send for list {list_id} scheduled at {next_send_times[list_id].strftime('%H:%M:%S')}\n")
 

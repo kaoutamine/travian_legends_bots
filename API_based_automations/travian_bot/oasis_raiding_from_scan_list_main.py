@@ -29,6 +29,7 @@ def main():
         print(f"   Server: {saved_data['server']}")
         print(f"   Village index: {saved_data['village_index']}")
         print(f"   Units: {[unit['unit_code'] for unit in saved_data['raid_plan']]}")
+        print(f"   Units: {[unit['group_size'] for unit in saved_data['raid_plan']]}")
         reuse_saved = input("\nDo you want to reuse this config? [Y/n]: ").strip().lower() in ("", "y", "yes")
 
     session, server_url = login()
