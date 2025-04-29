@@ -1,11 +1,13 @@
 import time
+import random
 from identity_handling.login import login
 from core.travian_api import TravianAPI
 from oasis_raiding_from_scan_list_main import run_raid_planner
 from raid_list_main import run_one_farm_list_burst
 
 # === CONFIG ===
-WAIT_BETWEEN_CYCLES_MINUTES = 20  # adjust as you want
+WAIT_BETWEEN_CYCLES_MINUTES = 50  # base time between cycles
+JITTER_MINUTES = 5                # random jitter +/- 5 min
 
 def main():
     print("""
@@ -46,8 +48,12 @@ def main():
                 interactive=False
             )
 
-            print(f"✅ Cycle complete. Waiting {WAIT_BETWEEN_CYCLES_MINUTES} minutes...\n")
-            time.sleep(WAIT_BETWEEN_CYCLES_MINUTES * 60)
+            # Calculate wait time with jitter
+            jitter = random.randint(-JITTER_MINUTES, JITTER_MINUTES)
+            total_wait_minutes = WAIT_BETWEEN_CYCLES_MINUTES + jitter
+            print(f"✅ Cycle complete. Waiting {total_wait_minutes} minutes (base {WAIT_BETWEEN_CYCLES_MINUTES} ± {JITTER_MINUTES})...\n")
+
+            time.sleep(total_wait_minutes * 60)
 
     else:
         print("❌ Invalid choice. Exiting.")
