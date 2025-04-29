@@ -20,7 +20,7 @@ console_handler = logging.StreamHandler()
 console_handler.setFormatter(NoTimestampFormatter())
 logging.basicConfig(level=logging.INFO, handlers=[console_handler])
 
-def main():
+def run_raid_planner():
     saved_data = load_saved_raid_plan()
 
     reuse_saved = False
@@ -126,7 +126,6 @@ def main():
             if try_send_hero_to_oasis(api, selected_village, oasis):
                 hero_sent = True
                 break
-
     # --- HERO LOGIC END ---
 
     run_raid_batch(api, raid_plan, faction, village_id, oases)
@@ -143,4 +142,4 @@ def main():
         print("⚠️ Hero was available but no suitable oasis was found.")
 
 if __name__ == "__main__":
-    main()
+    run_raid_planner()
