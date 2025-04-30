@@ -4,8 +4,8 @@ from identity_handling.login import login
 from core.travian_api import TravianAPI
 from oasis_raiding_from_scan_list_main import run_raid_planner
 from raid_list_main import run_one_farm_list_burst
-from features.raid.reset_raid_plan import reset_saved_raid_plan
-
+from features.raiding.reset_raid_plan import reset_saved_raid_plan
+from features.raiding.setup_interactive_plan import setup_interactive_raid_plan  # ✅ New import
 
 # === CONFIG ===
 WAIT_BETWEEN_CYCLES_MINUTES = 50
@@ -17,8 +17,14 @@ def main():
 🛡️ Travian Automation Launcher
 [1] Run one farm list burst + one raid planner
 [2] Run farm list + raid planner in infinite safe loop (with auto-recovery)
+[3] Reset saved raid plan
+[4] Setup new raid plan interactively
 """)
     choice = input("Select an option: ").strip()
+
+    if choice == "3":
+        reset_saved_raid_plan(server_selection=SERVER_SELECTION)
+        return
 
     print("\n🔐 Logging into Travian...")
     session, server_url = login(server_selection=SERVER_SELECTION, interactive=False)
@@ -60,10 +66,10 @@ def main():
                     session, server_url = login(server_selection=SERVER_SELECTION, interactive=False)
                     api = TravianAPI(session, server_url)
                     print("✅ Re-login successful.")
-            
+
                 except Exception as login_error:
                     print(f"❌ Re-login failed: {login_error}")
-                    print("💤 Will retry after 1 minute...")
+                    print("💤 Will retry after 1 hour...")
                     time.sleep(60 * 60)
                     continue
 
@@ -71,6 +77,9 @@ def main():
             total_wait_minutes = WAIT_BETWEEN_CYCLES_MINUTES + jitter
             print(f"✅ Cycle complete. Waiting {total_wait_minutes} minutes...\n")
             time.sleep(total_wait_minutes * 60)
+
+    elif choice == "4":
+        setup_interactive_raid_plan(api=api, server_url=server_url)
 
     else:
         print("❌ Invalid choice. Exiting.")

@@ -24,6 +24,7 @@ def run_raid_batch(api, raid_plan, faction, village_id, oases, hero_raiding=Fals
             unit_name = get_unit_name(unit["unit_code"], faction)
             logging.info(f"Launching raid on oasis at ({x}, {y}) with {unit['group_size']} {unit_name}...")
             raid_setup = {unit["unit_payload_code"]: unit["group_size"]}
+            raid_setup = {unit["unit_code"]: unit["group_size"]}  # 'u3': 5
 
             attack_info = api.prepare_oasis_attack(None, x, y, raid_setup)
             success = api.confirm_oasis_attack(attack_info, x, y, raid_setup, village_id)

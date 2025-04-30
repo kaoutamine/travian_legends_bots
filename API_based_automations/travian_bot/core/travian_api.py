@@ -3,6 +3,7 @@ import re
 from bs4 import BeautifulSoup
 from analysis.animal_to_power_mapping import get_animal_power
 
+
 class TravianAPI:
     def __init__(self, session: requests.Session, server_url: str):
         self.session = session
@@ -94,13 +95,11 @@ class TravianAPI:
         return response.json()["data"]["farmList"]
 
     def get_oasis_animal_count(self, x: int, y: int) -> int:
-        """Fetch animal count using tile-details API."""
         url = f"{self.server_url}/api/v1/map/tile-details"
         payload = {"x": x, "y": y}
         response = self.session.post(url, json=payload)
         response.raise_for_status()
         data = response.json()
-
         html = data.get("html")
         if not html:
             return 0
@@ -124,12 +123,24 @@ class TravianAPI:
 
     def prepare_oasis_attack(self, map_id: int, x: int, y: int, troop_setup: dict) -> dict:
         """Prepare an attack on a given oasis and return action and checksum."""
-        # 1. Open raid preparation page (GET)
+
+        def normalize_troops_dict(troops):
+            """Convert 'uX' keys to 'tX' if necessary."""
+            normalized = {}
+            for key, value in troops.items():
+                if key.startswith("u") and key[1:].isdigit():
+                    t_key = f"t{key[1:]}"
+                    normalized[t_key] = value
+                elif key.startswith("t") and key[1:].isdigit():
+                    normalized[key] = value
+            return normalized
+
+        troop_setup = normalize_troops_dict(troop_setup)
+
         url = f"{self.server_url}/build.php?gid=16&tt=2&eventType=4&targetMapId={map_id}"
         res = self.session.get(url)
         res.raise_for_status()
 
-        # 2. Send troop setup (POST)
         prepare_data = {
             "villagename": "",
             "x": x,
@@ -137,8 +148,10 @@ class TravianAPI:
             "eventType": 4,
             "ok": "ok",
         }
-        for troop_id in range(1, 12):  # t1 to t11
+
+        for troop_id in range(1, 12):
             prepare_data[f"troop[t{troop_id}]"] = troop_setup.get(f"t{troop_id}", 0)
+
         prepare_data["troop[scoutTarget]"] = ""
         prepare_data["troop[catapultTarget1]"] = ""
         prepare_data["troop[catapultTarget2]"] = ""
@@ -146,16 +159,13 @@ class TravianAPI:
         troop_preparation_res = self.session.post(f"{self.server_url}/build.php?gid=16&tt=2", data=prepare_data)
         troop_preparation_res.raise_for_status()
 
-        # 3. Parse action and checksum
         soup = BeautifulSoup(troop_preparation_res.text, "html.parser")
-
-        # Find action
         action_input = soup.select_one('input[name="action"]')
         if not action_input:
             raise Exception("[-] No action input found during preparation.")
+
         action = action_input["value"]
 
-        # Find checksum from Confirm button
         button = soup.find("button", id="confirmSendTroops")
         if not button:
             raise Exception("[-] Confirm button not found during preparation.")
@@ -170,10 +180,24 @@ class TravianAPI:
             "checksum": checksum,
         }
 
-
-
     def confirm_oasis_attack(self, attack_info: dict, x: int, y: int, troops: dict, village_id: int) -> bool:
         """Confirm and send the final attack based on prepared action and checksum."""
+
+        def normalize_troops_dict(troops):
+            """Convert 'uX' keys to 'tX' for correct form submission."""
+            normalized = {}
+            for key, value in troops.items():
+                if key.startswith("u") and key[1:].isdigit():
+                    t_key = f"t{key[1:]}"
+                    normalized[t_key] = value
+                elif key.startswith("t") and key[1:].isdigit():
+                    normalized[key] = value
+                else:
+                    print(f"[WARN] Skipping unrecognized troop key: {key}")
+            return normalized
+
+        troops = normalize_troops_dict(troops)
+
         final_payload = {
             "action": attack_info["action"],
             "eventType": 4,
@@ -195,23 +219,18 @@ class TravianAPI:
         res = self.session.post(f"{self.server_url}/build.php?gid=16&tt=2", data=final_payload, allow_redirects=False)
         res.raise_for_status()
 
-        # Detect success based on 302 redirect
         return res.status_code == 302 and res.headers.get("Location") == "/build.php?gid=16&tt=1"
-    
 
     def get_tile_html(self, x, y):
         url = f"{self.server_url}/api/v1/map/tile-details"
         res = self.session.post(url, json={"x": x, "y": y})
         res.raise_for_status()
         return res.json()["html"]
-    
-
 
     def get_troops_in_village(self):
-        """
-        Fetches the troop counts stationed in the currently active village.
-        Returns a dictionary like {'u5': 21, 'u6': 8, ...}
-        """
+        """Fetch troop counts in the currently active village."""
+        import re
+
         url = f"{self.server_url}/dorf1.php"
         response = self.session.get(url)
         response.raise_for_status()
@@ -227,15 +246,18 @@ class TravianAPI:
             img = row.find("img")
             num = row.find("td", class_="num")
             if img and num:
-                unit_class = img.get("class", [])
-                for c in unit_class:
-                    if c.startswith("u"):
-                        unit_code = c  # like "u5"
-                        troops[unit_code] = int(num.text.strip())
+                unit_classes = img.get("class", [])
+                for c in unit_classes:
+                    if c == "unit":
+                        continue
+                    if re.fullmatch(r"u\d{1,2}", c):
+                        try:
+                            troops[c] = int(num.text.strip())
+                        except ValueError:
+                            continue
+                    else:
+                        print(f"[DEBUG] Unrecognized unit class: {c}")
         return troops
-    
-
-
 
     def get_oasis_animal_info(self, x: int, y: int) -> list[tuple[str, int]]:
         """Returns a list of (animal_name, count) tuples in the oasis."""
@@ -269,13 +291,6 @@ class TravianAPI:
 
         return results
 
-
     def get_oasis_attack_power(self, x: int, y: int) -> int:
-        """Calculates total estimated defense power of an oasis."""
         animal_data = self.get_oasis_animal_info(x, y)
-        total = 0
-        for animal_name, count in animal_data:
-            total += get_animal_power(animal_name) * count
-        return int(total)
-
-
+        return sum(get_animal_power(name) * count for name, count in animal_data)
