@@ -33,6 +33,7 @@ def main():
     if choice == "1":
         print("\n🚀 Starting one safe cycle (farm + raid)...\n")
         run_one_farm_list_burst(api)
+        time.sleep(3)
         run_raid_planner(
             api=api,
             server_url=server_url,
@@ -50,7 +51,7 @@ def main():
 
             try:
                 run_one_farm_list_burst(api)
-                time.sleep(5)
+                time.sleep(3)
                 run_raid_planner(
                     api=api,
                     server_url=server_url,

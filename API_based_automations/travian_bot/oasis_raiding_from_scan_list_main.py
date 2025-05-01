@@ -11,6 +11,7 @@ from core.database_helpers import load_latest_unoccupied_oases
 from core.database_raid_config import load_saved_raid_plan, save_raid_plan
 from core.raid_runner import run_raid_batch
 from core.hero_runner import try_send_hero_to_oasis  # ✅ Hero logic
+from identity_handling.faction_utils import get_faction_name
 
 class NoTimestampFormatter(logging.Formatter):
     def format(self, record):
@@ -58,8 +59,7 @@ def run_raid_planner(
 
     player_info = api.get_player_info()
     faction_id = player_info.get("faction")
-    faction_mapping = {1: "roman", 2: "teuton", 3: "gaul"}
-    faction = faction_mapping.get(faction_id, "roman")
+    faction = get_faction_name(faction_id)
     logging.info(f"Detected faction: {faction.title()}")
 
     troops_info = api.get_troops_in_village()

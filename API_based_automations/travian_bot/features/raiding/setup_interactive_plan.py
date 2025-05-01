@@ -27,9 +27,8 @@ def setup_interactive_raid_plan(api: TravianAPI, server_url: str):
 
     player_info = api.get_player_info()
     faction_id = player_info.get("faction")
-    faction_mapping = {1: "roman", 2: "teuton", 3: "gaul"}
-    faction = faction_mapping.get(faction_id, "roman")
-    print(f"✅ Detected faction: {faction.title()}")
+    faction = get_faction_name(faction_id)
+    logging.info(f"Detected faction: {faction.title()}")
 
     troops_info = api.get_troops_in_village()
     if not troops_info:

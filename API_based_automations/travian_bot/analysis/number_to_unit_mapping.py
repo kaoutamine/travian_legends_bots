@@ -45,6 +45,36 @@ teuton_units = {
     "hero": "Hero"
 }
 
+# Egyptian units
+egyptian_units = {
+    "u1": "Slave Militia",
+    "u2": "Ash Warden",
+    "u3": "Khopesh Warrior",
+    "u4": "Anhur Guard",
+    "u5": "Resheph Chariot",
+    "u6": "Ram",
+    "u7": "Stone Catapult",
+    "u8": "Nomarch",
+    "u9": "Settler",
+    "u10": "Supply Wagon",
+    "hero": "Hero"
+}
+
+# Hun units
+hun_units = {
+    "u1": "Mercenary",
+    "u2": "Bowman",
+    "u3": "Spotter",
+    "u4": "Steppe Rider",
+    "u5": "Marksman",
+    "u6": "Marauder",
+    "u7": "Ram",
+    "u8": "Ballista",
+    "u9": "Logades",
+    "u10": "Settler",
+    "hero": "Hero"
+}
+
 # Helper to get the name of the unit based on faction
 def get_unit_name(unit_code: str, faction: str = "roman") -> str:
     if faction == "roman":
@@ -53,6 +83,10 @@ def get_unit_name(unit_code: str, faction: str = "roman") -> str:
         units = gaul_units
     elif faction == "teuton":
         units = teuton_units
+    elif faction == "egyptian":
+        units = egyptian_units
+    elif faction == "hun":
+        units = hun_units
     else:
         return f"Unknown Faction ({unit_code})"
 
