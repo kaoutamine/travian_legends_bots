@@ -1,5 +1,6 @@
 import os
 import json
+from identity_handling.faction_utils import get_faction_name
 
 # === LOCATION CONSTANTS ===
 DATABASE_FOLDER = os.path.join(os.path.dirname(__file__), "..", "database")
@@ -58,7 +59,9 @@ def fetch_villages_with_coordinates(session, server_url):
     for village in villages_info:
         village_id = village["id"]
         village_name = village["name"]
-        print(f"\n[🏡] Village '{village_name}' (ID {village_id})")
+        tribe_id = village["tribeId"]
+        faction_name = get_faction_name(tribe_id)
+        print(f"\n[🏡] Village '{village_name}' (ID {village_id}) - {faction_name.title()}")
 
         while True:
             try:
@@ -74,7 +77,9 @@ def fetch_villages_with_coordinates(session, server_url):
             "village_name": village_name,
             "village_id": village_id,
             "x": x,
-            "y": y
+            "y": y,
+            "tribe_id": tribe_id,
+            "faction": faction_name
         })
 
     print(f"\n✅ Finished collecting coordinates for {len(final_villages)} villages.")
@@ -98,6 +103,5 @@ def save_identity(session, server_url):
     }
 
     with open(IDENTITY_FILE, "w", encoding="utf-8") as f:
-        json.dump(identity_data, f, indent=2)
-
-    print(f"\n✅ Identity saved successfully at {IDENTITY_FILE}")
+        json.dump(identity_data, f, indent=4, ensure_ascii=False)
+    print(f"✅ Identity saved successfully at {IDENTITY_FILE}")

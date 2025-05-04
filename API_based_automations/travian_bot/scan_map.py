@@ -1,6 +1,5 @@
 from identity_handling.login import login
 from identity_handling.identity_helper import load_villages_from_identity, choose_village_to_scan
-from identity_handling.identity_builder import save_identity  
 from core.travian_api import TravianAPI
 from core.full_map_scanner import full_map_scan
 from analysis.full_scan_oasis_analysis import extract_unoccupied_oases
@@ -13,14 +12,13 @@ def main():
     time.sleep(1)  # Small wait after login to ensure session is ready
     api_client = TravianAPI(session, base_url)
 
-    # Try to load villages, else build identity
+    # Try to load villages, else inform user to run identity setup
     try:
         villages = load_villages_from_identity()
     except (FileNotFoundError, Exception) as e:
         print(f"[!] Issue loading identity: {e}")
-        print("[+] Starting identity setup...")
-        save_identity(session, base_url)
-        villages = load_villages_from_identity()
+        print("[!] Please run 'python identity_handling/setup_identity.py' first to set up your identity")
+        return
 
     # Let user choose from villages
     village_x, village_y = choose_village_to_scan(villages)
