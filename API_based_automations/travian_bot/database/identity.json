@@ -1,0 +1,33 @@
+{
+    "travian_identity": {
+        "created_at": "2025-04-22T00:00:00Z",
+        "tribe_id": 1,
+        "faction": "roman",
+        "servers": [
+            {
+                "server_name": "https://ts4.x1.arabics.travian.com/",
+                "server_url": "https://ts4.x1.arabics.travian.com/",
+                "villages": [
+                    {
+                        "village_name": "01 Gin Tonic",
+                        "village_id": 19983,
+                        "x": 36,
+                        "y": -31
+                    },
+                    {
+                        "village_name": "02 COCA Cola",
+                        "village_id": 21725,
+                        "x": 99,
+                        "y": -18
+                    },
+                    {
+                        "village_name": "03 Camel",
+                        "village_id": 22224,
+                        "x": 90,
+                        "y": -6
+                    }
+                ]
+            }
+        ]
+    }
+}

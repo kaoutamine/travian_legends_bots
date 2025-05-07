@@ -57,10 +57,16 @@ def run_raid_planner(
     village_y = selected_village["y"]
     logging.info(f"Selected village: {selected_village['village_name']} (ID {village_id})")
 
-    player_info = api.get_player_info()
-    faction_id = player_info.get("faction")
-    faction = get_faction_name(faction_id)
-    logging.info(f"Detected faction: {faction.title()}")
+    # Load faction from identity.json
+    try:
+        with open("database/identity.json", "r", encoding="utf-8") as f:
+            identity = json.load(f)
+            tribe_id = identity["travian_identity"]["tribe_id"]
+            faction = get_faction_name(tribe_id)
+            logging.info(f"Detected faction: {faction.title()}")
+    except (FileNotFoundError, KeyError, json.JSONDecodeError) as e:
+        logging.error(f"❌ Error loading identity: {e}")
+        return
 
     troops_info = api.get_troops_in_village()
     if not troops_info:

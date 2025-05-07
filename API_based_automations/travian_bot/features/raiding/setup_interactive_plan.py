@@ -1,10 +1,23 @@
+import logging
+import json
 from core.travian_api import TravianAPI
 from core.database_raid_config import save_raid_plan
 from identity_handling.identity_helper import load_villages_from_identity
+from identity_handling.faction_utils import get_faction_name
 from analysis.number_to_unit_mapping import get_unit_name
 
 def setup_interactive_raid_plan(api: TravianAPI, server_url: str):
     print("\n🛠️ Interactive Raid Plan Creator")
+
+    # Load identity to get faction info
+    try:
+        with open("database/identity.json", "r", encoding="utf-8") as f:
+            identity = json.load(f)
+            faction = identity["travian_identity"]["faction"]
+            print(f"Detected faction: {faction.title()}")
+    except (FileNotFoundError, KeyError, json.JSONDecodeError) as e:
+        print(f"❌ Error loading identity: {e}")
+        return
 
     villages = load_villages_from_identity()
     if not villages:
@@ -24,11 +37,6 @@ def setup_interactive_raid_plan(api: TravianAPI, server_url: str):
 
     village_id = selected["village_id"]
     print(f"\n🔍 Fetching info for '{selected['village_name']}'...")
-
-    player_info = api.get_player_info()
-    faction_id = player_info.get("faction")
-    faction = get_faction_name(faction_id)
-    logging.info(f"Detected faction: {faction.title()}")
 
     troops_info = api.get_troops_in_village()
     if not troops_info:

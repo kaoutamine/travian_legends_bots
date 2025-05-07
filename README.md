@@ -1,143 +1,147 @@
-# 🚀 Travian API Automation Project
-## 🛠 Personal Reverse Engineering and Automation
+# Travian Legends Bot
 
-> *Built out of curiosity, for personal use, and as an engineering challenge.* ⚙️
+A bot for automating various tasks in Travian Legends, including oasis raiding, farm list management, and hero operations.
 
-> A full early-game flow from login to launching raids.
+## Features
 
-## 🔑 Core Features
+- **Farm List Operations**: Automated farm list sending with configurable delays
+- **Oasis Raiding**: Smart raiding system that targets unoccupied oases
+- **Hero Management**: Automated hero operations with health monitoring
+- **Map Scanning**: Efficient scanning of nearby tiles for oasis detection
 
-### 1. Login and Village Management
-- Secure login with credentials stored in `.env`
-- Auto-fetch all linked avatars and villages
-- Session management and automatic reconnection
+## Setup Instructions
 
-### 2. Map Scanning and Oasis Detection
-- Scan thousands of tiles to detect nearby oases
-- Local storage of scan results for fast reuse
-- Automatic oasis analysis and distance sorting
-
-### 3. Dual Raid Planning System
-- Farm List Operations: Launch farm lists from villages
-- Oasis Scanning: Automatically detect and raid nearby empty oases
-- Power Analysis: Evaluate target strength and optimize troop deployment
-
-### 4. Hero Operations
-- Priority Targeting: Focus on closer and weaker oases first
-- Health Management: Automatic health monitoring and regeneration
-- Configurable Parameters: Customize power thresholds, distances, and health limits
-- Continuous Operation: Run hero raiding operations continuously
-
-## 🛠️ Technical Implementation
-
-### API-based Automation
-- Direct interaction with Travian's APIs and HTML endpoints
-- GraphQL for account, avatar, and farm list management
-- Classic POST/GET forms and HTML scraping for troop movements
-- Dynamic bot protection field handling (tokens, checksums)
-
-### Multi-threading
-- Parallel processing for farm list operations
-- Concurrent oasis scanning and raiding
-- Thread-safe operation queue management
-
-### Anti-Detection Measures
-- Randomized delays between actions
-- Human-like interaction patterns
-- Request rate limiting
-
-## 🎮 Usage
-
-### Prerequisites
-- Python 3.8 or higher
-- Chrome browser installed
-- Selenium WebDriver for Chrome
-
-### Installation
-1. Clone the repository:
+1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/travian_bot.git
-   cd travian_legend_bots/API_based_automations/travian_bot
+   git clone <repository-url>
+   cd travian_legends_bots
    ```
 
-2. Install required packages:
+2. **Navigate to Bot Directory**
+   ```bash
+   cd API_based_automations/travian_bot
+   ```
+
+3. **Create and Activate Virtual Environment**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate   # On Linux/Mac
+   .\venv\Scripts\activate    # On Windows
+   ```
+
+4. **Install Dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Configure your identity:
-   - Run the launcher
-   - Select "Setup Identity" option
-   - Enter your server URL, username, and password
-
-### Running the Bot
-1. Start the launcher:
+5. **Initial Setup Steps**
    ```bash
-   python launcher.py
+   # 1. Set up your identity (this will create database/identity.json and .env)
+   python3 setup_identity.py
+   # The script will ask for your credentials and create the .env file automatically
+   
+   # 2. Scan the map for oases (this will create unoccupied_oases directory)
+   python3 scan_map.py
+   
+   # 3. Set up a raid plan (this will create database/saved_raid_plan.json)
+   python3 launcher.py
+   # Then select option 4: "Setup new raid plan interactively"
+   # You'll be asked to:
+   # - Select a village to raid from
+   # - Choose which units to use (e.g., Imperians, Equites Imperatoris)
+   # - Set the group size for each unit type
    ```
 
-2. Choose from available operations:
-   - Farm List Burst + Raid Planner
+## Required Dependencies
+
+- beautifulsoup4==4.13.4
+- python-dotenv==1.1.0
+- Requests==2.32.3
+- tqdm==4.67.1
+
+## Usage
+
+1. **First Time Setup**
+   - Run the launcher: `python3 launcher.py`
+   - Choose "Setup Identity" option
+   - Enter your Travian server URL, username, and password
+
+2. **Available Operations**
    - Farm List Operations
-   - Hero Raiding
-   - Interactive Raid Planning
+   - Oasis Raiding
+   - Hero Operations
+   - Map Scanning
 
-## 📁 Project Structure
+## Project Structure
 
 ```
-travian_bot/
-├── core/
-│   ├── api/              # API interactions
-│   ├── hero_manager.py   # Hero management
-│   └── operation_queue.py # Operation management
-├── features/
-│   ├── hero/            # Hero operations
-│   ├── raiding/         # Raiding features
-│   └── farm/            # Farm operations
-├── identity_handling/   # Identity management
-├── database/           # Configuration storage
-└── launcher.py         # Main entry point
+API_based_automations/travian_bot/
+├── analysis/           # Analysis tools
+├── core/              # Core functionality
+├── features/          # Feature implementations
+├── identity_handling/ # Login and identity management
+├── database/          # Configuration storage
+│   ├── identity.json           # Created by setup_identity.py
+│   └── saved_raid_plan.json    # Created by raid plan setup
+├── unoccupied_oases/  # Created by scan_map.py
+├── launcher.py        # Main entry point
+├── requirements.txt   # Dependencies
+└── setup_identity.py  # Identity setup script
 ```
 
-## 🔧 Configuration
+## Troubleshooting
 
-### Hero Raiding Settings
-- Priority Radius: 1-20 fields
-- Priority Max Power: 100-2000
-- Normal Min Power: 100-2000
-- Normal Max Power: 100-5000
-- Min Health: 10-90%
+### Common Setup Issues
 
-### Farm List Settings
-- Configure farm lists through the interactive setup
-- Set resource thresholds and collection intervals
+1. **Python Version**
+   - Required: Python 3.8 or higher
+   - Check version: `python3 --version`
+   - If python3 command not found, install it:
+     ```bash
+     # On Ubuntu/Debian
+     sudo apt update
+     sudo apt install python3
+     
+     # On Windows
+     # Download from python.org
+     ```
 
-## 🔒 Security
+2. **Virtual Environment**
+   - If `venv` module is missing:
+     ```bash
+     # On Ubuntu/Debian
+     sudo apt install python3-venv
+     ```
+   - If activation fails, ensure you're in the correct directory
 
-- Credentials are stored locally in `database/identity.json`
-- Never share your identity file or commit it to version control
-- The bot includes `.gitignore` to prevent accidental credential commits
-- Checksum bypass implementation for secure login
+3. **Dependency Issues**
+   - If pip install fails, try upgrading pip:
+     ```bash
+     pip install --upgrade pip
+     ```
+   - For SSL errors, ensure certificates are up to date
 
-## 📚 Project Philosophy
+4. **Missing Modules**
+   - If you get "No module named 'core.hero_manager'" error:
+     - The hero_manager.py file should be created in the core directory
+     - It wraps the functionality from hero_runner.py
 
-This tool was never meant to be widely distributed:
-- It's a personal technical exercise — a playground for reverse engineering, automation architecture, and real-world API handling
-- It intentionally skips building a GUI to stay lightweight and focus on code quality and expandability
-- It's not intended to fully replace manual gameplay, only to relieve repetitive tasks like early-game oasis farming
+### Directory Structure
+If any required directories are missing:
+```bash
+mkdir -p database logs unoccupied_oases
+```
 
-## ⚠️ Disclaimer
+## Security Note
+
+- Store your credentials in a `.env` file
+- Never commit your `.env` file or identity information
+- The `.gitignore` file is configured to prevent accidental commits of sensitive data
+
+## Disclaimer
 
 This bot is for educational purposes only. Use at your own risk and in accordance with Travian Legends' terms of service.
 
-## 🤝 Contributing
+## License
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License
+This project is open source and available under the MIT License.
