@@ -1,6 +1,11 @@
 # Travian Legends Bot
 
-![Full Automation Demo](docs/images/cycle_complete.png)
+🚀 **Level Up Your Travian Game!** 🏰
+⚔️ **Dominate the Map with Advanced Automation** ⚔️
+🌟 **The Most Powerful Travian Bot Available** 🌟
+
+![Farm List Management](docs/images/farm_list_config.png)
+
 *Experience the power of full automation with our advanced Travian Legends bot*
 
 An automated bot for Travian Legends that handles farming and oasis raiding operations.
@@ -51,18 +56,13 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-3. Create a `.env` file in the root directory with your credentials:
-```env
-TRAVIAN_USERNAME=your_username
-TRAVIAN_PASSWORD=your_password
-TRAVIAN_SERVER_URL=your_server_url
-```
-
-4. Run the launcher:
+3. Run the launcher:
 ```bash
 cd API_based_automations/travian_bot
 python launcher.py
 ```
+
+The bot will guide you through the identity setup process, creating all necessary configuration files automatically.
 
 ## Usage
 
