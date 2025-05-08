@@ -38,25 +38,37 @@ class TravianAPI:
         return response.json()["data"]["ownPlayer"]
 
     def get_village_farm_lists(self, village_id: int) -> list:
+        """Get farm lists from the rally point page."""
         payload = {
             "query": """
-                query($villageId: Int!) {
-                    rallyPointOverview(villageId: $villageId) {
+                query {
+                    ownPlayer {
                         farmLists {
                             id
                             name
                             slotsAmount
                             runningRaidsAmount
                             lastStartedTime
+                            ownerVillage {
+                                id
+                            }
                         }
                     }
                 }
-            """,
-            "variables": {"villageId": village_id}
+            """
         }
         response = self.session.post(f"{self.server_url}/api/v1/graphql", json=payload)
         response.raise_for_status()
-        return response.json()["data"]["rallyPointOverview"]["farmLists"]
+        
+        print("\nAPI Response:")
+        print(response.text)
+        
+        data = response.json()
+        if "data" in data and "ownPlayer" in data["data"] and "farmLists" in data["data"]["ownPlayer"]:
+            # Filter farm lists to only those belonging to the specified village
+            return [fl for fl in data["data"]["ownPlayer"]["farmLists"] 
+                   if fl["ownerVillage"]["id"] == village_id]
+        return []
 
     def get_farm_list_details(self, farm_list_id: int) -> dict:
         payload = {
@@ -308,3 +320,46 @@ class TravianAPI:
     def get_oasis_attack_power(self, x: int, y: int) -> int:
         animal_data = self.get_oasis_animal_info(x, y)
         return sum(get_animal_power(name) * count for name, count in animal_data)
+
+    def _make_graphql_request(self, query: str, variables: dict = None) -> dict:
+        """Make a GraphQL request to the server."""
+        payload = {
+            "query": query,
+            "variables": variables or {}
+        }
+        response = self.session.post(f"{self.server_url}/api/v1/graphql", json=payload)
+        response.raise_for_status()
+        return response.json()
+
+    def launch_farm_list(self, farm_list_id: int) -> bool:
+        """Launch a farm list by its ID."""
+        payload = {
+            "query": """
+                mutation($listId: Int!) {
+                    startFarmListRaid(listId: $listId) {
+                        success
+                    }
+                }
+            """,
+            "variables": {
+                "listId": farm_list_id
+            }
+        }
+        response = self.session.post(f"{self.server_url}/api/v1/graphql", json=payload)
+        response.raise_for_status()
+        data = response.json()
+        print(f"\nServer response for farm list {farm_list_id}:")
+        print(data)
+        return data.get("data", {}).get("startFarmListRaid", {}).get("success", False)
+
+    def send_farm_list(self, list_id: int) -> bool:
+        """Send a farm list by its ID."""
+        payload = {
+            "action": "farmList",
+            "lists": [{"id": list_id}]
+        }
+        print(f"\nSending farm list {list_id} with payload: {payload}")
+        response = self.session.post(f"{self.server_url}/api/v1/farm-list/send", json=payload)
+        print(f"Response status: {response.status_code}")
+        print(f"Response text: {response.text}")
+        return response.status_code == 200

@@ -249,6 +249,8 @@ def main():
     print("[6] Hero Operations")
     print("[7] Run oasis raiding (single village - for testing)")
     print("[8] Run multi-village raid planner (full automation)")
+    print("[9] Run farm list raider (from config)")
+    print("[10] Configure farm lists")
 
     choice = input("\nSelect an option: ").strip()
 
@@ -293,8 +295,21 @@ def main():
     elif choice == "8":
         print("\n🎯 Starting multi-village raid planner (full automation)...")
         run_raid_planner(api, server_url, reuse_saved=True, multi_village=True)
+    elif choice == "9":
+        from features.farm_lists.farm_list_raider import run_farm_list_raids
+        
+        villages = load_villages_from_identity()
+        if not villages:
+            print("❌ No villages found in identity. Exiting.")
+            return
+            
+        for village in villages:
+            run_farm_list_raids(api, server_url, village["village_id"])
+    elif choice == "10":
+        from features.farm_lists.manage_farm_lists import update_farm_lists
+        update_farm_lists(api, server_url)
     else:
-        print("❌ Invalid option selected.")
+        print("❌ Invalid choice.")
 
 if __name__ == "__main__":
     main()

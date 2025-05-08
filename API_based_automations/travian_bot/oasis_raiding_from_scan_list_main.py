@@ -13,6 +13,7 @@ from core.database_raid_config import load_saved_raid_plan, save_raid_plan
 from core.raid_runner import run_raid_batch
 from core.hero_runner import try_send_hero_to_oasis  # ✅ Hero logic
 from identity_handling.faction_utils import get_faction_name
+from dotenv import load_dotenv
 
 class NoTimestampFormatter(logging.Formatter):
     def format(self, record):
@@ -116,19 +117,24 @@ def run_raid_planner(
             unit_name = get_unit_name(unit_code, faction)
             logging.info(f"    {unit_name} ({unit_code}): {amount} units")
 
-        # Check if this village has a raid plan
+        # First run farm lists for this village
+        logging.info("\nRunning farm lists...")
+        from features.farm_lists.farm_list_raider import run_farm_list_raids
+        run_farm_list_raids(api, server_url, village_id)
+
+        # Then check if this village has a raid plan for oases
         saved_data = load_saved_raid_plan(village_index)
         if reuse_saved and saved_data and saved_data["server"] == server_url:
             # This village has a saved raid plan
             raid_plan = saved_data  # Use the entire saved data as the raid plan
         else:
             # No raid plan for this village
-            logging.warning(f"⚠️ No raid plan found for {selected_village['village_name']}. Skipping.")
+            logging.warning(f"⚠️ No raid plan found for {selected_village['village_name']}. Skipping oasis raids.")
             continue
 
         oases = load_latest_unoccupied_oases(f"({village_x}_{village_y})")
         if not oases:
-            logging.info("No unoccupied oases found for this village. Skipping.")
+            logging.info("No unoccupied oases found for this village. Skipping oasis raids.")
             continue
 
         # --- HERO LOGIC START ---
@@ -304,5 +310,76 @@ def setup_raid_plan_interactive(api, server_url, selected_village_index=None):
 
     return raid_plan
 
+def main():
+    """Main entry point for the oasis raiding script."""
+    # Load environment variables
+    load_dotenv()
+    
+    # Get server URL from environment
+    server_url = os.getenv('TRAVIAN_SERVER_URL')
+    if not server_url:
+        print("❌ Error: TRAVIAN_SERVER_URL not found in .env file")
+        return
+    
+    # Login to server
+    print("\n🔐 Logging into Travian...")
+    api = login(server_url)
+    if not api:
+        print("❌ Failed to login")
+        return
+    
+    print("\n🎯 Starting multi-village raid planner (full automation)...")
+    
+    while True:
+        try:
+            # Get all villages
+            villages = api.get_villages()
+            if not villages:
+                print("❌ No villages found")
+                return
+            
+            # Process each village
+            for i, village in enumerate(villages, 1):
+                village_id = village['id']
+                village_name = village['name']
+                village_coords = (village['x'], village['y'])
+                
+                print(f"\n{'='*50}")
+                print(f"Processing village {i}/{len(villages)}: {village_name}")
+                print(f"{'='*50}")
+                print(f"Village coordinates: {village_coords}")
+                
+                # Switch to village
+                print(f"\nSwitching to village {village_id}")
+                api.switch_village(village_id)
+                
+                # Get current troops
+                troops = api.get_troops_in_village()
+                if troops:
+                    print("Current troops in village:")
+                    for unit_id, amount in troops.items():
+                        unit_name = api.get_unit_name(unit_id)
+                        print(f"    {unit_name}: {amount} units")
+                print()
+                
+                # First run farm lists
+                print("Running farm lists...")
+                run_farm_list_raids(api, server_url, village_id)
+                
+                # Then run oasis raids
+                run_raid_planner(api, village_id)
+            
+            print("\n⏳ Waiting 50 minutes before next raid cycle...")
+            time.sleep(50 * 60)  # 50 minutes in seconds
+            
+        except KeyboardInterrupt:
+            print("\n\n⚠️ Raid planner stopped by user")
+            break
+        except Exception as e:
+            print(f"\n❌ Error during raid cycle: {str(e)}")
+            print("⏳ Waiting 5 minutes before retrying...")
+            time.sleep(5 * 60)  # 5 minutes in seconds
+            continue
+
 if __name__ == "__main__":
-    run_raid_planner()
+    main()
