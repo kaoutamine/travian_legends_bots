@@ -201,91 +201,100 @@ def run_hero_operations(api: TravianAPI):
     else:
         print("❌ Failed to send hero.")
 
+def setup_interactive_raid_plan(api, server_url):
+    """Set up a raid plan interactively."""
+    print("\n🎯 Interactive Raid Plan Creator")
+    print("[1] Set up new raid plan")
+    print("[2] Use saved configuration")
+    
+    choice = input("\nSelect an option: ").strip()
+    
+    if choice == "1":
+        from features.raiding.setup_interactive_plan import setup_interactive_raid_plan
+        setup_interactive_raid_plan(api, server_url)
+    elif choice == "2":
+        # Load saved configuration
+        try:
+            with open("database/saved_raid_plan.json", "r", encoding="utf-8") as f:
+                saved_config = json.load(f)
+            
+            # Create raid plans for all villages
+            from features.raiding.setup_interactive_plan import create_raid_plan_from_saved
+            from identity_handling.identity_helper import load_villages_from_identity
+            
+            villages = load_villages_from_identity()
+            if not villages:
+                print("❌ No villages found in identity. Exiting.")
+                return
+            
+            for i, village in enumerate(villages):
+                print(f"\nSetting up raid plan for {village['village_name']}...")
+                create_raid_plan_from_saved(api, server_url, i, saved_config)
+            
+            print("\n✅ Finished setting up raid plans for all villages.")
+        except FileNotFoundError:
+            print("❌ No saved raid plan found. Please set up a new raid plan first.")
+        except Exception as e:
+            print(f"❌ Error: {e}")
+    else:
+        print("❌ Invalid option.")
+
 def main():
-    print("""
-🛡️ Travian Automation Launcher
-[1] Run one farm list burst + one raid planner
-[2] Run farm list + Oasis raid planner in infinite safe loop
-[3] Reset saved raid plan
-[4] Setup new raid plan interactively
-[5] Update identity, villages, etc
-[6] Hero Operations
-""")
-    choice = input("Select an option: ").strip()
+    print("\n🛡️ Travian Automation Launcher")
+    print("[1] Run one farm list burst + one raid planner")
+    print("[2] Run farm list + Oasis raid planner in infinite safe loop")
+    print("[3] Reset saved raid plan")
+    print("[4] Setup new raid plan interactively")
+    print("[5] Update identity, villages, etc")
+    print("[6] Hero Operations")
+    print("[7] Run oasis raiding (single village - for testing)")
+    print("[8] Run multi-village raid planner (full automation)")
 
-    if choice == "3":
-        reset_saved_raid_plan(server_selection=SERVER_SELECTION)
-        return
-    
-    if choice == "5":
-        handle_identity_management()
-        return
-    
-    if choice == "6":
-        print("\n🔐 Logging into Travian...")
-        session, server_url = login(server_selection=SERVER_SELECTION, interactive=False)
-        api = TravianAPI(session, server_url)
-        run_hero_operations(api)
-        return
+    choice = input("\nSelect an option: ").strip()
 
+    # Login first
     print("\n🔐 Logging into Travian...")
-    session, server_url = login(server_selection=SERVER_SELECTION, interactive=False)
+    session, server_url = login()
     api = TravianAPI(session, server_url)
 
     if choice == "1":
-        print("\n🚀 Starting one safe cycle (farm + raid)...\n")
         run_one_farm_list_burst(api)
-        time.sleep(3)
-        run_raid_planner(
-            api=api,
-            server_url=server_url,
-            reuse_saved=True,
-            enable_hero_raiding=True,
-            interactive=False
-        )
-
+        run_raid_planner(api, server_url)
     elif choice == "2":
-        print("\n🔁 Starting infinite safe loop with recovery...\n")
-
+        print("\n🔁 Starting infinite safe loop with recovery...")
         while True:
-            start_time = time.strftime("%H:%M:%S")
-            print(f"\n⏳ Starting cycle at {start_time}")
-
             try:
+                print(f"\n⏳ Starting cycle at {time.strftime('%H:%M:%S')}")
                 run_one_farm_list_burst(api)
-                time.sleep(3)
-                run_raid_planner(
-                    api=api,
-                    server_url=server_url,
-                    reuse_saved=True,
-                    enable_hero_raiding=True,
-                    interactive=False
-                )
+                run_raid_planner(api, server_url)
+                
+                # Calculate next cycle time with jitter
+                jitter = random.randint(-JITTER_MINUTES, JITTER_MINUTES)
+                total_wait_minutes = WAIT_BETWEEN_CYCLES_MINUTES + jitter
+                print(f"✅ Cycle complete. Waiting {total_wait_minutes} minutes...")
+                time.sleep(total_wait_minutes * 60)
             except Exception as e:
                 print(f"⚠️ Error during cycle: {e}")
                 print("🔁 Attempting re-login and retry...")
-
-                try:
-                    session, server_url = login(server_selection=SERVER_SELECTION, interactive=False)
-                    api = TravianAPI(session, server_url)
-                    print("✅ Re-login successful.")
-
-                except Exception as login_error:
-                    print(f"❌ Re-login failed: {login_error}")
-                    print("💤 Will retry after 1 hour...")
-                    time.sleep(60 * 60)
-                    continue
-
-            jitter = random.randint(-JITTER_MINUTES, JITTER_MINUTES)
-            total_wait_minutes = WAIT_BETWEEN_CYCLES_MINUTES + jitter
-            print(f"✅ Cycle complete. Waiting {total_wait_minutes} minutes...\n")
-            time.sleep(total_wait_minutes * 60)
-
+                session, server_url = login()
+                api = TravianAPI(session, server_url)
+                print("✅ Re-login successful.")
+    elif choice == "3":
+        reset_saved_raid_plan()
     elif choice == "4":
-        setup_interactive_raid_plan(api=api, server_url=server_url)
-
+        setup_interactive_raid_plan(api, server_url)
+    elif choice == "5":
+        handle_identity_management()
+    elif choice == "6":
+        run_hero_operations(api)
+    elif choice == "7":
+        print("\n🎯 Starting single-village oasis raiding (testing mode)...")
+        run_raid_planner(api, server_url, multi_village=False)
+    elif choice == "8":
+        print("\n🎯 Starting multi-village raid planner (full automation)...")
+        run_raid_planner(api, server_url, reuse_saved=True, multi_village=True)
     else:
-        print("❌ Invalid choice. Exiting.")
+        print("❌ Invalid option selected.")
 
 if __name__ == "__main__":
     main()

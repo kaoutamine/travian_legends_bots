@@ -227,8 +227,22 @@ class TravianAPI:
         res.raise_for_status()
         return res.json()["html"]
 
+    def log_cookies(self):
+        """Log all cookies for debugging."""
+        print("\nCurrent cookies:")
+        for cookie in self.session.cookies:
+            print(f"{cookie.name}: {cookie.value}")
+            if cookie.name == "JWT":
+                try:
+                    import jwt
+                    decoded = jwt.decode(cookie.value, options={"verify_signature": False})
+                    print("\nDecoded JWT:")
+                    print(f"did (village_id): {decoded.get('properties', {}).get('did')}")
+                except Exception as e:
+                    print(f"Failed to decode JWT: {e}")
+
     def get_troops_in_village(self):
-        """Fetch troop counts in the currently active village."""
+        """Fetch troop counts in the current village."""
         import re
 
         url = f"{self.server_url}/dorf1.php"

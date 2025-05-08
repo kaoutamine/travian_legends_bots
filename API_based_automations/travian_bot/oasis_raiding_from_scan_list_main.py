@@ -2,6 +2,7 @@ import os
 import json
 import logging
 from random import uniform
+import time
 
 from identity_handling.login import login
 from identity_handling.identity_helper import load_villages_from_identity
@@ -21,6 +22,33 @@ console_handler = logging.StreamHandler()
 console_handler.setFormatter(NoTimestampFormatter())
 logging.basicConfig(level=logging.INFO, handlers=[console_handler])
 
+def save_raid_plan(raid_plan, server_url, village_index):
+    """Save the raid plan to a JSON file."""
+    try:
+        # Create a directory for raid plans if it doesn't exist
+        os.makedirs("database/raid_plans", exist_ok=True)
+        
+        # Save the raid plan with village index in the filename
+        filename = f"database/raid_plans/raid_plan_village_{village_index}.json"
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(raid_plan, f, indent=4)
+        logging.info(f"✅ Raid plan saved to {filename}")
+    except Exception as e:
+        logging.error(f"❌ Failed to save raid plan: {e}")
+
+def load_saved_raid_plan(village_index):
+    """Load the saved raid plan from JSON file."""
+    try:
+        filename = f"database/raid_plans/raid_plan_village_{village_index}.json"
+        with open(filename, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        logging.warning(f"⚠️ No saved raid plan found for village {village_index}")
+        return None
+    except Exception as e:
+        logging.error(f"❌ Failed to load raid plan: {e}")
+        return None
+
 def run_raid_planner(
     api,
     server_url,
@@ -28,34 +56,13 @@ def run_raid_planner(
     selected_village_index=None,
     units_to_use=None,
     enable_hero_raiding=True,
-    interactive=False
+    interactive=False,
+    multi_village=False  # New parameter to control multi-village mode
 ):
-
-    saved_data = load_saved_raid_plan()
-
-    if not saved_data:
-        logging.error("❌ No saved raid plan found. You must run it once interactively to save one.")
-        return
-
     villages = load_villages_from_identity()
     if not villages:
         logging.error("No villages found in identity. Exiting.")
         return
-
-    if reuse_saved and saved_data["server"] == server_url:
-        village_index = saved_data["village_index"]
-        logging.info(f"✅ Using saved village index: {village_index}")
-    else:
-        if selected_village_index is None:
-            logging.error("❌ No village index provided and not using saved config.")
-            return
-        village_index = selected_village_index
-
-    selected_village = villages[village_index]
-    village_id = selected_village["village_id"]
-    village_x = selected_village["x"]
-    village_y = selected_village["y"]
-    logging.info(f"Selected village: {selected_village['village_name']} (ID {village_id})")
 
     # Load faction from identity.json
     try:
@@ -68,6 +75,142 @@ def run_raid_planner(
         logging.error(f"❌ Error loading identity: {e}")
         return
 
+    # Determine which villages to process
+    if multi_village:
+        villages_to_process = list(enumerate(villages))
+        logging.info(f"Running in multi-village mode. Will process {len(villages)} villages.")
+    else:
+        # Single village mode
+        if selected_village_index is None:
+            logging.error("❌ No village index provided.")
+            return
+        village_index = selected_village_index
+        villages_to_process = [(village_index, villages[village_index])]
+        logging.info("Running in single-village mode.")
+
+    # Process selected villages
+    for village_index, selected_village in villages_to_process:
+        logging.info(f"\n{'='*50}")
+        logging.info(f"Processing village {village_index + 1}/{len(villages)}: {selected_village['village_name']}")
+        logging.info(f"{'='*50}")
+
+        village_id = selected_village["village_id"]
+        village_x = selected_village["x"]
+        village_y = selected_village["y"]
+        logging.info(f"Village coordinates: ({village_x}, {village_y})")
+
+        # Switch to the correct village
+        logging.info(f"\nSwitching to village {village_id}")
+        url = f"{api.server_url}/dorf1.php?newdid={village_id}"
+        response = api.session.get(url)
+        response.raise_for_status()
+
+        # Get troops info for this village
+        troops_info = api.get_troops_in_village()
+        if not troops_info:
+            logging.error("Could not fetch troops. Skipping village.")
+            continue
+
+        logging.info("Current troops in village:")
+        for unit_code, amount in troops_info.items():
+            unit_name = get_unit_name(unit_code, faction)
+            logging.info(f"    {unit_name} ({unit_code}): {amount} units")
+
+        # Check if this village has a raid plan
+        saved_data = load_saved_raid_plan(village_index)
+        if reuse_saved and saved_data and saved_data["server"] == server_url:
+            # This village has a saved raid plan
+            raid_plan = saved_data  # Use the entire saved data as the raid plan
+        else:
+            # No raid plan for this village
+            logging.warning(f"⚠️ No raid plan found for {selected_village['village_name']}. Skipping.")
+            continue
+
+        oases = load_latest_unoccupied_oases(f"({village_x}_{village_y})")
+        if not oases:
+            logging.info("No unoccupied oases found for this village. Skipping.")
+            continue
+
+        # --- HERO LOGIC START ---
+        hero_available = troops_info.get("uhero", 0) >= 1
+        hero_sent = False
+
+        if enable_hero_raiding and hero_available:
+            for coord_key, oasis_data in oases.items():
+                x_str, y_str = coord_key.split("_")
+                oasis = {"x": int(x_str), "y": int(y_str)}
+                if try_send_hero_to_oasis(api, selected_village, oasis):
+                    hero_sent = True
+                    break
+        # --- HERO LOGIC END ---
+
+        run_raid_batch(api, raid_plan, faction, village_id, oases)
+
+        # --- HERO RESULT REPORT ---
+        print("\n--- Hero Raid Summary ---")
+        if not enable_hero_raiding:
+            print("Hero raiding was disabled.")
+        elif not hero_available:
+            print("Hero was not available.")
+        elif hero_sent:
+            print("✅ Hero was sent on a raid.")
+        else:
+            print("⚠️ Hero was available but no suitable oasis was found.")
+
+        # Add a small delay between villages to avoid overwhelming the server
+        if multi_village:
+            time.sleep(uniform(2, 4))
+
+    logging.info("\n✅ Finished processing all selected villages.")
+
+def setup_raid_plan_interactive(api, server_url, selected_village_index=None):
+    """Set up a raid plan interactively."""
+    villages = load_villages_from_identity()
+    if not villages:
+        logging.error("No villages found in identity. Exiting.")
+        return
+
+    # Load faction from identity.json
+    try:
+        with open("database/identity.json", "r", encoding="utf-8") as f:
+            identity = json.load(f)
+            tribe_id = identity["travian_identity"]["tribe_id"]
+            faction = get_faction_name(tribe_id)
+            logging.info(f"Detected faction: {faction.title()}")
+    except (FileNotFoundError, KeyError, json.JSONDecodeError) as e:
+        logging.error(f"❌ Error loading identity: {e}")
+        return
+
+    # Determine which village to use
+    if selected_village_index is None:
+        # Show available villages
+        print("\nAvailable villages:")
+        for i, village in enumerate(villages):
+            print(f"[{i}] {village['village_name']} ({village['x']}, {village['y']})")
+        
+        # Get village selection
+        while True:
+            try:
+                selected_village_index = int(input("\nSelect a village (enter number): "))
+                if 0 <= selected_village_index < len(villages):
+                    break
+                print("Invalid selection. Please try again.")
+            except ValueError:
+                print("Please enter a valid number.")
+
+    selected_village = villages[selected_village_index]
+    village_id = selected_village["village_id"]
+    village_x = selected_village["x"]
+    village_y = selected_village["y"]
+    logging.info(f"Selected village: {selected_village['village_name']} ({village_x}, {village_y})")
+
+    # Switch to the correct village
+    logging.info(f"\nSwitching to village {village_id}")
+    url = f"{api.server_url}/dorf1.php?newdid={village_id}"
+    response = api.session.get(url)
+    response.raise_for_status()
+
+    # Get troops info
     troops_info = api.get_troops_in_village()
     if not troops_info:
         logging.error("Could not fetch troops. Exiting.")
@@ -78,38 +221,88 @@ def run_raid_planner(
         unit_name = get_unit_name(unit_code, faction)
         logging.info(f"    {unit_name} ({unit_code}): {amount} units")
 
-    # Use saved raid plan
-    raid_plan = saved_data["raid_plan"]
-    for unit in raid_plan:
-        unit["available"] = troops_info.get(unit["unit_code"], 0)
-
-    oases = load_latest_unoccupied_oases(f"({village_x}_{village_y})")
-
-    # --- HERO LOGIC START ---
-    hero_available = troops_info.get("uhero", 0) >= 1
-    hero_sent = False
-
-    if enable_hero_raiding and hero_available:
-        for coord_key, oasis_data in oases.items():
-            x_str, y_str = coord_key.split("_")
-            oasis = {"x": int(x_str), "y": int(y_str)}
-            if try_send_hero_to_oasis(api, selected_village, oasis):
-                hero_sent = True
+    # Get max raid distance
+    while True:
+        try:
+            max_raid_distance = int(input("\nEnter maximum raid distance (1-15): "))
+            if 1 <= max_raid_distance <= 15:
                 break
-    # --- HERO LOGIC END ---
+            print("Distance must be between 1 and 15.")
+        except ValueError:
+            print("Please enter a valid number.")
 
-    run_raid_batch(api, saved_data, faction, village_id, oases)
+    # Get distance ranges and unit combinations
+    distance_ranges = []
+    current_start = 0
 
-    # --- HERO RESULT REPORT ---
-    print("\n--- Hero Raid Summary ---")
-    if not enable_hero_raiding:
-        print("Hero raiding was disabled.")
-    elif not hero_available:
-        print("Hero was not available.")
-    elif hero_sent:
-        print("✅ Hero was sent on a raid.")
-    else:
-        print("⚠️ Hero was available but no suitable oasis was found.")
+    while current_start < max_raid_distance:
+        print(f"\nSetting up raid group for distance {current_start}+")
+        
+        # Get end distance for this range
+        while True:
+            try:
+                end_distance = int(input(f"Enter end distance for this group (max {max_raid_distance}): "))
+                if current_start < end_distance <= max_raid_distance:
+                    break
+                print(f"End distance must be between {current_start + 1} and {max_raid_distance}.")
+            except ValueError:
+                print("Please enter a valid number.")
+
+        # Get unit combinations for this range
+        units = []
+        while True:
+            print("\nAvailable units:")
+            for unit_code, amount in troops_info.items():
+                unit_name = get_unit_name(unit_code, faction)
+                print(f"    {unit_name} ({unit_code}): {amount} units")
+
+            unit_code = input("\nEnter unit code to add (or press Enter to finish this range): ").strip()
+            if not unit_code:
+                break
+
+            if unit_code not in troops_info:
+                print("Invalid unit code. Please try again.")
+                continue
+
+            while True:
+                try:
+                    group_size = int(input(f"Enter group size for {get_unit_name(unit_code, faction)}: "))
+                    if 1 <= group_size <= troops_info[unit_code]:
+                        break
+                    print(f"Group size must be between 1 and {troops_info[unit_code]}.")
+                except ValueError:
+                    print("Please enter a valid number.")
+
+            units.append({
+                "unit_code": unit_code,
+                "unit_payload_code": unit_code,
+                "group_size": group_size
+            })
+
+        if units:
+            distance_ranges.append({
+                "start": current_start,
+                "end": end_distance,
+                "units": units
+            })
+            current_start = end_distance
+        else:
+            print("No units added for this range. Please add at least one unit.")
+
+    # Create the raid plan
+    raid_plan = {
+        "server": server_url,
+        "village_index": selected_village_index,
+        "max_raid_distance": max_raid_distance,
+        "distance_ranges": distance_ranges,
+        "raid_plan": []
+    }
+
+    # Save the raid plan
+    save_raid_plan(raid_plan, server_url, selected_village_index)
+    logging.info("✅ Raid plan setup complete!")
+
+    return raid_plan
 
 if __name__ == "__main__":
     run_raid_planner()

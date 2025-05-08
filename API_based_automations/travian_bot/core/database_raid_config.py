@@ -6,39 +6,29 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 RAID_PLAN_FILE = os.path.join(CURRENT_DIR, "..", "database", "saved_raid_plan.json")
 RAID_PLAN_FILE = os.path.abspath(RAID_PLAN_FILE)
 
-def load_saved_raid_plan():
-    if os.path.exists(RAID_PLAN_FILE):
-        with open(RAID_PLAN_FILE, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            # Handle old format (just raid_plan array) by wrapping it in new format
-            if isinstance(data, list):
-                data = {
-                    "max_raid_distance": 25,  # Default for old format
-                    "raid_plan": data
-                }
-            logging.info(f"✅ Loaded saved raid config from {os.path.abspath(RAID_PLAN_FILE)}")
-            return data
-    return None
+def load_saved_raid_plan(village_index):
+    """Load the saved raid plan from JSON file."""
+    try:
+        filename = f"database/raid_plans/raid_plan_village_{village_index}.json"
+        with open(filename, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        logging.warning(f"⚠️ No saved raid plan found for village {village_index}")
+        return None
+    except Exception as e:
+        logging.error(f"❌ Failed to load raid plan: {e}")
+        return None
 
-def save_raid_plan(server_url, village_index, raid_plan_data):
-    """
-    Save raid plan configuration.
-    
-    Args:
-        server_url (str): The server URL
-        village_index (int): Index of the village in the identity file
-        raid_plan_data (dict): Dictionary containing:
-            - max_raid_distance (int): Maximum distance for raids
-            - raid_plan (list): List of unit configurations
-    """
-    data = {
-        "server": server_url,
-        "village_index": village_index,
-        "max_raid_distance": raid_plan_data.get("max_raid_distance", 25),  # Default to 25 if not specified
-        "raid_plan": raid_plan_data.get("raid_plan", [])  # Default to empty list if not specified
-    }
-
-    os.makedirs(os.path.dirname(RAID_PLAN_FILE), exist_ok=True)
-    with open(RAID_PLAN_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4)
-    logging.info(f"✅ Saved raid config to {os.path.abspath(RAID_PLAN_FILE)}")
+def save_raid_plan(raid_plan, server_url=None, village_index=None):
+    """Save the raid plan to a JSON file."""
+    try:
+        # Create a directory for raid plans if it doesn't exist
+        os.makedirs("database/raid_plans", exist_ok=True)
+        
+        # Save the raid plan with village index in the filename
+        filename = f"database/raid_plans/raid_plan_village_{village_index}.json"
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(raid_plan, f, indent=4)
+        logging.info(f"✅ Raid plan saved to {filename}")
+    except Exception as e:
+        logging.error(f"❌ Failed to save raid plan: {e}")
