@@ -98,7 +98,7 @@ def run_raid_planner(
                 break
     # --- HERO LOGIC END ---
 
-    run_raid_batch(api, raid_plan, faction, village_id, oases)
+    run_raid_batch(api, saved_data, faction, village_id, oases)
 
     # --- HERO RESULT REPORT ---
     print("\n--- Hero Raid Summary ---")

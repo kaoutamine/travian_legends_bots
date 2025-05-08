@@ -90,5 +90,22 @@ def setup_interactive_raid_plan(api: TravianAPI, server_url: str):
             "group_size": group_size
         })
 
-    save_raid_plan(server_url, village_index, raid_plan)
+    # Ask for maximum raid distance
+    while True:
+        try:
+            max_distance = int(input("\nEnter maximum raid distance in tiles (default = 25): ").strip() or "25")
+            if max_distance <= 0:
+                print("Distance must be > 0.")
+                continue
+            break
+        except ValueError:
+            print("Invalid number.")
+
+    # Save raid plan with metadata
+    save_raid_plan(server_url, village_index, {
+        "max_raid_distance": max_distance,
+        "raid_plan": raid_plan
+    })
+    
     print(f"\n✅ Saved raid plan for village '{selected['village_name']}' using {len(raid_plan)} unit types.")
+    print(f"Maximum raid distance set to {max_distance} tiles.")

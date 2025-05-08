@@ -34,9 +34,13 @@ def extract_unoccupied_oases(scan_path):
         if tile_info.get("type") == "empty":
             title = tile_info.get("raw_title", "").lower().strip()
             if title.startswith("unoccupied oasis"):
+                x_str, y_str = coords.split("_")
+                x, y = int(x_str), int(y_str)
+                dist = distance(center_x, center_y, x, y)
                 tile_info["scanned_from"] = {
                     "center_x": center_x,
                     "center_y": center_y,
+                    "distance": dist  # Store the distance directly
                 }
                 unoccupied_oases[coords] = tile_info
             elif "oasis" in title and not title.startswith("unoccupied oasis"):
@@ -49,7 +53,7 @@ def extract_unoccupied_oases(scan_path):
     sorted_unoccupied = {}
     for coords in sorted(
         unoccupied_oases.keys(),
-        key=lambda c: distance(center_x, center_y, int(c.split("_")[0]), int(c.split("_")[1]))
+        key=lambda c: unoccupied_oases[c]["scanned_from"]["distance"]  # Use stored distance
     ):
         sorted_unoccupied[coords] = unoccupied_oases[coords]
 
@@ -67,4 +71,4 @@ def extract_unoccupied_oases(scan_path):
     for idx, (coords, info) in enumerate(sorted_unoccupied.items()):
         if idx >= 5:
             break
-        print(f"    {coords}: {info['raw_title']}")
+        print(f"    {coords}: {info['raw_title']} (Distance: {info['scanned_from']['distance']:.1f} tiles)")

@@ -1,147 +1,83 @@
 # Travian Legends Bot
 
-A bot for automating various tasks in Travian Legends, including oasis raiding, farm list management, and hero operations.
+An automated bot for Travian Legends that handles farming and oasis raiding operations.
 
 ## Features
 
-- **Farm List Operations**: Automated farm list sending with configurable delays
-- **Oasis Raiding**: Smart raiding system that targets unoccupied oases
-- **Hero Management**: Automated hero operations with health monitoring
-- **Map Scanning**: Efficient scanning of nearby tiles for oasis detection
+- **Farm List Automation**
+  - Automated sending of farm lists with configurable delays
+  - Random timing variations to avoid detection
+  - Auto-recovery from session timeouts
+  - Configurable stop time (default: 9 AM)
 
-## Setup Instructions
+- **Oasis Raiding**
+  - Smart oasis selection based on distance
+  - Animal detection to avoid losses
+  - Configurable maximum raid distance
+  - Support for multiple unit types
+  - Hero raiding capability
+  - Automatic troop availability checking
 
-1. **Clone the Repository**
-   ```bash
-   git clone <repository-url>
-   cd travian_legends_bots
-   ```
+## Setup
 
-2. **Navigate to Bot Directory**
-   ```bash
-   cd API_based_automations/travian_bot
-   ```
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/travian_legends_bots.git
+cd travian_legends_bots
+```
 
-3. **Create and Activate Virtual Environment**
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate   # On Linux/Mac
-   .\venv\Scripts\activate    # On Windows
-   ```
+2. Create a virtual environment and install dependencies:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-4. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+3. Create a `.env` file in the root directory with your credentials:
+```env
+TRAVIAN_USERNAME=your_username
+TRAVIAN_PASSWORD=your_password
+```
 
-5. **Initial Setup Steps**
-   ```bash
-   # 1. Set up your identity (this will create database/identity.json and .env)
-   python3 setup_identity.py
-   # The script will ask for your credentials and create the .env file automatically
-   
-   # 2. Scan the map for oases (this will create unoccupied_oases directory)
-   python3 scan_map.py
-   
-   # 3. Set up a raid plan (this will create database/saved_raid_plan.json)
-   python3 launcher.py
-   # Then select option 4: "Setup new raid plan interactively"
-   # You'll be asked to:
-   # - Select a village to raid from
-   # - Choose which units to use (e.g., Imperians, Equites Imperatoris)
-   # - Set the group size for each unit type
-   ```
-
-## Required Dependencies
-
-- beautifulsoup4==4.13.4
-- python-dotenv==1.1.0
-- Requests==2.32.3
-- tqdm==4.67.1
+4. Run the launcher:
+```bash
+cd API_based_automations/travian_bot
+python launcher.py
+```
 
 ## Usage
 
-1. **First Time Setup**
-   - Run the launcher: `python3 launcher.py`
-   - Choose "Setup Identity" option
-   - Enter your Travian server URL, username, and password
+The bot provides several operation modes through an interactive launcher:
 
-2. **Available Operations**
-   - Farm List Operations
-   - Oasis Raiding
-   - Hero Operations
-   - Map Scanning
+1. **One-time Farm + Raid** - Executes one round of farming and raiding
+2. **Infinite Safe Loop** - Continuously farms and raids with safety checks
+3. **Reset Raid Plan** - Clears the saved raid configuration
+4. **Setup New Raid Plan** - Interactive setup for a new raiding strategy
+5. **Update Identity** - Updates village and player information
+6. **Hero Operations** - Manages hero-related activities
 
-## Project Structure
+## Configuration
 
-```
-API_based_automations/travian_bot/
-├── analysis/           # Analysis tools
-├── core/              # Core functionality
-├── features/          # Feature implementations
-├── identity_handling/ # Login and identity management
-├── database/          # Configuration storage
-│   ├── identity.json           # Created by setup_identity.py
-│   └── saved_raid_plan.json    # Created by raid plan setup
-├── unoccupied_oases/  # Created by scan_map.py
-├── launcher.py        # Main entry point
-├── requirements.txt   # Dependencies
-└── setup_identity.py  # Identity setup script
-```
+- Farm list delays and burst counts can be configured in `raid_list_main.py`
+- Raid settings (units, group sizes, max distance) are stored in `database/saved_raid_plan.json`
+- Village and player information is stored in `database/identity.json`
 
-## Troubleshooting
+## Safety Features
 
-### Common Setup Issues
+- Distance-based raid targeting
+- Animal presence detection
+- Automatic session recovery
+- Random timing variations
+- Safe shutdown at specified time
 
-1. **Python Version**
-   - Required: Python 3.8 or higher
-   - Check version: `python3 --version`
-   - If python3 command not found, install it:
-     ```bash
-     # On Ubuntu/Debian
-     sudo apt update
-     sudo apt install python3
-     
-     # On Windows
-     # Download from python.org
-     ```
+## Contributing
 
-2. **Virtual Environment**
-   - If `venv` module is missing:
-     ```bash
-     # On Ubuntu/Debian
-     sudo apt install python3-venv
-     ```
-   - If activation fails, ensure you're in the correct directory
-
-3. **Dependency Issues**
-   - If pip install fails, try upgrading pip:
-     ```bash
-     pip install --upgrade pip
-     ```
-   - For SSL errors, ensure certificates are up to date
-
-4. **Missing Modules**
-   - If you get "No module named 'core.hero_manager'" error:
-     - The hero_manager.py file should be created in the core directory
-     - It wraps the functionality from hero_runner.py
-
-### Directory Structure
-If any required directories are missing:
-```bash
-mkdir -p database logs unoccupied_oases
-```
-
-## Security Note
-
-- Store your credentials in a `.env` file
-- Never commit your `.env` file or identity information
-- The `.gitignore` file is configured to prevent accidental commits of sensitive data
+Feel free to submit issues and pull requests.
 
 ## Disclaimer
 
-This bot is for educational purposes only. Use at your own risk and in accordance with Travian Legends' terms of service.
+This is an unofficial bot for Travian Legends. Use at your own risk. The authors are not responsible for any consequences of using this bot.
 
 ## License
 
-This project is open source and available under the MIT License.
+MIT License

@@ -2,37 +2,46 @@
 
 import os
 import json
-from glob import glob
+import glob
+from datetime import datetime
 from core.paths import UNOCCUPIED_OASES_DIR  # We'll set this properly in paths.py
 
-def load_latest_unoccupied_oases(village_folder):
-    """
-    Load the latest unoccupied oases JSON for a specific village.
+def calculate_distance(x1, y1, x2, y2):
+    return ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
+
+def load_latest_unoccupied_oases(village_coords):
+    """Load the latest unoccupied oases file for a given village coordinates.
     
     Args:
-        village_folder (str): Folder name in the format (x_y) corresponding to the village.
-    
-    Returns:
-        dict: Loaded oases data, or None if not found.
+        village_coords (str): Village coordinates in format "(x_y)"
     """
-    folder_path = os.path.join(UNOCCUPIED_OASES_DIR, village_folder)
-    folder_path = os.path.abspath(folder_path)
+    base_path = os.path.join("database", "unoccupied_oases", village_coords)
+    if not os.path.exists(base_path):
+        print(f"[📂] No unoccupied oases directory found for {village_coords}")
+        return {}
 
-    print(f"[📂] Looking for unoccupied oases in: {folder_path}")
+    print(f"[📂] Looking for unoccupied oases in: {os.path.abspath(base_path)}")
+    files = glob.glob(os.path.join(base_path, "unoccupied_oases_*.json"))
+    if not files:
+        print(f"[📂] No unoccupied oases files found in {base_path}")
+        return {}
 
-    if not os.path.isdir(folder_path):
-        print(f"[-] Folder does not exist: {folder_path}")
-        return None
-
-    scan_files = glob(os.path.join(folder_path, "*.json"))
-    if not scan_files:
-        print(f"[-] No JSON files found in {folder_path}")
-        return None
-
-    latest_file = max(scan_files, key=os.path.getmtime)
+    latest_file = max(files, key=os.path.getctime)
     print(f"[+] Using latest unoccupied oases file: {os.path.basename(latest_file)}")
 
-    with open(latest_file, "r") as f:
-        oases = json.load(f)
-
-    return oases
+    try:
+        with open(latest_file, "r", encoding="utf-8") as f:
+            oases = json.load(f)
+            
+            # Extract village coordinates from the folder name
+            village_x, village_y = map(int, village_coords.strip("()").split("_"))
+            
+            # Add distance to each oasis
+            for coords, oasis in oases.items():
+                oasis_x, oasis_y = map(int, coords.split("_"))
+                oasis["distance"] = calculate_distance(village_x, village_y, oasis_x, oasis_y)
+                
+            return oases
+    except (json.JSONDecodeError, FileNotFoundError) as e:
+        print(f"[❌] Error loading unoccupied oases: {e}")
+        return {}
