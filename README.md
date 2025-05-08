@@ -1,5 +1,8 @@
 # Travian Legends Bot
 
+![Full Automation Demo](docs/images/cycle_complete.png)
+*Experience the power of full automation with our advanced Travian Legends bot*
+
 An automated bot for Travian Legends that handles farming and oasis raiding operations.
 
 ## Features
@@ -129,17 +132,21 @@ To set up full automation (Option 8), follow these steps in order:
 
 #### Main Interface
 ![Launcher Menu](docs/images/launcher_menu.png.png)
+
 *The main launcher interface showing all available options*
 
 #### Farm List Management
 ![Farm List Configuration](docs/images/farm_list_config.png)
+
 *Configure which farm lists to run for each village*
 
 ![Farm List Launch](docs/images/farm_list_launch.png)
+
 *Launch farm lists with automatic timing and recovery*
 
 #### Map Analysis & Scanning
 ![Map Scanning](docs/images/raid_plan_setup.png)
+
 *Map scanning and analysis features:*
 - Scan any radius around your villages
 - Multiple analysis modules (oases, distances, etc.)
@@ -147,10 +154,12 @@ To set up full automation (Option 8), follow these steps in order:
 - Extensible for future features (crop fields, villages, etc.)
 
 ![Oasis Analysis](docs/images/oasis_raid_launch.png)
+
 *Oasis analysis and targeting based on scan data*
 
 #### Operation Status
 ![Cycle Complete](docs/images/cycle_complete.png)
+
 *Successful completion of a raid cycle with automatic timing for next run*
 
 ## Contributing
