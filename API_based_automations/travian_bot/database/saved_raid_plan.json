@@ -1,17 +1,35 @@
 {
     "server": "https://ts4.x1.arabics.travian.com/",
     "village_index": 0,
-    "max_raid_distance": 10,
-    "raid_plan": [
+    "max_raid_distance": 14,
+    "distance_ranges": [
         {
-            "unit_code": "u3",
-            "unit_payload_code": "u3",
-            "group_size": 10
+            "start": 0,
+            "end": 6,
+            "units": [
+                {
+                    "unit_code": "u3",
+                    "unit_payload_code": "u3",
+                    "group_size": 6
+                },
+                {
+                    "unit_code": "u5",
+                    "unit_payload_code": "u5",
+                    "group_size": 4
+                }
+            ]
         },
         {
-            "unit_code": "u5",
-            "unit_payload_code": "u5",
-            "group_size": 5
+            "start": 6,
+            "end": 14,
+            "units": [
+                {
+                    "unit_code": "u5",
+                    "unit_payload_code": "u5",
+                    "group_size": 4
+                }
+            ]
         }
-    ]
+    ],
+    "raid_plan": []
 }

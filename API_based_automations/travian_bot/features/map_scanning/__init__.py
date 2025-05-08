@@ -1,0 +1,1 @@
+"""Map scanning functionality for Travian Legends bot.""" 

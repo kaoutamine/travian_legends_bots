@@ -239,20 +239,81 @@ def setup_interactive_raid_plan(api, server_url):
     else:
         print("❌ Invalid option.")
 
-def main():
-    print("\n🛡️ Travian Automation Launcher")
-    print("[1] Run one farm list burst + one raid planner")
-    print("[2] Run farm list + Oasis raid planner in infinite safe loop")
-    print("[3] Reset saved raid plan")
-    print("[4] Setup new raid plan interactively")
-    print("[5] Update identity, villages, etc")
-    print("[6] Hero Operations")
-    print("[7] Run oasis raiding (single village - for testing)")
-    print("[8] Run multi-village raid planner (full automation)")
-    print("[9] Run farm list raider (from config)")
-    print("[10] Configure farm lists")
-
+def run_map_scan(api: TravianAPI):
+    """Run map scanning operations."""
+    print("\n🗺️ Map Scanning")
+    print("[1] Scan for unoccupied oases")
+    print("[2] View latest scan results")
+    print("[3] Back to main menu")
+    
     choice = input("\nSelect an option: ").strip()
+    
+    if choice == "1":
+        from features.map_scanning.scan_map import scan_map_for_oases
+        print("\n🔍 Starting map scan...")
+        scan_map_for_oases(api)
+        print("✅ Map scan complete!")
+    elif choice == "2":
+        from core.database_helpers import load_latest_unoccupied_oases
+        villages = load_villages_from_identity()
+        if not villages:
+            print("❌ No villages found in identity. Exiting.")
+            return
+        
+        print("\nAvailable villages:")
+        for idx, v in enumerate(villages):
+            print(f"[{idx}] {v['village_name']} at ({v['x']}, {v['y']})")
+        
+        try:
+            village_idx = int(input("\nSelect village to view oases for: ").strip())
+            selected_village = villages[village_idx]
+            oases = load_latest_unoccupied_oases(f"({selected_village['x']}_{selected_village['y']})")
+            
+            if not oases:
+                print("❌ No oases found in latest scan.")
+                return
+            
+            print(f"\n📊 Found {len(oases)} unoccupied oases near {selected_village['village_name']}:")
+            for coord_key, oasis_data in oases.items():
+                x_str, y_str = coord_key.split("_")
+                print(f"- Oasis at ({x_str}, {y_str})")
+        except (ValueError, IndexError):
+            print("❌ Invalid village selection.")
+    elif choice == "3":
+        return
+    else:
+        print("❌ Invalid choice.")
+
+def main():
+    print("\n" + "="*40)
+    print("🎮 TRAVIAN AUTOMATION LAUNCHER")
+    print("="*40)
+    
+    print("\n🌾 FARM LIST:")
+    print("1) Farm burst")
+    print("2) Configure farm lists")
+    print("3) Run farm from config")
+    
+    print("\n🏰 OASIS RAID:")
+    print("4) Setup raid plan")
+    print("5) Reset raid plan")
+    print("6) Test raid (single village)")
+    
+    print("\n🤖 AUTOMATION:")
+    print("7) 👑 FULL AUTO MODE 👑")
+    print("   • Farm lists + Oasis raids")
+    print("   • Multi-village loop")
+    
+    print("\n🗺️ MAP SCANNING:")
+    print("8) Scan & View Oases")
+    
+    print("\n👤 ACCOUNT:")
+    print("9) Hero Operations")
+    print("10) Identity & Villages")
+    
+    print("\n" + "="*40)
+
+    choice = input("\n👉 Select an option: ").strip()
 
     # Login first
     print("\n🔐 Logging into Travian...")
@@ -261,14 +322,31 @@ def main():
 
     if choice == "1":
         run_one_farm_list_burst(api)
-        run_raid_planner(api, server_url)
     elif choice == "2":
-        print("\n🔁 Starting infinite safe loop with recovery...")
+        from features.farm_lists.manage_farm_lists import update_farm_lists
+        update_farm_lists(api, server_url)
+    elif choice == "3":
+        from features.farm_lists.farm_list_raider import run_farm_list_raids
+        villages = load_villages_from_identity()
+        if not villages:
+            print("❌ No villages found in identity. Exiting.")
+            return
+        for village in villages:
+            run_farm_list_raids(api, server_url, village["village_id"])
+    elif choice == "4":
+        setup_interactive_raid_plan(api, server_url)
+    elif choice == "5":
+        reset_saved_raid_plan()
+    elif choice == "6":
+        print("\n🎯 Starting single-village oasis raiding (testing mode)...")
+        run_raid_planner(api, server_url, multi_village=False)
+    elif choice == "7":
+        print("\n🤖 Starting full automation mode...")
         while True:
             try:
                 print(f"\n⏳ Starting cycle at {time.strftime('%H:%M:%S')}")
                 run_one_farm_list_burst(api)
-                run_raid_planner(api, server_url)
+                run_raid_planner(api, server_url, reuse_saved=True, multi_village=True)
                 
                 # Calculate next cycle time with jitter
                 jitter = random.randint(-JITTER_MINUTES, JITTER_MINUTES)
@@ -281,33 +359,12 @@ def main():
                 session, server_url = login()
                 api = TravianAPI(session, server_url)
                 print("✅ Re-login successful.")
-    elif choice == "3":
-        reset_saved_raid_plan()
-    elif choice == "4":
-        setup_interactive_raid_plan(api, server_url)
-    elif choice == "5":
-        handle_identity_management()
-    elif choice == "6":
-        run_hero_operations(api)
-    elif choice == "7":
-        print("\n🎯 Starting single-village oasis raiding (testing mode)...")
-        run_raid_planner(api, server_url, multi_village=False)
     elif choice == "8":
-        print("\n🎯 Starting multi-village raid planner (full automation)...")
-        run_raid_planner(api, server_url, reuse_saved=True, multi_village=True)
+        run_map_scan(api)
     elif choice == "9":
-        from features.farm_lists.farm_list_raider import run_farm_list_raids
-        
-        villages = load_villages_from_identity()
-        if not villages:
-            print("❌ No villages found in identity. Exiting.")
-            return
-            
-        for village in villages:
-            run_farm_list_raids(api, server_url, village["village_id"])
+        run_hero_operations(api)
     elif choice == "10":
-        from features.farm_lists.manage_farm_lists import update_farm_lists
-        update_farm_lists(api, server_url)
+        handle_identity_management()
     else:
         print("❌ Invalid choice.")
 

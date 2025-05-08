@@ -60,9 +60,6 @@ class TravianAPI:
         response = self.session.post(f"{self.server_url}/api/v1/graphql", json=payload)
         response.raise_for_status()
         
-        print("\nAPI Response:")
-        print(response.text)
-        
         data = response.json()
         if "data" in data and "ownPlayer" in data["data"] and "farmLists" in data["data"]["ownPlayer"]:
             # Filter farm lists to only those belonging to the specified village
@@ -241,17 +238,23 @@ class TravianAPI:
 
     def log_cookies(self):
         """Log all cookies for debugging."""
-        print("\nCurrent cookies:")
+        print("\n" + "="*40)
+        print("🍪 Current Session Cookies")
+        print("="*40)
         for cookie in self.session.cookies:
-            print(f"{cookie.name}: {cookie.value}")
+            print(f"   🔑 {cookie.name}: {cookie.value}")
             if cookie.name == "JWT":
                 try:
                     import jwt
                     decoded = jwt.decode(cookie.value, options={"verify_signature": False})
-                    print("\nDecoded JWT:")
-                    print(f"did (village_id): {decoded.get('properties', {}).get('did')}")
+                    print("\n🔐 Decoded JWT Token:")
+                    print("="*30)
+                    print(f"   🏰 Village ID: {decoded.get('properties', {}).get('did')}")
+                    print(f"   ⏰ Expires: {decoded.get('exp', 'Unknown')}")
+                    print("="*30)
                 except Exception as e:
-                    print(f"Failed to decode JWT: {e}")
+                    print(f"❌ Failed to decode JWT: {e}")
+        print("="*40)
 
     def get_troops_in_village(self):
         """Fetch troop counts in the current village."""
@@ -264,10 +267,12 @@ class TravianAPI:
         soup = BeautifulSoup(response.text, "html.parser")
         troops_table = soup.find("table", {"id": "troops"})
         if not troops_table:
-            print("[!] Troops table not found.")
+            print("⚠️ Troops table not found.")
             return {}
 
         troops = {}
+        print("\n⚔️ Current troops in village:")
+        print("="*30)
         for row in troops_table.find_all("tr"):
             img = row.find("img")
             num = row.find("td", class_="num")
@@ -278,11 +283,14 @@ class TravianAPI:
                         continue
                     if re.fullmatch(r"u\d{1,2}", c):
                         try:
-                            troops[c] = int(num.text.strip())
+                            count = int(num.text.strip())
+                            troops[c] = count
+                            print(f"   🛡️ {c}: {count:,} units")
                         except ValueError:
                             continue
                     else:
-                        print(f"[DEBUG] Unrecognized unit class: {c}")
+                        print(f"🔍 Unrecognized unit class: {c}")
+        print("="*30)
         return troops
 
     def get_oasis_animal_info(self, x: int, y: int) -> list[tuple[str, int]]:
@@ -348,8 +356,8 @@ class TravianAPI:
         response = self.session.post(f"{self.server_url}/api/v1/graphql", json=payload)
         response.raise_for_status()
         data = response.json()
-        print(f"\nServer response for farm list {farm_list_id}:")
-        print(data)
+        print(f"\n📡 Server response for farm list {farm_list_id}:")
+        print(f"   {'✨ Success' if data.get('data', {}).get('startFarmListRaid', {}).get('success', False) else '💥 Failed'}")
         return data.get("data", {}).get("startFarmListRaid", {}).get("success", False)
 
     def send_farm_list(self, list_id: int) -> bool:
@@ -358,8 +366,5 @@ class TravianAPI:
             "action": "farmList",
             "lists": [{"id": list_id}]
         }
-        print(f"\nSending farm list {list_id} with payload: {payload}")
         response = self.session.post(f"{self.server_url}/api/v1/farm-list/send", json=payload)
-        print(f"Response status: {response.status_code}")
-        print(f"Response text: {response.text}")
         return response.status_code == 200

@@ -1,5 +1,55 @@
-# Python
+# === Python ignores ===
 __pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Environment files
+.env
+
+# Logs or debug output
+*.log
+
+# Byte-compiled / cache files
+*.pyc
+
+# Jupyter notebook checkpoints (if ever used)
+.ipynb_checkpoints/
+
+# === Editor ignores ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === OS-specific ignores ===
+.DS_Store
+Thumbs.db
+
+# === Travian bot project ignores ===
+
+# Ignore database output and sensitive files
+# Runtime data
+database/full_map_scans/
+database/unoccupied_oases/
+database/raid_plans/
+database/farm_lists/
+database/farm_lists.json
+database/saved_raid_plan.json
+
+# Keep directory structure
+!database/full_map_scans/.gitkeep
+!database/unoccupied_oases/.gitkeep
+!database/raid_plans/.gitkeep
+!database/farm_lists/.gitkeep
+
+# Python
 *.py[cod]
 *$py.class
 *.so
@@ -19,10 +69,6 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
-
-# Virtual Environment
-venv/
-ENV/
 
 # IDE
 .idea/
