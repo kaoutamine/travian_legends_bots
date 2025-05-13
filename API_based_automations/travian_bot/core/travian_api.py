@@ -103,7 +103,69 @@ class TravianAPI:
         response.raise_for_status()
         return response.json()["data"]["farmList"]
 
+    def get_oasis_info(self, x: int, y: int) -> dict:
+        """Get complete information about an oasis in a single API call.
+        
+        Returns a dictionary containing:
+        - is_occupied: bool
+        - title: str
+        - animals: list of (name, count) tuples
+        - total_animal_count: int
+        - attack_power: int
+        """
+        url = f"{self.server_url}/api/v1/map/tile-details"
+        payload = {"x": x, "y": y}
+        response = self.session.post(url, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        html = data.get("html")
+        if not html:
+            return {
+                "is_occupied": False,
+                "title": "",
+                "animals": [],
+                "total_animal_count": 0,
+                "attack_power": 0
+            }
+
+        soup = BeautifulSoup(html, "html.parser")
+        
+        # Get title and occupation status
+        title_tag = soup.find("h1")
+        title = title_tag.text.strip() if title_tag else ""
+        is_occupied = not title.lower().startswith("unoccupied oasis")
+        
+        # Get animal information
+        animals = []
+        total_count = 0
+        troop_table = soup.find("table", id="troop_info")
+        if troop_table:
+            for row in troop_table.find_all("tr"):
+                img = row.find("img")
+                cols = row.find_all("td")
+                if img and len(cols) >= 2:
+                    animal_name = img.get("alt", "").strip().lower()
+                    count_text = cols[1].get_text(strip=True).replace("\u202d", "").replace("\u202c", "")
+                    try:
+                        count = int(count_text)
+                        animals.append((animal_name, count))
+                        total_count += count
+                    except ValueError:
+                        continue
+        
+        # Calculate attack power
+        attack_power = sum(get_animal_power(name) * count for name, count in animals)
+        
+        return {
+            "is_occupied": is_occupied,
+            "title": title,
+            "animals": animals,
+            "total_animal_count": total_count,
+            "attack_power": attack_power
+        }
+
     def get_oasis_animal_count(self, x: int, y: int) -> int:
+        """Get total count of animals in an oasis."""
         url = f"{self.server_url}/api/v1/map/tile-details"
         payload = {"x": x, "y": y}
         response = self.session.post(url, json=payload)
@@ -129,6 +191,43 @@ class TravianAPI:
                 except ValueError:
                     continue
         return animal_count
+
+    def get_oasis_animal_info(self, x: int, y: int) -> list[tuple[str, int]]:
+        """Returns a list of (animal_name, count) tuples in the oasis."""
+        url = f"{self.server_url}/api/v1/map/tile-details"
+        payload = {"x": x, "y": y}
+        response = self.session.post(url, json=payload)
+        response.raise_for_status()
+        data = response.json()
+
+        html = data.get("html")
+        if not html:
+            return []
+
+        soup = BeautifulSoup(html, "html.parser")
+        troop_table = soup.find("table", id="troop_info")
+        if not troop_table:
+            return []
+
+        results = []
+        for row in troop_table.find_all("tr"):
+            img = row.find("img")
+            cols = row.find_all("td")
+            if img and len(cols) >= 2:
+                animal_name = img.get("alt", "").strip().lower()
+                count_text = cols[1].get_text(strip=True).replace("\u202d", "").replace("\u202c", "")
+                try:
+                    count = int(count_text)
+                    results.append((animal_name, count))
+                except ValueError:
+                    continue
+
+        return results
+
+    def get_oasis_attack_power(self, x: int, y: int) -> int:
+        """Get total attack power of animals in an oasis."""
+        animal_data = self.get_oasis_animal_info(x, y)
+        return sum(get_animal_power(name) * count for name, count in animal_data)
 
     def prepare_oasis_attack(self, map_id: int, x: int, y: int, troop_setup: dict) -> dict:
         """Prepare an attack on a given oasis and return action and checksum."""
@@ -293,42 +392,6 @@ class TravianAPI:
         print("="*30)
         return troops
 
-    def get_oasis_animal_info(self, x: int, y: int) -> list[tuple[str, int]]:
-        """Returns a list of (animal_name, count) tuples in the oasis."""
-        url = f"{self.server_url}/api/v1/map/tile-details"
-        payload = {"x": x, "y": y}
-        response = self.session.post(url, json=payload)
-        response.raise_for_status()
-        data = response.json()
-
-        html = data.get("html")
-        if not html:
-            return []
-
-        soup = BeautifulSoup(html, "html.parser")
-        troop_table = soup.find("table", id="troop_info")
-        if not troop_table:
-            return []
-
-        results = []
-        for row in troop_table.find_all("tr"):
-            img = row.find("img")
-            cols = row.find_all("td")
-            if img and len(cols) >= 2:
-                animal_name = img.get("alt", "").strip().lower()
-                count_text = cols[1].get_text(strip=True).replace("\u202d", "").replace("\u202c", "")
-                try:
-                    count = int(count_text)
-                    results.append((animal_name, count))
-                except ValueError:
-                    continue
-
-        return results
-
-    def get_oasis_attack_power(self, x: int, y: int) -> int:
-        animal_data = self.get_oasis_animal_info(x, y)
-        return sum(get_animal_power(name) * count for name, count in animal_data)
-
     def _make_graphql_request(self, query: str, variables: dict = None) -> dict:
         """Make a GraphQL request to the server."""
         payload = {
@@ -368,3 +431,34 @@ class TravianAPI:
         }
         response = self.session.post(f"{self.server_url}/api/v1/farm-list/send", json=payload)
         return response.status_code == 200
+
+    def debug_tile_details(self, x: int, y: int):
+        """Debug method to print all information from tile details API call."""
+        url = f"{self.server_url}/api/v1/map/tile-details"
+        payload = {"x": x, "y": y}
+        response = self.session.post(url, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        html = data.get("html")
+        if not html:
+            print("No HTML response")
+            return
+
+        soup = BeautifulSoup(html, "html.parser")
+        
+        # Print all h1 tags (titles)
+        print("\nTitles:")
+        for h1 in soup.find_all("h1"):
+            print(f"- {h1.text.strip()}")
+        
+        # Print all tables and their IDs
+        print("\nTables:")
+        for table in soup.find_all("table"):
+            print(f"- Table ID: {table.get('id', 'No ID')}")
+            print(f"  Content: {table.text.strip()[:100]}...")
+        
+        # Print all divs with class
+        print("\nDivs with classes:")
+        for div in soup.find_all("div", class_=True):
+            print(f"- Div class: {div.get('class')}")
+            print(f"  Content: {div.text.strip()[:100]}...")

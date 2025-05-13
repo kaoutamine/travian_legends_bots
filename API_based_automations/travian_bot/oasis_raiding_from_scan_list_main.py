@@ -10,7 +10,7 @@ from core.travian_api import TravianAPI
 from analysis.number_to_unit_mapping import get_unit_name
 from core.database_helpers import load_latest_unoccupied_oases
 from core.database_raid_config import load_saved_raid_plan, save_raid_plan
-from core.raid_runner import run_raid_batch
+from features.oasis.raider import run_raid_batch
 from core.hero_runner import try_send_hero_to_oasis  # ✅ Hero logic
 from identity_handling.faction_utils import get_faction_name
 from dotenv import load_dotenv
@@ -58,7 +58,8 @@ def run_raid_planner(
     units_to_use=None,
     enable_hero_raiding=True,
     interactive=False,
-    multi_village=False  # New parameter to control multi-village mode
+    multi_village=False,  # New parameter to control multi-village mode
+    run_farm_lists=False  # New parameter to control whether to run farm lists
 ):
     villages = load_villages_from_identity()
     if not villages:
@@ -81,11 +82,7 @@ def run_raid_planner(
         villages_to_process = list(enumerate(villages))
         logging.info(f"Running in multi-village mode. Will process {len(villages)} villages.")
     else:
-        # Single village mode
-        if selected_village_index is None:
-            logging.error("❌ No village index provided.")
-            return
-        village_index = selected_village_index
+        village_index = 0
         villages_to_process = [(village_index, villages[village_index])]
         logging.info("Running in single-village mode.")
 
@@ -117,10 +114,13 @@ def run_raid_planner(
             unit_name = get_unit_name(unit_code, faction)
             logging.info(f"    {unit_name} ({unit_code}): {amount} units")
 
-        # First run farm lists for this village
-        logging.info("\nRunning farm lists...")
-        from features.farm_lists.farm_list_raider import run_farm_list_raids
-        run_farm_list_raids(api, server_url, village_id)
+        # Run farm lists only if explicitly requested
+        if run_farm_lists:
+            logging.info("\nRunning farm lists...")
+            from features.farm_lists.farm_list_raider import run_farm_list_raids
+            run_farm_list_raids(api, server_url, village_id)
+        else:
+            logging.info("\nSkipping farm lists as requested.")
 
         # Then check if this village has a raid plan for oases
         saved_data = load_saved_raid_plan(village_index)

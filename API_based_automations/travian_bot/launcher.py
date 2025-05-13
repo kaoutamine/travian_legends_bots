@@ -15,7 +15,7 @@ from identity_handling.identity_helper import load_villages_from_identity
 from features.hero.hero_operations import run_hero_operations
 
 # === CONFIG ===
-WAIT_BETWEEN_CYCLES_MINUTES = 50
+WAIT_BETWEEN_CYCLES_MINUTES = 44
 JITTER_MINUTES = 5
 SERVER_SELECTION = 0  # 👈 update if needed
 
@@ -339,14 +339,31 @@ def main():
         reset_saved_raid_plan()
     elif choice == "6":
         print("\n🎯 Starting single-village oasis raiding (testing mode)...")
-        run_raid_planner(api, server_url, multi_village=False)
+        run_raid_planner(api, server_url, multi_village=False, run_farm_lists=False)
     elif choice == "7":
         print("\n🤖 Starting full automation mode...")
+        # Ask for delay
+        while True:
+            try:
+                delay_input = input("\nWould you like to delay the start? (y/N): ").strip().lower()
+                if delay_input == 'y':
+                    delay_minutes = int(input("Enter delay in minutes: "))
+                    if delay_minutes > 0:
+                        print(f"\n⏳ Waiting {delay_minutes} minutes before starting...")
+                        time.sleep(delay_minutes * 60)
+                        break
+                    else:
+                        print("Delay must be greater than 0 minutes.")
+                else:
+                    print("\nStarting immediately...")
+                    break
+            except ValueError:
+                print("Please enter a valid number of minutes.")
+
         while True:
             try:
                 print(f"\n⏳ Starting cycle at {time.strftime('%H:%M:%S')}")
-                run_one_farm_list_burst(api)
-                run_raid_planner(api, server_url, reuse_saved=True, multi_village=True)
+                run_raid_planner(api, server_url, reuse_saved=True, multi_village=True, run_farm_lists=True)
                 
                 # Calculate next cycle time with jitter
                 jitter = random.randint(-JITTER_MINUTES, JITTER_MINUTES)

@@ -2,6 +2,7 @@ import logging
 import time
 from random import uniform
 from analysis.number_to_unit_mapping import get_unit_name
+from features.oasis.validator import is_valid_unoccupied_oasis
 
 def get_units_for_distance(distance, distance_ranges):
     """Get the appropriate unit combination for a given distance."""
@@ -11,6 +12,18 @@ def get_units_for_distance(distance, distance_ranges):
     return None
 
 def run_raid_batch(api, raid_plan, faction, village_id, oases, hero_raiding=False, hero_available=False):
+    """
+    Execute a batch of raids on oases based on the raid plan.
+    
+    :param api: TravianAPI instance
+    :param raid_plan: Dictionary containing raid configuration
+    :param faction: Player's faction (Romans, Gauls, etc.)
+    :param village_id: ID of the village sending raids
+    :param oases: Dictionary of oases to raid
+    :param hero_raiding: Whether hero raiding is enabled
+    :param hero_available: Whether hero is available
+    :return: Number of successful raids sent
+    """
     sent_raids = 0
     max_raid_distance = raid_plan.get("max_raid_distance", float("inf"))
     distance_ranges = raid_plan.get("distance_ranges", [])
@@ -25,7 +38,7 @@ def run_raid_batch(api, raid_plan, faction, village_id, oases, hero_raiding=Fals
     troops_info = api.get_troops_in_village()
     if not troops_info:
         logging.error("Could not fetch troops. Exiting.")
-        return
+        return sent_raids
 
     for coords, tile in oases.items():
         # Check distance from stored value
@@ -54,11 +67,8 @@ def run_raid_batch(api, raid_plan, faction, village_id, oases, hero_raiding=Fals
         x_str, y_str = coords.split("_")
         x, y = int(x_str), int(y_str)
         
-        animal_count = api.get_oasis_animal_count(x, y)
-        if animal_count is None:
-            continue
-        if animal_count > 0:
-            logging.warning(f"Skipping oasis at ({x}, {y}) — {animal_count} animals present. Distance: {distance:.1f} tiles")
+        # Validate oasis is raidable
+        if not is_valid_unoccupied_oasis(api, x, y):
             continue
 
         # Prepare raid setup with all units in the combination
@@ -89,3 +99,5 @@ def run_raid_batch(api, raid_plan, faction, village_id, oases, hero_raiding=Fals
         if amount > 0 and unit_code != "uhero":
             unit_name = get_unit_name(unit_code, faction)
             logging.info(f"    {unit_name}: {amount} left")
+            
+    return sent_raids 
