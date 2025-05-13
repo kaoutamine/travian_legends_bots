@@ -12,7 +12,7 @@ from features.raiding.reset_raid_plan import reset_saved_raid_plan
 from features.raiding.setup_interactive_plan import setup_interactive_raid_plan
 from identity_handling.identity_manager import handle_identity_management
 from identity_handling.identity_helper import load_villages_from_identity
-from features.hero.hero_operations import run_hero_operations
+from features.hero.hero_operations import run_hero_operations as run_hero_ops, print_hero_status_summary
 
 # === CONFIG ===
 WAIT_BETWEEN_CYCLES_MINUTES = 44
@@ -121,7 +121,7 @@ def handle_identity_management():
     
     if choice == "1":
         print("\nℹ️ Running identity setup...")
-        os.system("python setup_identity.py")
+        os.system("python3 setup_identity.py")
     elif choice == "2":
         view_identity()
     elif choice == "3":
@@ -133,73 +133,7 @@ def handle_identity_management():
 
 def run_hero_operations(api: TravianAPI):
     """Run hero-specific operations including checking status and sending to suitable oases."""
-    print("\n🦸 Hero Operations")
-    
-    # Load villages and let user select one
-    villages = load_villages_from_identity()
-    if not villages:
-        print("❌ No villages found in identity. Exiting.")
-        return
-    
-    print("\nAvailable villages:")
-    for idx, v in enumerate(villages):
-        print(f"[{idx}] {v['village_name']} at ({v['x']}, {v['y']})")
-    
-    try:
-        village_idx = int(input("\nSelect village index: ").strip())
-        selected_village = villages[village_idx]
-    except (ValueError, IndexError):
-        print("❌ Invalid village selection.")
-        return
-    
-    # Check hero status
-    hero_manager = HeroManager(api)
-    troops_info = api.get_troops_in_village()
-    if not troops_info:
-        print("❌ Could not fetch troops. Exiting.")
-        return
-    
-    is_present, health = hero_manager.get_hero_status(troops_info)
-    if not is_present:
-        print("❌ Hero is not present in the village.")
-        return
-    
-    print(f"✅ Hero is present in {selected_village['village_name']}")
-    if health is not None:
-        print(f"Hero health: {health}%")
-    
-    # Load oases and filter by power range
-    oases = load_latest_unoccupied_oases(f"({selected_village['x']}_{selected_village['y']})")
-    suitable_oases = []
-    
-    for coord_key, oasis_data in oases.items():
-        x_str, y_str = coord_key.split("_")
-        oasis = {"x": int(x_str), "y": int(y_str)}
-        power = api.get_oasis_attack_power(oasis["x"], oasis["y"])
-        
-        if 500 <= power <= 2000:
-            suitable_oases.append((oasis, power))
-    
-    if not suitable_oases:
-        print("❌ No suitable oases found (power between 500-2000).")
-        return
-    
-    # Display suitable oases
-    print("\nSuitable oases found:")
-    for idx, (oasis, power) in enumerate(suitable_oases):
-        print(f"[{idx}] Oasis at ({oasis['x']}, {oasis['y']}) - Power: {power}")
-    
-    # Ask user if they want to send hero
-    choice = input("\nSend hero to attack? (y/n): ").strip().lower()
-    if choice != 'y':
-        print("Operation cancelled.")
-        return
-    
-    # Send hero to first suitable oasis
-    if hero_manager.send_hero_with_escort(selected_village, suitable_oases[0][0]):
-        print(f"✅ Hero sent to oasis at ({suitable_oases[0][0]['x']}, {suitable_oases[0][0]['y']})")
-    else:
-        print("❌ Failed to send hero.")
+    run_hero_ops(api)
 
 def setup_interactive_raid_plan(api, server_url):
     """Set up a raid plan interactively."""
@@ -365,6 +299,13 @@ def main():
                 print(f"\n⏳ Starting cycle at {time.strftime('%H:%M:%S')}")
                 run_raid_planner(api, server_url, reuse_saved=True, multi_village=True, run_farm_lists=True)
                 
+                # Print hero status summary at the end of the cycle
+                hero_manager = HeroManager(api)
+                status = hero_manager.fetch_hero_status()
+                if status:
+                    print_hero_status_summary(status)
+                else:
+                    print("❌ Could not fetch hero status summary.")
                 # Calculate next cycle time with jitter
                 jitter = random.randint(-JITTER_MINUTES, JITTER_MINUTES)
                 total_wait_minutes = WAIT_BETWEEN_CYCLES_MINUTES + jitter
