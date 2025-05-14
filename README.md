@@ -168,7 +168,7 @@ Feel free to submit issues and pull requests.
 
 ## Disclaimer
 
-This is an unofficial bot for Travian Legends. Use at your own risk. The authors are not responsible for any consequences of using this bot.
+This is an unofficial bot for Travian Legends. Use at your own risk. The authors are not responsible for any consequences of using this bot. This bot exists for an educational purpose (my own) to prove I understand Travian API and structures. That's all. 
 
 ## License
 
