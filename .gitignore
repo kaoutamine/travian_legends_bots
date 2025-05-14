@@ -68,3 +68,6 @@ database/raid_plans/
 database/unoccupied_oases/
 database/farm_lists.json
 database/saved_raid_plan.json 
+
+# Ignore all database files in the travian bot
+API_based_automations/travian_bot/database/ 

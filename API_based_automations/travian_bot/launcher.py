@@ -2,6 +2,7 @@ import time
 import random
 import json
 import os
+import threading
 from identity_handling.login import login
 from core.travian_api import TravianAPI
 from core.hero_manager import HeroManager
@@ -13,6 +14,7 @@ from features.raiding.setup_interactive_plan import setup_interactive_raid_plan
 from identity_handling.identity_manager import handle_identity_management
 from identity_handling.identity_helper import load_villages_from_identity
 from features.hero.hero_operations import run_hero_operations as run_hero_ops, print_hero_status_summary
+from features.hero.hero_raiding_thread import run_hero_raiding_thread
 
 # === CONFIG ===
 WAIT_BETWEEN_CYCLES_MINUTES = 44
@@ -244,6 +246,7 @@ def main():
     print("\n👤 ACCOUNT:")
     print("9) Hero Operations")
     print("10) Identity & Villages")
+    print("11) Test Hero Raiding Thread (Standalone)")
     
     print("\n" + "="*40)
 
@@ -253,6 +256,11 @@ def main():
     print("\n🔐 Logging into Travian...")
     session, server_url = login()
     api = TravianAPI(session, server_url)
+
+    # Start hero raiding thread
+    hero_thread = threading.Thread(target=run_hero_raiding_thread, args=(api,))
+    hero_thread.daemon = True  # Exits with main program
+    hero_thread.start()
 
     if choice == "1":
         run_one_farm_list_burst(api)
@@ -323,6 +331,9 @@ def main():
         run_hero_operations(api)
     elif choice == "10":
         handle_identity_management()
+    elif choice == "11":
+        print("\n🦸 Testing Hero Raiding Thread (Standalone)...")
+        run_hero_raiding_thread(api)
     else:
         print("❌ Invalid choice.")
 

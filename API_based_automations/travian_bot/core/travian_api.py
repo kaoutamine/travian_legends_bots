@@ -2,6 +2,8 @@ import requests
 import re
 from bs4 import BeautifulSoup
 from analysis.animal_to_power_mapping import get_animal_power
+from typing import Optional
+import logging
 
 
 class TravianAPI:
@@ -462,3 +464,50 @@ class TravianAPI:
         for div in soup.find_all("div", class_=True):
             print(f"- Div class: {div.get('class')}")
             print(f"  Content: {div.text.strip()[:100]}...")
+
+    def get_hero_page(self) -> Optional[str]:
+        """Get the hero status page HTML."""
+        try:
+            response = self.session.get(f"{self.server_url}/hero")
+            response.raise_for_status()
+            return response.text
+        except Exception as e:
+            logging.error(f"Failed to get hero page: {str(e)}")
+            return None
+
+    def get_hero_attributes(self):
+        """Get hero attributes from the GraphQL API."""
+        payload = {
+            "query": """
+                query {
+                    ownPlayer {
+                        hero {
+                            id
+                            health
+                            isPresent
+                            isOnMission
+                            missionReturnTime
+                            missionTarget {
+                                x
+                                y
+                            }
+                            currentVillage {
+                                id
+                                name
+                            }
+                        }
+                    }
+                }
+            """
+        }
+        try:
+            response = self.session.post(f"{self.server_url}/api/v1/graphql", json=payload)
+            response.raise_for_status()
+            data = response.json()
+            if "data" in data and "ownPlayer" in data["data"] and "hero" in data["data"]["ownPlayer"]:
+                return data["data"]["ownPlayer"]["hero"]
+            logging.error(f"Unexpected API response format: {data}")
+            return None
+        except Exception as e:
+            logging.error(f"Failed to get hero attributes: {str(e)}")
+            return None

@@ -152,21 +152,6 @@ def run_raid_planner(
 
         run_raid_batch(api, raid_plan, faction, village_id, oases)
 
-        # --- HERO RESULT REPORT ---
-        print("\n--- Hero Raid Summary ---")
-        if not enable_hero_raiding:
-            print("Hero raiding was disabled.")
-        elif not hero_available:
-            print("Hero was not available.")
-        elif hero_sent:
-            print("✅ Hero was sent on a raid.")
-        else:
-            print("⚠️ Hero was available but no suitable oasis was found.")
-
-        # Add a small delay between villages to avoid overwhelming the server
-        if multi_village:
-            time.sleep(uniform(2, 4))
-
     logging.info("\n✅ Finished processing all selected villages.")
 
 def setup_raid_plan_interactive(api, server_url, selected_village_index=None):
