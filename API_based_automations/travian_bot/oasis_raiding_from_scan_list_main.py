@@ -66,9 +66,14 @@ def run_raid_planner(
         logging.error("No villages found in identity. Exiting.")
         return
 
-    # Load faction from identity.json
+    # Load faction from identity using the helper function
     try:
-        with open("database/identity.json", "r", encoding="utf-8") as f:
+        current_dir = os.path.dirname(__file__)
+        database_dir = os.path.join(current_dir, 'database')
+        identity_path = os.path.join(database_dir, 'identity.json')
+        identity_path = os.path.abspath(identity_path)
+
+        with open(identity_path, "r", encoding="utf-8") as f:
             identity = json.load(f)
             tribe_id = identity["travian_identity"]["tribe_id"]
             faction = get_faction_name(tribe_id)
@@ -161,9 +166,14 @@ def setup_raid_plan_interactive(api, server_url, selected_village_index=None):
         logging.error("No villages found in identity. Exiting.")
         return
 
-    # Load faction from identity.json
+    # Load faction from identity using the helper function
     try:
-        with open("database/identity.json", "r", encoding="utf-8") as f:
+        current_dir = os.path.dirname(__file__)
+        database_dir = os.path.join(current_dir, '..', 'database')
+        identity_path = os.path.join(database_dir, 'identity.json')
+        identity_path = os.path.abspath(identity_path)
+
+        with open(identity_path, "r", encoding="utf-8") as f:
             identity = json.load(f)
             tribe_id = identity["travian_identity"]["tribe_id"]
             faction = get_faction_name(tribe_id)

@@ -1,3 +1,4 @@
+import os
 from .hero_runner import try_send_hero_to_oasis
 import logging
 import json
@@ -28,7 +29,12 @@ class HeroManager:
     def _is_known_village(self, village_id: str) -> bool:
         """Check if village_id exists in identity.json."""
         try:
-            with open("database/identity.json", "r", encoding="utf-8") as f:
+            current_dir = os.path.dirname(__file__)
+            database_dir = os.path.join(current_dir, '..', 'database')
+            identity_path = os.path.join(database_dir, 'identity.json')
+            identity_path = os.path.abspath(identity_path)
+
+            with open(identity_path, "r", encoding="utf-8") as f:
                 identity = json.load(f)
             for server in identity.get("travian_identity", {}).get("servers", []):
                 for village in server.get("villages", []):

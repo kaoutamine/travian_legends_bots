@@ -257,11 +257,6 @@ def main():
     session, server_url = login()
     api = TravianAPI(session, server_url)
 
-    # Start hero raiding thread
-    hero_thread = threading.Thread(target=run_hero_raiding_thread, args=(api,))
-    hero_thread.daemon = True  # Exits with main program
-    hero_thread.start()
-
     if choice == "1":
         run_one_farm_list_burst(api)
     elif choice == "2":
@@ -302,29 +297,51 @@ def main():
             except ValueError:
                 print("Please enter a valid number of minutes.")
 
+        # Ask if user wants to skip farm lists on first run
+        skip_farm_lists_first_run = False
+        skip_input = input("\nDo you want to skip farm lists on the first run? (y/N): ").strip().lower()
+        if skip_input == 'y':
+            skip_farm_lists_first_run = True
+
+        print("\n[Main] Starting hero raiding thread...")
+        # Start hero raiding thread
+        hero_thread = threading.Thread(target=run_hero_raiding_thread, args=(api,))
+        hero_thread.daemon = True  # Exits with main program
+        hero_thread.start()
+        print("[Main] Hero raiding thread started successfully.")
+
+        first_cycle = True
         while True:
             try:
-                print(f"\n⏳ Starting cycle at {time.strftime('%H:%M:%S')}")
-                run_raid_planner(api, server_url, reuse_saved=True, multi_village=True, run_farm_lists=True)
+                print(f"\n[Main] Starting cycle at {time.strftime('%H:%M:%S')}")
+                print("[Main] Running raid planner...")
+                # Skip farm lists only on the first run if requested
+                if first_cycle and skip_farm_lists_first_run:
+                    run_raid_planner(api, server_url, reuse_saved=True, multi_village=True, run_farm_lists=False)
+                else:
+                    run_raid_planner(api, server_url, reuse_saved=True, multi_village=True, run_farm_lists=True)
+                first_cycle = False
                 
                 # Print hero status summary at the end of the cycle
+                print("[Main] Fetching hero status summary...")
                 hero_manager = HeroManager(api)
                 status = hero_manager.fetch_hero_status()
                 if status:
                     print_hero_status_summary(status)
                 else:
                     print("❌ Could not fetch hero status summary.")
+                
                 # Calculate next cycle time with jitter
                 jitter = random.randint(-JITTER_MINUTES, JITTER_MINUTES)
                 total_wait_minutes = WAIT_BETWEEN_CYCLES_MINUTES + jitter
-                print(f"✅ Cycle complete. Waiting {total_wait_minutes} minutes...")
+                print(f"[Main] Cycle complete. Waiting {total_wait_minutes} minutes...")
                 time.sleep(total_wait_minutes * 60)
             except Exception as e:
-                print(f"⚠️ Error during cycle: {e}")
-                print("🔁 Attempting re-login and retry...")
+                print(f"[Main] ⚠️ Error during cycle: {e}")
+                print("[Main] 🔁 Attempting re-login and retry...")
                 session, server_url = login()
                 api = TravianAPI(session, server_url)
-                print("✅ Re-login successful.")
+                print("[Main] ✅ Re-login successful.")
     elif choice == "8":
         run_map_scan(api)
     elif choice == "9":
