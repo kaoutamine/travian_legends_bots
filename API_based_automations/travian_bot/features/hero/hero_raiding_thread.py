@@ -100,12 +100,11 @@ def run_hero_raiding_thread(api):
                 distance = abs(current_village['x'] - oasis['x']) + abs(current_village['y'] - oasis['y'])
                 if distance >= 20:
                     continue
-                animal_info = api.get_oasis_animal_info(oasis["x"], oasis["y"])
-                if not animal_info:
+                oasis_info = api.get_oasis_info(oasis["x"], oasis["y"])
+                if oasis_info["is_occupied"]:
                     continue
-                if api.get_oasis_info(oasis["x"], oasis["y"])["is_occupied"]:
-                    continue
-                power = api.get_oasis_attack_power(oasis["x"], oasis["y"])
+                animal_info = oasis_info["animals"]
+                power = oasis_info["attack_power"]
                 max_power = 2000
                 if distance < 3:
                     max_power = 500

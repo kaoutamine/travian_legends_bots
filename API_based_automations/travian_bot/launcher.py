@@ -17,7 +17,7 @@ from features.hero.hero_operations import run_hero_operations as run_hero_ops, p
 from features.hero.hero_raiding_thread import run_hero_raiding_thread
 
 # === CONFIG ===
-WAIT_BETWEEN_CYCLES_MINUTES = 44
+WAIT_BETWEEN_CYCLES_MINUTES = 34
 JITTER_MINUTES = 5
 SERVER_SELECTION = 0  # 👈 update if needed
 

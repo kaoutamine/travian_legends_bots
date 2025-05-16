@@ -194,43 +194,6 @@ class TravianAPI:
                     continue
         return animal_count
 
-    def get_oasis_animal_info(self, x: int, y: int) -> list[tuple[str, int]]:
-        """Returns a list of (animal_name, count) tuples in the oasis."""
-        url = f"{self.server_url}/api/v1/map/tile-details"
-        payload = {"x": x, "y": y}
-        response = self.session.post(url, json=payload)
-        response.raise_for_status()
-        data = response.json()
-
-        html = data.get("html")
-        if not html:
-            return []
-
-        soup = BeautifulSoup(html, "html.parser")
-        troop_table = soup.find("table", id="troop_info")
-        if not troop_table:
-            return []
-
-        results = []
-        for row in troop_table.find_all("tr"):
-            img = row.find("img")
-            cols = row.find_all("td")
-            if img and len(cols) >= 2:
-                animal_name = img.get("alt", "").strip().lower()
-                count_text = cols[1].get_text(strip=True).replace("\u202d", "").replace("\u202c", "")
-                try:
-                    count = int(count_text)
-                    results.append((animal_name, count))
-                except ValueError:
-                    continue
-
-        return results
-
-    def get_oasis_attack_power(self, x: int, y: int) -> int:
-        """Get total attack power of animals in an oasis."""
-        animal_data = self.get_oasis_animal_info(x, y)
-        return sum(get_animal_power(name) * count for name, count in animal_data)
-
     def prepare_oasis_attack(self, map_id: int, x: int, y: int, troop_setup: dict) -> dict:
         """Prepare an attack on a given oasis and return action and checksum."""
 

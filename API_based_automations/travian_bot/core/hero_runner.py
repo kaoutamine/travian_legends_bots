@@ -33,7 +33,8 @@ def try_send_hero_to_oasis(api, village, oasis, min_power=50, max_power=2000, he
         logging.info(f"⚠️ Distance too far ({distance} tiles). Skipping.")
         return False
 
-    power = api.get_oasis_attack_power(oasis["x"], oasis["y"])
+    oasis_info = api.get_oasis_info(oasis["x"], oasis["y"])
+    power = oasis_info["attack_power"]
     logging.debug(f"Checking oasis at ({oasis['x']}, {oasis['y']}) → Power: {power}, Distance: {distance}")
     
     if power > max_power or power < min_power:

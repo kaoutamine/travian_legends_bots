@@ -1,0 +1,47 @@
+{
+    "raid_settings": {
+        "max_raid_distance": 8,
+        "wait_time_seconds": 60,
+        "wait_time_jitter_seconds": 10
+    },
+    "aggressive_units": {
+        "roman": ["u3", "u5", "u6"],
+        "gaul": ["u4", "u6"],
+        "teuton": ["u5", "u6"],
+        "egyptian": ["u4", "u5"],
+        "hun": ["u4", "u5", "u6"]
+    },
+    "unit_pairs": {
+        "roman": [
+            ["u3", "u5"],
+            ["u5", "u6"]
+        ],
+        "gaul": [
+            ["u4", "u6"]
+        ],
+        "teuton": [
+            ["u5", "u6"]
+        ],
+        "egyptian": [
+            ["u4", "u5"]
+        ],
+        "hun": [
+            ["u4", "u5"],
+            ["u5", "u6"]
+        ]
+    },
+    "oasis_power_thresholds": {
+        "weak": {
+            "max_power": 500,
+            "total_units": 30,
+            "max_per_type": 10
+        },
+        "medium": {
+            "max_power": 1000,
+            "total_units": 40,
+            "min_units": 40,
+            "max_per_type": 25,
+            "prefer_unit_pairs": true
+        }
+    }
+} 

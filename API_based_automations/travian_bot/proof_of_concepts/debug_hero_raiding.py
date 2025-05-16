@@ -88,16 +88,13 @@ def find_suitable_oases(api, village, oases):
             continue
         
         # Query live animal data for the oasis
-        animal_info = api.get_oasis_animal_info(oasis["x"], oasis["y"])
-        if not animal_info:
-            continue  # Skip if no animal data available
+        oasis_info = api.get_oasis_info(oasis["x"], oasis["y"])
+        animal_info = oasis_info["animals"]
+        power = oasis_info["attack_power"]
         
         # Check if the oasis is occupied
-        if api.get_oasis_info(oasis["x"], oasis["y"])["is_occupied"]:
+        if oasis_info["is_occupied"]:
             continue  # Skip occupied oases
-        
-        # Get power
-        power = api.get_oasis_attack_power(oasis["x"], oasis["y"])
         
         # Set power threshold based on distance
         max_power = 2000  # Default for medium distance

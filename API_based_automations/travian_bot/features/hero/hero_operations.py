@@ -83,7 +83,8 @@ def run_hero_operations(api):
     for coord_key, oasis_data in oases.items():
         x_str, y_str = coord_key.split("_")
         oasis = {"x": int(x_str), "y": int(y_str)}
-        power = api.get_oasis_attack_power(oasis["x"], oasis["y"])
+        oasis_info = api.get_oasis_info(oasis["x"], oasis["y"])
+        power = oasis_info["attack_power"]
         
         if 500 <= power <= 2000:
             suitable_oases.append((oasis, power))
